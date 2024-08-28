@@ -1,0 +1,274 @@
+   1               		.file	"hal_pal.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.palReadBus,"ax",@progbits
+  11               	.global	palReadBus
+  13               	palReadBus:
+  14               	.LFB243:
+  15               		.file 1 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c"
+   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /*
+   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
+   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****     you may not use this file except in compliance with the License.
+   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****     You may obtain a copy of the License at
+   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****     Unless required by applicable law or agreed to in writing, software
+  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****     See the License for the specific language governing permissions and
+  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****     limitations under the License.
+  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** */
+  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /**
+  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @file    hal_pal.c
+  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @brief   I/O Ports Abstraction Layer code.
+  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *
+  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @addtogroup PAL
+  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @{
+  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  */
+  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** #include "hal.h"
+  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** #if (HAL_USE_PAL == TRUE) || defined(__DOXYGEN__)
+  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /*===========================================================================*/
+  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /* Driver local definitions.                                                 */
+  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /*===========================================================================*/
+  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /*===========================================================================*/
+  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /* Driver exported variables.                                                */
+  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /*===========================================================================*/
+  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /*===========================================================================*/
+  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /* Driver local variables and types.                                         */
+  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /*===========================================================================*/
+  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /*===========================================================================*/
+  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /* Driver local functions.                                                   */
+  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /*===========================================================================*/
+  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /*===========================================================================*/
+  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /* Driver exported functions.                                                */
+  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /*===========================================================================*/
+  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /**
+  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @brief   Read from an I/O bus.
+  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @note    The operation is not guaranteed to be atomic on all the
+  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          architectures, for atomicity and/or portability reasons you may
+  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          need to enclose port I/O operations between @p osalSysLock() and
+  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          @p osalSysUnlock().
+  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @note    The function internally uses the @p palReadGroup() macro. The use
+  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          of this function is preferred when you value code size, readability
+  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          and error checking over speed.
+  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @note    The function can be called from any context.
+  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *
+  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @param[in] bus       the I/O bus, pointer to a @p IOBus structure
+  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @return              The bus logical states.
+  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *
+  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @special
+  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  */
+  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** ioportmask_t palReadBus(const IOBus *bus) {
+  16               		.loc 1 65 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+  23 0000 FC01      		movw r30,r24
+  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****   osalDbgCheck((bus != NULL) && (bus->offset < PAL_IOPORTS_WIDTH));
+  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****   return palReadGroup(bus->portid, bus->mask, bus->offset);
+  24               		.loc 1 69 0
+  25 0002 A081      		ld r26,Z
+  26 0004 B181      		ldd r27,Z+1
+  27 0006 2C91      		ld r18,X
+  28 0008 30E0      		ldi r19,0
+  29 000a 8381      		ldd r24,Z+3
+  30               	.LVL1:
+  31 000c 00C0      		rjmp 2f
+  32               		1:
+  33 000e 3595      		asr r19
+  34 0010 2795      		ror r18
+  35               		2:
+  36 0012 8A95      		dec r24
+  37 0014 02F4      		brpl 1b
+  38 0016 8281      		ldd r24,Z+2
+  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** }
+  39               		.loc 1 70 0
+  40 0018 8223      		and r24,r18
+  41               	/* epilogue start */
+  42 001a 0895      		ret
+  43               		.cfi_endproc
+  44               	.LFE243:
+  46               		.section	.text.palWriteBus,"ax",@progbits
+  47               	.global	palWriteBus
+  49               	palWriteBus:
+  50               	.LFB244:
+  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /**
+  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @brief   Write to an I/O bus.
+  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @note    The operation is not guaranteed to be atomic on all the
+  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          architectures, for atomicity and/or portability reasons you may
+  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          need to enclose port I/O operations between @p osalSysLock() and
+  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          @p osalSysUnlock().
+  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @note    The default implementation is non atomic and not necessarily
+  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          optimal. Low level drivers may  optimize the function by using
+  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          specific hardware or coding.
+  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @note    The function can be called from any context.
+  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *
+  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @param[in] bus       the I/O bus, pointer to a @p IOBus structure
+  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @param[in] bits      the bits to be written on the I/O bus. Values exceeding
+  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *                      the bus width are masked so most significant bits are
+  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *                      lost.
+  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *
+  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @special
+  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  */
+  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** void palWriteBus(const IOBus *bus, ioportmask_t bits) {
+  51               		.loc 1 90 0
+  52               		.cfi_startproc
+  53               	.LVL2:
+  54               	/* prologue: function */
+  55               	/* frame size = 0 */
+  56               	/* stack size = 0 */
+  57               	.L__stack_usage = 0
+  58 0000 FC01      		movw r30,r24
+  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****   osalDbgCheck((bus != NULL) && (bus->offset < PAL_IOPORTS_WIDTH));
+  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****   palWriteGroup(bus->portid, bus->mask, bus->offset, bits);
+  59               		.loc 1 94 0
+  60 0002 A081      		ld r26,Z
+  61 0004 B181      		ldd r27,Z+1
+  62 0006 1296      		adiw r26,2
+  63 0008 4C91      		ld r20,X
+  64 000a 1297      		sbiw r26,2
+  65 000c 2281      		ldd r18,Z+2
+  66 000e 3381      		ldd r19,Z+3
+  67 0010 822F      		mov r24,r18
+  68               	.LVL3:
+  69 0012 032E      		mov r0,r19
+  70 0014 00C0      		rjmp 2f
+  71               		1:
+  72 0016 880F      		lsl r24
+  73               		2:
+  74 0018 0A94      		dec r0
+  75 001a 02F4      		brpl 1b
+  76 001c 8095      		com r24
+  77 001e 8423      		and r24,r20
+  78 0020 6223      		and r22,r18
+  79               	.LVL4:
+  80 0022 00C0      		rjmp 2f
+  81               		1:
+  82 0024 660F      		lsl r22
+  83               		2:
+  84 0026 3A95      		dec r19
+  85 0028 02F4      		brpl 1b
+  86 002a 862B      		or r24,r22
+  87 002c 1296      		adiw r26,2
+  88 002e 8C93      		st X,r24
+  89               	/* epilogue start */
+  95:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** }
+  90               		.loc 1 95 0
+  91 0030 0895      		ret
+  92               		.cfi_endproc
+  93               	.LFE244:
+  95               		.section	.text.palSetBusMode,"ax",@progbits
+  96               	.global	palSetBusMode
+  98               	palSetBusMode:
+  99               	.LFB245:
+  96:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+  97:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** /**
+  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @brief   Programs a bus with the specified mode.
+  99:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @note    The operation is not guaranteed to be atomic on all the
+ 100:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          architectures, for atomicity and/or portability reasons you may
+ 101:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          need to enclose port I/O operations between @p osalSysLock() and
+ 102:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          @p osalSysUnlock().
+ 103:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @note    The default implementation is non atomic and not necessarily
+ 104:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          optimal. Low level drivers may  optimize the function by using
+ 105:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *          specific hardware or coding.
+ 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @note    The function can be called from any context.
+ 107:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *
+ 108:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @param[in] bus       the I/O bus, pointer to a @p IOBus structure
+ 109:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @param[in] mode      the mode
+ 110:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  *
+ 111:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  * @special
+ 112:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****  */
+ 113:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** void palSetBusMode(const IOBus *bus, iomode_t mode) {
+ 100               		.loc 1 113 0
+ 101               		.cfi_startproc
+ 102               	.LVL5:
+ 103               	/* prologue: function */
+ 104               	/* frame size = 0 */
+ 105               	/* stack size = 0 */
+ 106               	.L__stack_usage = 0
+ 107 0000 FC01      		movw r30,r24
+ 108 0002 462F      		mov r20,r22
+ 114:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+ 115:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****   osalDbgCheck((bus != NULL) && (bus->offset < PAL_IOPORTS_WIDTH));
+ 116:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c **** 
+ 117:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_pal.c ****   palSetGroupMode(bus->portid, bus->mask, bus->offset, mode);
+ 109               		.loc 1 117 0
+ 110 0004 2281      		ldd r18,Z+2
+ 111 0006 8381      		ldd r24,Z+3
+ 112               	.LVL6:
+ 113 0008 00C0      		rjmp 2f
+ 114               		1:
+ 115 000a 220F      		lsl r18
+ 116               		2:
+ 117 000c 8A95      		dec r24
+ 118 000e 02F4      		brpl 1b
+ 119 0010 622F      		mov r22,r18
+ 120               	.LVL7:
+ 121 0012 8081      		ld r24,Z
+ 122 0014 9181      		ldd r25,Z+1
+ 123 0016 0C94 0000 		jmp _pal_lld_setgroupmode
+ 124               	.LVL8:
+ 125               		.cfi_endproc
+ 126               	.LFE245:
+ 128               		.text
+ 129               	.Letext0:
+ 130               		.file 2 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
+ 131               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 132               		.file 4 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
+ 133               		.file 5 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
+ 134               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
+ 135               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
+ 136               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
+ 137               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
+ 138               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
+ 139               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
+ 140               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
+ 141               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
+ 142               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
+ 143               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
+ 144               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chevents.h"
+ 145               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
+ 146               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_queues.h"
+ 147               		.file 19 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPI
+ 148               		.file 20 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_pal.h"
+ 149               		.file 21 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_serial.h"
+ 150               		.file 22 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 hal_pal.c
+     /tmp/ccgclNdN.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccgclNdN.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccgclNdN.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccgclNdN.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccgclNdN.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccgclNdN.s:13     .text.palReadBus:0000000000000000 palReadBus
+     /tmp/ccgclNdN.s:49     .text.palWriteBus:0000000000000000 palWriteBus
+     /tmp/ccgclNdN.s:98     .text.palSetBusMode:0000000000000000 palSetBusMode
+
+UNDEFINED SYMBOLS
+_pal_lld_setgroupmode

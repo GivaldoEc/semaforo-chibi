@@ -1,0 +1,1656 @@
+   1               		.file	"hal_flash.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.flashWaitErase,"ax",@progbits
+  11               	.global	flashWaitErase
+  13               	flashWaitErase:
+  14               	.LFB243:
+  15               		.file 1 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c"
+   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /*
+   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     ChibiOS - Copyright (C) 2006..2021 Giovanni Di Sirio
+   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     you may not use this file except in compliance with the License.
+   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     You may obtain a copy of the License at
+   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     Unless required by applicable law or agreed to in writing, software
+  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     See the License for the specific language governing permissions and
+  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     limitations under the License.
+  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** */
+  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /**
+  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @file    hal_flash.c
+  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @brief   Generic flash driver class code.
+  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @addtogroup HAL_FLASH
+  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @{
+  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  */
+  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** #include "hal.h"
+  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** #include "hal_flash.h"
+  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /*===========================================================================*/
+  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /* Driver local definitions.                                                 */
+  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /*===========================================================================*/
+  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /*===========================================================================*/
+  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /* Driver exported variables.                                                */
+  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /*===========================================================================*/
+  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /*===========================================================================*/
+  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /* Driver local variables and types.                                         */
+  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /*===========================================================================*/
+  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /*===========================================================================*/
+  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /* Driver local functions.                                                   */
+  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /*===========================================================================*/
+  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /*===========================================================================*/
+  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /* Driver exported functions.                                                */
+  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /*===========================================================================*/
+  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /**
+  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @brief   Waits until the current erase operation is finished.
+  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @param[in] devp      pointer to a @p BaseFlash object
+  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @return              An error code.
+  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @retval FLASH_NO_ERROR if there is no erase operation in progress.
+  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @retval FLASH_ERROR_ERASE if the erase operation failed.
+  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @retval FLASH_ERROR_HW_FAILURE if access to the memory failed.
+  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @api
+  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  */
+  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** flash_error_t flashWaitErase(BaseFlash *devp) {
+  16               		.loc 1 61 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19 0000 CF92      		push r12
+  20               	.LCFI0:
+  21               		.cfi_def_cfa_offset 3
+  22               		.cfi_offset 12, -2
+  23 0002 DF92      		push r13
+  24               	.LCFI1:
+  25               		.cfi_def_cfa_offset 4
+  26               		.cfi_offset 13, -3
+  27 0004 EF92      		push r14
+  28               	.LCFI2:
+  29               		.cfi_def_cfa_offset 5
+  30               		.cfi_offset 14, -4
+  31 0006 FF92      		push r15
+  32               	.LCFI3:
+  33               		.cfi_def_cfa_offset 6
+  34               		.cfi_offset 15, -5
+  35 0008 0F93      		push r16
+  36               	.LCFI4:
+  37               		.cfi_def_cfa_offset 7
+  38               		.cfi_offset 16, -6
+  39 000a 1F93      		push r17
+  40               	.LCFI5:
+  41               		.cfi_def_cfa_offset 8
+  42               		.cfi_offset 17, -7
+  43 000c CF93      		push r28
+  44               	.LCFI6:
+  45               		.cfi_def_cfa_offset 9
+  46               		.cfi_offset 28, -8
+  47 000e DF93      		push r29
+  48               	.LCFI7:
+  49               		.cfi_def_cfa_offset 10
+  50               		.cfi_offset 29, -9
+  51 0010 00D0      		rcall .
+  52 0012 00D0      		rcall .
+  53               	.LCFI8:
+  54               		.cfi_def_cfa_offset 14
+  55 0014 CDB7      		in r28,__SP_L__
+  56 0016 DEB7      		in r29,__SP_H__
+  57               	.LCFI9:
+  58               		.cfi_def_cfa_register 28
+  59               	/* prologue: function */
+  60               	/* frame size = 4 */
+  61               	/* stack size = 12 */
+  62               	.L__stack_usage = 12
+  63 0018 8C01      		movw r16,r24
+  64               	.LBB5:
+  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   while (true) {
+  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     flash_error_t err;
+  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     uint32_t msec;
+  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     /* Checking operation state.*/
+  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     err = flashQueryErase(devp, &msec);
+  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     if (err != FLASH_BUSY_ERASING) {
+  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****       return err;
+  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     }
+  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     /* Interval because nice waiting.*/
+  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     osalThreadSleepMilliseconds(msec);
+  65               		.loc 1 74 0
+  66 001a 88EE      		ldi r24,lo8(-24)
+  67 001c C82E      		mov r12,r24
+  68 001e 83E0      		ldi r24,lo8(3)
+  69 0020 D82E      		mov r13,r24
+  70 0022 E12C      		mov r14,__zero_reg__
+  71 0024 F12C      		mov r15,__zero_reg__
+  72               	.LVL1:
+  73 0026 00C0      		rjmp .L3
+  74               	.LVL2:
+  75               	.L6:
+  76 0028 2981      		ldd r18,Y+1
+  77 002a 3A81      		ldd r19,Y+2
+  78 002c 4B81      		ldd r20,Y+3
+  79 002e 5C81      		ldd r21,Y+4
+  80 0030 A8E0      		ldi r26,lo8(8)
+  81 0032 BDE3      		ldi r27,lo8(61)
+  82 0034 0E94 0000 		call __muluhisi3
+  83 0038 6951      		subi r22,25
+  84 003a 7C4F      		sbci r23,-4
+  85 003c 8F4F      		sbci r24,-1
+  86 003e 9F4F      		sbci r25,-1
+  87 0040 A701      		movw r20,r14
+  88 0042 9601      		movw r18,r12
+  89 0044 0E94 0000 		call __udivmodsi4
+  90               	.LBB6:
+  91               	.LBB7:
+  92               		.file 2 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h"
+   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*
+   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
+   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****     you may not use this file except in compliance with the License.
+   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****     You may obtain a copy of the License at
+   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****     Unless required by applicable law or agreed to in writing, software
+  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****     See the License for the specific language governing permissions and
+  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****     limitations under the License.
+  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** */
+  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @file    osal.h
+  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   OSAL module header.
+  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @addtogroup OSAL
+  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @{
+  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #ifndef OSAL_H
+  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_H
+  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #include <stddef.h>
+  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #include <stdint.h>
+  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #include <stdbool.h>
+  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #include "ch.h"
+  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /* Module constants.                                                         */
+  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @name    Common constants
+  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @{
+  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if !defined(FALSE) || defined(__DOXYGEN__)
+  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define FALSE                               0
+  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if !defined(TRUE) || defined(__DOXYGEN__)
+  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define TRUE                                1
+  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_SUCCESS                        false
+  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_FAILED                         true
+  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /** @} */
+  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if 0
+  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @name    Messages
+  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @{
+  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define MSG_OK                              (msg_t)0
+  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define MSG_TIMEOUT                         (msg_t)-1
+  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define MSG_RESET                           (msg_t)-2
+  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /** @} */
+  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if 0
+  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @name    Special time constants
+  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @{
+  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define TIME_IMMEDIATE                      ((sysinterval_t)0)
+  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define TIME_INFINITE                       ((sysinterval_t)-1)
+  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /** @} */
+  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @name    Systick modes.
+  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @{
+  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_ST_MODE_NONE                   0
+  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_ST_MODE_PERIODIC               1
+  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_ST_MODE_FREERUNNING            2
+  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /** @} */
+  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @name    Systick parameters.
+  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @{
+  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Size in bits of the @p systick_t type.
+  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_ST_RESOLUTION                  CH_CFG_ST_RESOLUTION
+  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Required systick frequency or resolution.
+  95:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+  96:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_ST_FREQUENCY                   CH_CFG_ST_FREQUENCY
+  97:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+  99:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Systick mode required by the underlying OS.
+ 100:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 101:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if (CH_CFG_ST_TIMEDELTA == 0) || defined(__DOXYGEN__)
+ 102:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_ST_MODE                        OSAL_ST_MODE_PERIODIC
+ 103:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #else
+ 104:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_ST_MODE                        OSAL_ST_MODE_FREERUNNING
+ 105:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /** @} */
+ 107:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 108:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+ 109:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /* Module pre-compile time settings.                                         */
+ 110:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+ 111:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 112:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+ 113:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /* Derived constants and error checks.                                       */
+ 114:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+ 115:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 116:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if !(OSAL_ST_MODE == OSAL_ST_MODE_NONE) &&                                 \
+ 117:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****     !(OSAL_ST_MODE == OSAL_ST_MODE_PERIODIC) &&                             \
+ 118:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****     !(OSAL_ST_MODE == OSAL_ST_MODE_FREERUNNING)
+ 119:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #error "invalid OSAL_ST_MODE setting in osal.h"
+ 120:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 121:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 122:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if (OSAL_ST_RESOLUTION != 16) && (OSAL_ST_RESOLUTION != 32) &&             \
+ 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****     (OSAL_ST_RESOLUTION != 64)
+ 124:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #error "invalid OSAL_ST_RESOLUTION, must be 16, 32 or 64"
+ 125:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 126:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 127:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+ 128:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /* Module data structures and types.                                         */
+ 129:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+ 130:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 131:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if 0
+ 132:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 133:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Type of a system status word.
+ 134:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 135:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** typedef uint32_t syssts_t;
+ 136:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 137:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 138:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if 0
+ 139:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 140:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Type of a message.
+ 141:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 142:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** typedef int32_t msg_t;
+ 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 144:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if 0
+ 146:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 147:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Type of system time counter.
+ 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 149:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** typedef uint32_t systime_t;
+ 150:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if 0
+ 153:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 154:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Type of system time interval.
+ 155:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** typedef uint32_t sysinterval_t;
+ 157:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 158:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 159:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if 0
+ 160:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 161:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Type of time conversion variable.
+ 162:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    This type must have double width than other time types, it is
+ 163:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          only used internally for conversions.
+ 164:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 165:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** typedef uint64_t time_conv_t;
+ 166:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 167:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 168:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if 0
+ 169:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 170:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Type of realtime counter.
+ 171:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 172:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** typedef uint32_t rtcnt_t;
+ 173:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 174:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 175:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if 0
+ 176:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 177:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Type of a thread reference.
+ 178:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 179:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** typedef thread_t * thread_reference_t;
+ 180:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 181:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 182:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if 0
+ 183:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 184:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Type of an event flags mask.
+ 185:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 186:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** typedef uint32_t eventflags_t;
+ 187:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 188:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 189:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if (CH_CFG_USE_EVENTS == FALSE) || defined(__DOXYGEN__)
+ 190:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 191:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Type of an event flags object.
+ 192:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The content of this structure is not part of the API and should
+ 193:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          not be relied upon. Implementers may define this structure in
+ 194:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          an entirely different way.
+ 195:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    Retrieval and clearing of the flags are not defined in this
+ 196:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          API and are implementation-dependent.
+ 197:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 198:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** typedef struct event_source event_source_t;
+ 199:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 200:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 201:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Type of an event source callback.
+ 202:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    This type is not part of the OSAL API and is provided
+ 203:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          exclusively as an example and for convenience.
+ 204:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 205:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** typedef void (*eventcallback_t)(event_source_t *esp);
+ 206:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 207:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 208:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Events source object.
+ 209:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The content of this structure is not part of the API and should
+ 210:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          not be relied upon. Implementers may define this structure in
+ 211:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          an entirely different way.
+ 212:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    Retrieval and clearing of the flags are not defined in this
+ 213:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          API and are implementation-dependent.
+ 214:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 215:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** struct event_source {
+ 216:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   volatile eventflags_t flags;      /**< @brief Stored event flags.         */
+ 217:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   eventcallback_t       cb;         /**< @brief Event source callback.      */
+ 218:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   void                  *param;     /**< @brief User defined field.         */
+ 219:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** };
+ 220:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif /* CH_CFG_USE_EVENTS == FALSE */
+ 221:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 222:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 223:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Type of a mutex.
+ 224:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    If the OS does not support mutexes or there is no OS then the
+ 225:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          mechanism can be simulated.
+ 226:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 227:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if CH_CFG_USE_MUTEXES || defined(__DOXYGEN__)
+ 228:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #elif CH_CFG_USE_SEMAPHORES
+ 229:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** typedef semaphore_t mutex_t;
+ 230:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #else
+ 231:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** typedef uint32_t mutex_t;
+ 232:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 233:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 234:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if 0
+ 235:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 236:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Type of a thread queue.
+ 237:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details A thread queue is a queue of sleeping threads, queued threads
+ 238:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          can be dequeued one at time or all together.
+ 239:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    In this implementation it is implemented as a single reference
+ 240:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          because there are no real threads.
+ 241:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 242:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** typedef struct {
+ 243:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   thread_reference_t    tr;
+ 244:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** } threads_queue_t;
+ 245:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 246:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 247:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+ 248:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /* Module macros.                                                            */
+ 249:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+ 250:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 251:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 252:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @name    Debug related macros
+ 253:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @{
+ 254:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 255:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 256:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Condition assertion.
+ 257:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details If the condition check fails then the OSAL panics with a
+ 258:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          message and halts.
+ 259:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The condition is tested only if the @p OSAL_ENABLE_ASSERTIONS
+ 260:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          switch is enabled.
+ 261:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The remark string is not currently used except for putting a
+ 262:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          comment in the code about the assertion.
+ 263:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 264:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] c         the condition to be verified to be true
+ 265:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] remark    a remark string
+ 266:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 267:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 268:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 269:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define osalDbgAssert(c, remark) chDbgAssert(c, remark)
+ 270:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 271:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 272:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Function parameters check.
+ 273:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details If the condition check fails then the OSAL panics and halts.
+ 274:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The condition is tested only if the @p OSAL_ENABLE_CHECKS switch
+ 275:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          is enabled.
+ 276:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 277:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] c         the condition to be verified to be true
+ 278:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 279:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 280:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 281:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define osalDbgCheck(c) chDbgCheck(c)
+ 282:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 283:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 284:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   I-Class state check.
+ 285:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    Not implemented in this simplified OSAL.
+ 286:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 287:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define osalDbgCheckClassI() chDbgCheckClassI()
+ 288:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 289:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 290:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   S-Class state check.
+ 291:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    Not implemented in this simplified OSAL.
+ 292:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 293:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define osalDbgCheckClassS() chDbgCheckClassS()
+ 294:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /** @} */
+ 295:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 296:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 297:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @name    IRQ service routines wrappers
+ 298:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @{
+ 299:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 300:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 301:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Priority level verification macro.
+ 302:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 303:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_IRQ_IS_VALID_PRIORITY(n) CH_IRQ_IS_VALID_KERNEL_PRIORITY(n)
+ 304:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 305:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 306:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   IRQ prologue code.
+ 307:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details This macro must be inserted at the start of all IRQ handlers.
+ 308:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 309:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_IRQ_PROLOGUE() CH_IRQ_PROLOGUE()
+ 310:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 311:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 312:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   IRQ epilogue code.
+ 313:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details This macro must be inserted at the end of all IRQ handlers.
+ 314:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 315:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_IRQ_EPILOGUE() CH_IRQ_EPILOGUE()
+ 316:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 317:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 318:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   IRQ handler function declaration.
+ 319:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details This macro hides the details of an ISR function declaration.
+ 320:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 321:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] id        a vector name as defined in @p vectors.s
+ 322:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 323:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_IRQ_HANDLER(id) CH_IRQ_HANDLER(id)
+ 324:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /** @} */
+ 325:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 326:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 327:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @name    Time conversion utilities
+ 328:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @{
+ 329:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 330:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 331:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Seconds to time interval.
+ 332:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details Converts from seconds to system ticks number.
+ 333:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The result is rounded upward to the next tick boundary.
+ 334:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    Use of this macro for large values is not secure because
+ 335:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          integer overflows, make sure your value can be correctly
+ 336:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          converted.
+ 337:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 338:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] secs      number of seconds
+ 339:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @return              The number of ticks.
+ 340:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 341:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 342:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 343:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_S2I(secs) TIME_S2I(secs)
+ 344:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 345:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 346:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Milliseconds to time interval.
+ 347:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details Converts from milliseconds to system ticks number.
+ 348:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The result is rounded upward to the next tick boundary.
+ 349:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    Use of this macro for large values is not secure because
+ 350:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          integer overflows, make sure your value can be correctly
+ 351:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          converted.
+ 352:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 353:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] msecs     number of milliseconds
+ 354:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @return              The number of ticks.
+ 355:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 356:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 357:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 358:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_MS2I(msecs) TIME_MS2I(msecs)
+ 359:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 360:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 361:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Microseconds to time interval.
+ 362:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details Converts from microseconds to system ticks number.
+ 363:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The result is rounded upward to the next tick boundary.
+ 364:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    Use of this macro for large values is not secure because
+ 365:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          integer overflows, make sure your value can be correctly
+ 366:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          converted.
+ 367:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 368:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] usecs     number of microseconds
+ 369:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @return              The number of ticks.
+ 370:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 371:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 372:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 373:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_US2I(usecs) TIME_US2I(usecs)
+ 374:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 375:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 376:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Time interval to seconds.
+ 377:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details Converts from system ticks number to seconds.
+ 378:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The result is rounded up to the next second boundary.
+ 379:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    Use of this macro for large values is not secure because
+ 380:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          integer overflows, make sure your value can be correctly
+ 381:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          converted.
+ 382:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 383:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] interval  interval in ticks
+ 384:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @return              The number of seconds.
+ 385:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 386:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 387:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 388:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_I2S(interval) TIME_I2S(interval)
+ 389:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 390:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 391:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Time interval to milliseconds.
+ 392:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details Converts from system ticks number to milliseconds.
+ 393:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The result is rounded up to the next millisecond boundary.
+ 394:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    Use of this macro for large values is not secure because
+ 395:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          integer overflows, make sure your value can be correctly
+ 396:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          converted.
+ 397:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 398:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] interval  interval in ticks
+ 399:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @return              The number of milliseconds.
+ 400:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 401:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 402:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 403:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_I2MS(interval) TIME_I2MS(interval)
+ 404:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 405:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 406:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Time interval to microseconds.
+ 407:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details Converts from system ticks number to microseconds.
+ 408:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The result is rounded up to the next microsecond boundary.
+ 409:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    Use of this macro for large values is not secure because
+ 410:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          integer overflows, make sure your value can be correctly
+ 411:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          converted.
+ 412:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 413:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] interval  interval in ticks
+ 414:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @return              The number of microseconds.
+ 415:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 416:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 417:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 418:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_I2US(interval) TIME_I2US(interval)
+ 419:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /** @} */
+ 420:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 421:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 422:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @name    Time conversion utilities for the realtime counter
+ 423:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @{
+ 424:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 425:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 426:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Seconds to realtime counter.
+ 427:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details Converts from seconds to realtime counter cycles.
+ 428:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The macro assumes that @p freq >= @p 1.
+ 429:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 430:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] freq      clock frequency, in Hz, of the realtime counter
+ 431:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] sec       number of seconds
+ 432:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @return              The number of cycles.
+ 433:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 434:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 435:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 436:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_S2RTC(freq, sec) S2RTC(freq, sec)
+ 437:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 438:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 439:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Milliseconds to realtime counter.
+ 440:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details Converts from milliseconds to realtime counter cycles.
+ 441:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The result is rounded upward to the next millisecond boundary.
+ 442:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The macro assumes that @p freq >= @p 1000.
+ 443:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 444:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] freq      clock frequency, in Hz, of the realtime counter
+ 445:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] msec      number of milliseconds
+ 446:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @return              The number of cycles.
+ 447:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 448:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 449:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 450:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_MS2RTC(freq, msec) MS2RTC(freq, msec)
+ 451:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 452:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 453:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Microseconds to realtime counter.
+ 454:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details Converts from microseconds to realtime counter cycles.
+ 455:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The result is rounded upward to the next microsecond boundary.
+ 456:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The macro assumes that @p freq >= @p 1000000.
+ 457:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 458:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] freq      clock frequency, in Hz, of the realtime counter
+ 459:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] usec      number of microseconds
+ 460:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @return              The number of cycles.
+ 461:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 462:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 463:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 464:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define OSAL_US2RTC(freq, usec) US2RTC(freq, usec)
+ 465:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /** @} */
+ 466:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 467:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 468:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @name    Sleep macros using absolute time
+ 469:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @{
+ 470:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 471:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 472:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Delays the invoking thread for the specified number of seconds.
+ 473:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The specified time is rounded up to a value allowed by the real
+ 474:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          system tick clock.
+ 475:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The maximum specifiable value is implementation dependent.
+ 476:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 477:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] secs      time in seconds, must be different from zero
+ 478:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 479:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 480:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 481:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define osalThreadSleepSeconds(secs) osalThreadSleep(OSAL_S2I(secs))
+ 482:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 483:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 484:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Delays the invoking thread for the specified number of
+ 485:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          milliseconds.
+ 486:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The specified time is rounded up to a value allowed by the real
+ 487:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          system tick clock.
+ 488:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The maximum specifiable value is implementation dependent.
+ 489:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 490:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] msecs     time in milliseconds, must be different from zero
+ 491:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 492:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 493:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 494:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define osalThreadSleepMilliseconds(msecs) osalThreadSleep(OSAL_MS2I(msecs))
+ 495:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 496:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 497:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Delays the invoking thread for the specified number of
+ 498:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          microseconds.
+ 499:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The specified time is rounded up to a value allowed by the real
+ 500:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          system tick clock.
+ 501:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The maximum specifiable value is implementation dependent.
+ 502:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 503:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] usecs     time in microseconds, must be different from zero
+ 504:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 505:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 506:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 507:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #define osalThreadSleepMicroseconds(usecs) osalThreadSleep(OSAL_US2I(usecs))
+ 508:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /** @} */
+ 509:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 510:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+ 511:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /* External declarations.                                                    */
+ 512:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+ 513:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 514:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #ifdef __cplusplus
+ 515:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** extern "C" {
+ 516:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 517:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 518:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #ifdef __cplusplus
+ 519:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 520:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 521:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 522:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+ 523:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /* Module inline functions.                                                  */
+ 524:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /*===========================================================================*/
+ 525:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 526:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 527:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   OSAL module initialization.
+ 528:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 529:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 530:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 531:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalInit(void) {
+ 532:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 533:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 534:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 535:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 536:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   System halt with error message.
+ 537:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 538:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] reason    the halt message pointer
+ 539:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 540:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 541:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 542:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalSysHalt(const char *reason) {
+ 543:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 544:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   chSysHalt(reason);
+ 545:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 546:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 547:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 548:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Disables interrupts globally.
+ 549:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 550:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @special
+ 551:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 552:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalSysDisable(void) {
+ 553:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 554:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   chSysDisable();
+ 555:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 556:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 557:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 558:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Enables interrupts globally.
+ 559:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 560:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @special
+ 561:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 562:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalSysEnable(void) {
+ 563:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 564:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   chSysEnable();
+ 565:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 566:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 567:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 568:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Enters a critical zone from thread context.
+ 569:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    This function cannot be used for reentrant critical zones.
+ 570:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 571:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @special
+ 572:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 573:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalSysLock(void) {
+ 574:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 575:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   chSysLock();
+ 576:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 577:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 578:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 579:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Leaves a critical zone from thread context.
+ 580:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    This function cannot be used for reentrant critical zones.
+ 581:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 582:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @special
+ 583:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 584:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalSysUnlock(void) {
+ 585:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 586:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   chSysUnlock();
+ 587:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 588:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 589:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 590:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Enters a critical zone from ISR context.
+ 591:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    This function cannot be used for reentrant critical zones.
+ 592:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 593:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @special
+ 594:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 595:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalSysLockFromISR(void) {
+ 596:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 597:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   chSysLockFromISR();
+ 598:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 599:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 600:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 601:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Leaves a critical zone from ISR context.
+ 602:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    This function cannot be used for reentrant critical zones.
+ 603:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 604:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @special
+ 605:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 606:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalSysUnlockFromISR(void) {
+ 607:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 608:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   chSysUnlockFromISR();
+ 609:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 610:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 611:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 612:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Returns the execution status and enters a critical zone.
+ 613:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details This functions enters into a critical zone and can be called
+ 614:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          from any context. Because its flexibility it is less efficient
+ 615:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          than @p chSysLock() which is preferable when the calling context
+ 616:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          is known.
+ 617:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @post    The system is in a critical zone.
+ 618:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 619:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @return              The previous system status, the encoding of this
+ 620:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *                      status word is architecture-dependent and opaque.
+ 621:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 622:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @xclass
+ 623:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 624:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline syssts_t osalSysGetStatusAndLockX(void) {
+ 625:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 626:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   return chSysGetStatusAndLockX();
+ 627:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 628:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 629:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 630:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Restores the specified execution status and leaves a critical zone.
+ 631:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    A call to @p chSchRescheduleS() is automatically performed
+ 632:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          if exiting the critical zone and if not in ISR context.
+ 633:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 634:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] sts       the system status to be restored.
+ 635:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 636:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @xclass
+ 637:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 638:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalSysRestoreStatusX(syssts_t sts) {
+ 639:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 640:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   chSysRestoreStatusX(sts);
+ 641:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 642:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 643:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 644:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Polled delay.
+ 645:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The real delay is always few cycles in excess of the specified
+ 646:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          value.
+ 647:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 648:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] cycles    number of cycles
+ 649:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 650:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @xclass
+ 651:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 652:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if (PORT_SUPPORTS_RT == TRUE) || defined(__DOXYGEN__)
+ 653:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalSysPolledDelayX(rtcnt_t cycles) {
+ 654:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 655:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   chSysPolledDelayX(cycles);
+ 656:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 657:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 658:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 659:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 660:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Systick callback for the underlying OS.
+ 661:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    This callback is only defined if the OSAL requires such a
+ 662:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          service from the HAL.
+ 663:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 664:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #if (OSAL_ST_MODE != OSAL_ST_MODE_NONE) || defined(__DOXYGEN__)
+ 665:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalOsTimerHandlerI(void) {
+ 666:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 667:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   chSysTimerHandlerI();
+ 668:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 669:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** #endif
+ 670:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 671:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 672:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Checks if a reschedule is required and performs it.
+ 673:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    I-Class functions invoked from thread context must not reschedule
+ 674:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          by themselves, an explicit reschedule using this function is
+ 675:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          required in this scenario.
+ 676:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    Not implemented in this simplified OSAL.
+ 677:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 678:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @sclass
+ 679:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 680:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalOsRescheduleS(void) {
+ 681:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 682:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   chSchRescheduleS();
+ 683:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 684:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 685:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 686:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Current system time.
+ 687:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @details Returns the number of system ticks since the @p osalInit()
+ 688:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          invocation.
+ 689:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    The counter can reach its maximum and then restart from zero.
+ 690:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    This function can be called from any context but its atomicity
+ 691:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          is not guaranteed on architectures whose word size is less than
+ 692:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          @p systime_t size.
+ 693:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 694:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @return              The system time in ticks.
+ 695:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 696:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @xclass
+ 697:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 698:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline systime_t osalOsGetSystemTimeX(void) {
+ 699:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 700:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   return chVTGetSystemTimeX();
+ 701:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 702:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 703:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 704:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Adds an interval to a system time returning a system time.
+ 705:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 706:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] systime   base system time
+ 707:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] interval  interval to be added
+ 708:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @return              The new system time.
+ 709:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 710:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @xclass
+ 711:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 712:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline systime_t osalTimeAddX(systime_t systime,
+ 713:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****                                      sysinterval_t interval) {
+ 714:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 715:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   return chTimeAddX(systime, interval);
+ 716:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 717:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 718:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 719:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Subtracts two system times returning an interval.
+ 720:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 721:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] start     first system time
+ 722:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] end       second system time
+ 723:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @return              The interval representing the time difference.
+ 724:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 725:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @xclass
+ 726:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 727:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline sysinterval_t osalTimeDiffX(systime_t start, systime_t end) {
+ 728:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 729:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   return chTimeDiffX(start, end);
+ 730:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 731:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 732:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 733:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Checks if the specified time is within the specified time window.
+ 734:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    When start==end then the function returns always true because the
+ 735:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *          whole time range is specified.
+ 736:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @note    This function can be called from any context.
+ 737:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 738:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] time      the time to be verified
+ 739:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] start     the start of the time window (inclusive)
+ 740:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] end       the end of the time window (non inclusive)
+ 741:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @retval true         current time within the specified time window.
+ 742:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @retval false        current time not within the specified time window.
+ 743:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 744:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @xclass
+ 745:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 746:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline bool osalTimeIsInRangeX(systime_t time,
+ 747:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****                                       systime_t start,
+ 748:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****                                       systime_t end) {
+ 749:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 750:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   return chTimeIsInRangeX(time, start, end);
+ 751:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 752:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 753:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 754:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Suspends the invoking thread for the specified time.
+ 755:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 756:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] delay     the delay in system ticks, the special values are
+ 757:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *                      handled as follow:
+ 758:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *                      - @a TIME_INFINITE is allowed but interpreted as a
+ 759:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *                        normal time specification.
+ 760:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *                      - @a TIME_IMMEDIATE this value is not allowed.
+ 761:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *                      .
+ 762:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 763:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @sclass
+ 764:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 765:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalThreadSleepS(sysinterval_t delay) {
+ 766:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 767:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   chThdSleepS(delay);
+ 768:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** }
+ 769:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 770:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** /**
+ 771:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @brief   Suspends the invoking thread for the specified time.
+ 772:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 773:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @param[in] delay     the delay in system ticks, the special values are
+ 774:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *                      handled as follow:
+ 775:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *                      - @a TIME_INFINITE is allowed but interpreted as a
+ 776:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *                        normal time specification.
+ 777:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *                      - @a TIME_IMMEDIATE this value is not allowed.
+ 778:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *                      .
+ 779:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  *
+ 780:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  * @api
+ 781:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****  */
+ 782:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** static inline void osalThreadSleep(sysinterval_t delay) {
+ 783:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h **** 
+ 784:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/osal/rt-nil/osal.h ****   chThdSleep(delay);
+  93               		.loc 2 784 0
+  94 0048 C901      		movw r24,r18
+  95               	.LVL3:
+  96 004a 0E94 0000 		call chThdSleep
+  97               	.LVL4:
+  98               	.L3:
+  99               	.LBE7:
+ 100               	.LBE6:
+  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     if (err != FLASH_BUSY_ERASING) {
+ 101               		.loc 1 68 0
+ 102 004e D801      		movw r26,r16
+ 103 0050 ED91      		ld r30,X+
+ 104 0052 FC91      		ld r31,X
+ 105 0054 0484      		ldd __tmp_reg__,Z+12
+ 106 0056 F585      		ldd r31,Z+13
+ 107 0058 E02D      		mov r30,__tmp_reg__
+ 108 005a BE01      		movw r22,r28
+ 109 005c 6F5F      		subi r22,-1
+ 110 005e 7F4F      		sbci r23,-1
+ 111 0060 C801      		movw r24,r16
+ 112 0062 0995      		icall
+ 113               	.LVL5:
+  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****       return err;
+ 114               		.loc 1 69 0
+ 115 0064 8130      		cpi r24,lo8(1)
+ 116 0066 01F0      		breq .L6
+ 117               	/* epilogue start */
+ 118               	.LBE5:
+  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   }
+  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** }
+ 119               		.loc 1 76 0
+ 120 0068 0F90      		pop __tmp_reg__
+ 121 006a 0F90      		pop __tmp_reg__
+ 122 006c 0F90      		pop __tmp_reg__
+ 123 006e 0F90      		pop __tmp_reg__
+ 124 0070 DF91      		pop r29
+ 125 0072 CF91      		pop r28
+ 126 0074 1F91      		pop r17
+ 127 0076 0F91      		pop r16
+ 128               	.LVL6:
+ 129 0078 FF90      		pop r15
+ 130 007a EF90      		pop r14
+ 131 007c DF90      		pop r13
+ 132 007e CF90      		pop r12
+ 133 0080 0895      		ret
+ 134               		.cfi_endproc
+ 135               	.LFE243:
+ 137               		.section	.text.flashGetSectorOffset,"ax",@progbits
+ 138               	.global	flashGetSectorOffset
+ 140               	flashGetSectorOffset:
+ 141               	.LFB244:
+  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /**
+  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @brief   Returns the offset of a sector.
+  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @param[in] devp      pointer to a @p BaseFlash object
+  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @param[in] sector    flash sector number
+  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @return              Sector offset.
+  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @api
+  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  */
+  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** flash_offset_t flashGetSectorOffset(BaseFlash *devp,
+  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****                                     flash_sector_t sector) {
+ 142               		.loc 1 88 0
+ 143               		.cfi_startproc
+ 144               	.LVL7:
+ 145 0000 CF92      		push r12
+ 146               	.LCFI10:
+ 147               		.cfi_def_cfa_offset 3
+ 148               		.cfi_offset 12, -2
+ 149 0002 DF92      		push r13
+ 150               	.LCFI11:
+ 151               		.cfi_def_cfa_offset 4
+ 152               		.cfi_offset 13, -3
+ 153 0004 EF92      		push r14
+ 154               	.LCFI12:
+ 155               		.cfi_def_cfa_offset 5
+ 156               		.cfi_offset 14, -4
+ 157 0006 FF92      		push r15
+ 158               	.LCFI13:
+ 159               		.cfi_def_cfa_offset 6
+ 160               		.cfi_offset 15, -5
+ 161               	/* prologue: function */
+ 162               	/* frame size = 0 */
+ 163               	/* stack size = 4 */
+ 164               	.L__stack_usage = 4
+ 165 0008 6A01      		movw r12,r20
+ 166 000a 7B01      		movw r14,r22
+  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   flash_offset_t offset;
+  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   const flash_descriptor_t *descriptor = flashGetDescriptor(devp);
+ 167               		.loc 1 90 0
+ 168 000c DC01      		movw r26,r24
+ 169 000e ED91      		ld r30,X+
+ 170 0010 FC91      		ld r31,X
+ 171 0012 0280      		ldd __tmp_reg__,Z+2
+ 172 0014 F381      		ldd r31,Z+3
+ 173 0016 E02D      		mov r30,__tmp_reg__
+ 174 0018 0995      		icall
+ 175               	.LVL8:
+  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   osalDbgAssert(sector < descriptor->sectors_count, "invalid sector");
+  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   if (descriptor->sectors != NULL) {
+ 176               		.loc 1 94 0
+ 177 001a FC01      		movw r30,r24
+ 178 001c 6485      		ldd r22,Z+12
+ 179 001e 7585      		ldd r23,Z+13
+ 180 0020 6115      		cp r22,__zero_reg__
+ 181 0022 7105      		cpc r23,__zero_reg__
+ 182 0024 01F0      		breq .L8
+  95:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     offset = descriptor->sectors[sector].offset;
+ 183               		.loc 1 95 0
+ 184 0026 CC0C      		lsl r12
+ 185 0028 DD1C      		rol r13
+ 186 002a CC0C      		lsl r12
+ 187 002c DD1C      		rol r13
+ 188 002e CC0C      		lsl r12
+ 189 0030 DD1C      		rol r13
+ 190               	.LVL9:
+ 191 0032 6C0D      		add r22,r12
+ 192 0034 7D1D      		adc r23,r13
+ 193 0036 DB01      		movw r26,r22
+ 194 0038 6D91      		ld r22,X+
+ 195 003a 7D91      		ld r23,X+
+ 196 003c 8D91      		ld r24,X+
+ 197 003e 9C91      		ld r25,X
+ 198               	.LVL10:
+ 199               	/* epilogue start */
+  96:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   }
+  97:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   else {
+  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     offset = (flash_offset_t)sector * (flash_offset_t)descriptor->sectors_size;
+  99:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   }
+ 100:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 101:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   return offset;
+ 102:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** }
+ 200               		.loc 1 102 0
+ 201 0040 FF90      		pop r15
+ 202 0042 EF90      		pop r14
+ 203 0044 DF90      		pop r13
+ 204 0046 CF90      		pop r12
+ 205 0048 0895      		ret
+ 206               	.LVL11:
+ 207               	.L8:
+  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   }
+ 208               		.loc 1 98 0
+ 209 004a 6685      		ldd r22,Z+14
+ 210 004c 7785      		ldd r23,Z+15
+ 211 004e 8089      		ldd r24,Z+16
+ 212 0050 9189      		ldd r25,Z+17
+ 213 0052 A701      		movw r20,r14
+ 214 0054 9601      		movw r18,r12
+ 215 0056 0E94 0000 		call __mulsi3
+ 216               	.LVL12:
+ 217               	/* epilogue start */
+ 218               		.loc 1 102 0
+ 219 005a FF90      		pop r15
+ 220 005c EF90      		pop r14
+ 221 005e DF90      		pop r13
+ 222 0060 CF90      		pop r12
+ 223 0062 0895      		ret
+ 224               		.cfi_endproc
+ 225               	.LFE244:
+ 227               		.section	.text.flashGetSectorSize,"ax",@progbits
+ 228               	.global	flashGetSectorSize
+ 230               	flashGetSectorSize:
+ 231               	.LFB245:
+ 103:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 104:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /**
+ 105:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @brief   Returns the size of a sector.
+ 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+ 107:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @param[in] devp      pointer to a @p BaseFlash object
+ 108:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @param[in] sector    flash sector number
+ 109:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @return              Sector size.
+ 110:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+ 111:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @api
+ 112:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  */
+ 113:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** uint32_t flashGetSectorSize(BaseFlash *devp,
+ 114:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****                             flash_sector_t sector) {
+ 232               		.loc 1 114 0
+ 233               		.cfi_startproc
+ 234               	.LVL13:
+ 235 0000 CF92      		push r12
+ 236               	.LCFI14:
+ 237               		.cfi_def_cfa_offset 3
+ 238               		.cfi_offset 12, -2
+ 239 0002 DF92      		push r13
+ 240               	.LCFI15:
+ 241               		.cfi_def_cfa_offset 4
+ 242               		.cfi_offset 13, -3
+ 243 0004 EF92      		push r14
+ 244               	.LCFI16:
+ 245               		.cfi_def_cfa_offset 5
+ 246               		.cfi_offset 14, -4
+ 247 0006 FF92      		push r15
+ 248               	.LCFI17:
+ 249               		.cfi_def_cfa_offset 6
+ 250               		.cfi_offset 15, -5
+ 251               	/* prologue: function */
+ 252               	/* frame size = 0 */
+ 253               	/* stack size = 4 */
+ 254               	.L__stack_usage = 4
+ 255 0008 6A01      		movw r12,r20
+ 115:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   uint32_t size;
+ 116:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   const flash_descriptor_t *descriptor = flashGetDescriptor(devp);
+ 256               		.loc 1 116 0
+ 257 000a DC01      		movw r26,r24
+ 258 000c ED91      		ld r30,X+
+ 259 000e FC91      		ld r31,X
+ 260 0010 0280      		ldd __tmp_reg__,Z+2
+ 261 0012 F381      		ldd r31,Z+3
+ 262 0014 E02D      		mov r30,__tmp_reg__
+ 263 0016 0995      		icall
+ 264               	.LVL14:
+ 117:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 118:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   osalDbgAssert(sector < descriptor->sectors_count, "invalid sector");
+ 119:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 120:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   if (descriptor->sectors != NULL) {
+ 265               		.loc 1 120 0
+ 266 0018 FC01      		movw r30,r24
+ 267 001a 2485      		ldd r18,Z+12
+ 268 001c 3585      		ldd r19,Z+13
+ 269 001e 2115      		cp r18,__zero_reg__
+ 270 0020 3105      		cpc r19,__zero_reg__
+ 271 0022 01F0      		breq .L11
+ 121:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     size = descriptor->sectors[sector].size;
+ 272               		.loc 1 121 0
+ 273 0024 CC0C      		lsl r12
+ 274 0026 DD1C      		rol r13
+ 275 0028 CC0C      		lsl r12
+ 276 002a DD1C      		rol r13
+ 277 002c CC0C      		lsl r12
+ 278 002e DD1C      		rol r13
+ 279               	.LVL15:
+ 280 0030 2C0D      		add r18,r12
+ 281 0032 3D1D      		adc r19,r13
+ 282 0034 D901      		movw r26,r18
+ 283 0036 1496      		adiw r26,4
+ 284 0038 6D91      		ld r22,X+
+ 285 003a 7D91      		ld r23,X+
+ 286 003c 8D91      		ld r24,X+
+ 287 003e 9C91      		ld r25,X
+ 288 0040 1797      		sbiw r26,4+3
+ 289               	.LVL16:
+ 290               	/* epilogue start */
+ 122:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   }
+ 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   else {
+ 124:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     size = descriptor->sectors_size;
+ 125:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   }
+ 126:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 127:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   return size;
+ 128:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** }
+ 291               		.loc 1 128 0
+ 292 0042 FF90      		pop r15
+ 293 0044 EF90      		pop r14
+ 294 0046 DF90      		pop r13
+ 295 0048 CF90      		pop r12
+ 296 004a 0895      		ret
+ 297               	.LVL17:
+ 298               	.L11:
+ 124:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   }
+ 299               		.loc 1 124 0
+ 300 004c 6685      		ldd r22,Z+14
+ 301 004e 7785      		ldd r23,Z+15
+ 302 0050 8089      		ldd r24,Z+16
+ 303 0052 9189      		ldd r25,Z+17
+ 304               	.LVL18:
+ 305               	/* epilogue start */
+ 306               		.loc 1 128 0
+ 307 0054 FF90      		pop r15
+ 308 0056 EF90      		pop r14
+ 309 0058 DF90      		pop r13
+ 310 005a CF90      		pop r12
+ 311 005c 0895      		ret
+ 312               		.cfi_endproc
+ 313               	.LFE245:
+ 315               		.section	.text.flashGetOffsetSector,"ax",@progbits
+ 316               	.global	flashGetOffsetSector
+ 318               	flashGetOffsetSector:
+ 319               	.LFB246:
+ 129:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 130:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /**
+ 131:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @brief   Returns the sector of an offset.
+ 132:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+ 133:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @param[in] devp      pointer to a @p BaseFlash object
+ 134:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @param[in] offset    flash offset
+ 135:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @return              Flash sector.
+ 136:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+ 137:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @api
+ 138:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  */
+ 139:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** flash_sector_t flashGetOffsetSector(BaseFlash *devp, flash_offset_t offset) {
+ 320               		.loc 1 139 0
+ 321               		.cfi_startproc
+ 322               	.LVL19:
+ 323 0000 8F92      		push r8
+ 324               	.LCFI18:
+ 325               		.cfi_def_cfa_offset 3
+ 326               		.cfi_offset 8, -2
+ 327 0002 9F92      		push r9
+ 328               	.LCFI19:
+ 329               		.cfi_def_cfa_offset 4
+ 330               		.cfi_offset 9, -3
+ 331 0004 AF92      		push r10
+ 332               	.LCFI20:
+ 333               		.cfi_def_cfa_offset 5
+ 334               		.cfi_offset 10, -4
+ 335 0006 BF92      		push r11
+ 336               	.LCFI21:
+ 337               		.cfi_def_cfa_offset 6
+ 338               		.cfi_offset 11, -5
+ 339 0008 CF92      		push r12
+ 340               	.LCFI22:
+ 341               		.cfi_def_cfa_offset 7
+ 342               		.cfi_offset 12, -6
+ 343 000a DF92      		push r13
+ 344               	.LCFI23:
+ 345               		.cfi_def_cfa_offset 8
+ 346               		.cfi_offset 13, -7
+ 347 000c EF92      		push r14
+ 348               	.LCFI24:
+ 349               		.cfi_def_cfa_offset 9
+ 350               		.cfi_offset 14, -8
+ 351 000e FF92      		push r15
+ 352               	.LCFI25:
+ 353               		.cfi_def_cfa_offset 10
+ 354               		.cfi_offset 15, -9
+ 355 0010 0F93      		push r16
+ 356               	.LCFI26:
+ 357               		.cfi_def_cfa_offset 11
+ 358               		.cfi_offset 16, -10
+ 359 0012 1F93      		push r17
+ 360               	.LCFI27:
+ 361               		.cfi_def_cfa_offset 12
+ 362               		.cfi_offset 17, -11
+ 363               	/* prologue: function */
+ 364               	/* frame size = 0 */
+ 365               	/* stack size = 10 */
+ 366               	.L__stack_usage = 10
+ 367 0014 6A01      		movw r12,r20
+ 368 0016 7B01      		movw r14,r22
+ 140:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   flash_sector_t sector, i;
+ 141:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   const flash_descriptor_t *descriptor = flashGetDescriptor(devp);
+ 369               		.loc 1 141 0
+ 370 0018 DC01      		movw r26,r24
+ 371 001a ED91      		ld r30,X+
+ 372 001c FC91      		ld r31,X
+ 373 001e 0280      		ldd __tmp_reg__,Z+2
+ 374 0020 F381      		ldd r31,Z+3
+ 375 0022 E02D      		mov r30,__tmp_reg__
+ 376 0024 0995      		icall
+ 377               	.LVL20:
+ 378 0026 DC01      		movw r26,r24
+ 379               	.LVL21:
+ 142:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   osalDbgAssert(offset < descriptor->size, "invalid offset");
+ 144:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   if (descriptor->sectors != NULL) {
+ 380               		.loc 1 145 0
+ 381 0028 1C96      		adiw r26,12
+ 382 002a ED91      		ld r30,X+
+ 383 002c FC91      		ld r31,X
+ 384 002e 1D97      		sbiw r26,12+1
+ 385 0030 3097      		sbiw r30,0
+ 386 0032 01F4      		brne .+2
+ 387 0034 00C0      		rjmp .L14
+ 388               	.LVL22:
+ 389               	.LBB8:
+ 146:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     flash_offset_t sector_start;
+ 147:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     flash_offset_t sector_end;
+ 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     for (i = 0; i < descriptor->sectors_count; i++) {
+ 390               		.loc 1 148 0
+ 391 0036 1896      		adiw r26,8
+ 392 0038 4D91      		ld r20,X+
+ 393 003a 5D91      		ld r21,X+
+ 394 003c 6D91      		ld r22,X+
+ 395 003e 7C91      		ld r23,X
+ 396 0040 1B97      		sbiw r26,8+3
+ 397 0042 00E0      		ldi r16,0
+ 398 0044 10E0      		ldi r17,0
+ 399 0046 9801      		movw r18,r16
+ 400 0048 4115      		cp r20,__zero_reg__
+ 401 004a 5105      		cpc r21,__zero_reg__
+ 402 004c 6105      		cpc r22,__zero_reg__
+ 403 004e 7105      		cpc r23,__zero_reg__
+ 404 0050 01F0      		breq .L13
+ 405               	.LVL23:
+ 406               	.L17:
+ 149:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****       sector_start = descriptor->sectors[i].offset;
+ 407               		.loc 1 149 0
+ 408 0052 8080      		ld r8,Z
+ 409 0054 9180      		ldd r9,Z+1
+ 410 0056 A280      		ldd r10,Z+2
+ 411 0058 B380      		ldd r11,Z+3
+ 412               	.LVL24:
+ 150:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****       sector_end = sector_start + descriptor->sectors[i].size - 1U;
+ 413               		.loc 1 150 0
+ 414 005a 8481      		ldd r24,Z+4
+ 415 005c 9581      		ldd r25,Z+5
+ 416 005e A681      		ldd r26,Z+6
+ 417 0060 B781      		ldd r27,Z+7
+ 418               	.LVL25:
+ 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****       if ((offset >= sector_start) && (offset <= sector_end)) {
+ 419               		.loc 1 151 0
+ 420 0062 C814      		cp r12,r8
+ 421 0064 D904      		cpc r13,r9
+ 422 0066 EA04      		cpc r14,r10
+ 423 0068 FB04      		cpc r15,r11
+ 424 006a 00F0      		brlo .L16
+ 150:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****       sector_end = sector_start + descriptor->sectors[i].size - 1U;
+ 425               		.loc 1 150 0 discriminator 1
+ 426 006c 880D      		add r24,r8
+ 427 006e 991D      		adc r25,r9
+ 428 0070 AA1D      		adc r26,r10
+ 429 0072 BB1D      		adc r27,r11
+ 430               	.LVL26:
+ 431 0074 0197      		sbiw r24,1
+ 432 0076 A109      		sbc r26,__zero_reg__
+ 433 0078 B109      		sbc r27,__zero_reg__
+ 434               	.LVL27:
+ 435               		.loc 1 151 0 discriminator 1
+ 436 007a 8C15      		cp r24,r12
+ 437 007c 9D05      		cpc r25,r13
+ 438 007e AE05      		cpc r26,r14
+ 439 0080 BF05      		cpc r27,r15
+ 440 0082 00F4      		brsh .L13
+ 441               	.LVL28:
+ 442               	.L16:
+ 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****       sector_start = descriptor->sectors[i].offset;
+ 443               		.loc 1 148 0 discriminator 2
+ 444 0084 0F5F      		subi r16,-1
+ 445 0086 1F4F      		sbci r17,-1
+ 446 0088 2F4F      		sbci r18,-1
+ 447 008a 3F4F      		sbci r19,-1
+ 448               	.LVL29:
+ 449 008c 3896      		adiw r30,8
+ 450               	.LVL30:
+ 451 008e 0417      		cp r16,r20
+ 452 0090 1507      		cpc r17,r21
+ 453 0092 2607      		cpc r18,r22
+ 454 0094 3707      		cpc r19,r23
+ 455 0096 01F4      		brne .L17
+ 456               	.LBE8:
+ 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****         sector = i;
+ 153:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****         return sector;
+ 154:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****       }
+ 155:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     }
+ 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   }
+ 157:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   else {
+ 158:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     sector = offset / descriptor->sectors_size;
+ 159:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     return sector;
+ 160:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   }
+ 161:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 162:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   osalDbgAssert(FALSE, "invalid offset");
+ 163:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 164:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   return 0;
+ 457               		.loc 1 164 0
+ 458 0098 00E0      		ldi r16,0
+ 459 009a 10E0      		ldi r17,0
+ 460 009c 9801      		movw r18,r16
+ 461               	.LVL31:
+ 462               	.L13:
+ 165:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** }
+ 463               		.loc 1 165 0
+ 464 009e C901      		movw r24,r18
+ 465 00a0 B801      		movw r22,r16
+ 466               	/* epilogue start */
+ 467 00a2 1F91      		pop r17
+ 468 00a4 0F91      		pop r16
+ 469 00a6 FF90      		pop r15
+ 470 00a8 EF90      		pop r14
+ 471 00aa DF90      		pop r13
+ 472 00ac CF90      		pop r12
+ 473 00ae BF90      		pop r11
+ 474 00b0 AF90      		pop r10
+ 475 00b2 9F90      		pop r9
+ 476 00b4 8F90      		pop r8
+ 477 00b6 0895      		ret
+ 478               	.LVL32:
+ 479               	.L14:
+ 158:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****     return sector;
+ 480               		.loc 1 158 0
+ 481 00b8 1E96      		adiw r26,14
+ 482 00ba 2D91      		ld r18,X+
+ 483 00bc 3D91      		ld r19,X+
+ 484 00be 4D91      		ld r20,X+
+ 485 00c0 5C91      		ld r21,X
+ 486 00c2 5197      		sbiw r26,14+3
+ 487 00c4 C701      		movw r24,r14
+ 488               	.LVL33:
+ 489 00c6 B601      		movw r22,r12
+ 490 00c8 0E94 0000 		call __udivmodsi4
+ 491               	.LVL34:
+ 492 00cc 8901      		movw r16,r18
+ 493 00ce 9A01      		movw r18,r20
+ 494               	.LVL35:
+ 159:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   }
+ 495               		.loc 1 159 0
+ 496 00d0 00C0      		rjmp .L13
+ 497               		.cfi_endproc
+ 498               	.LFE246:
+ 500               		.section	.text.flashGetOffsetAddress,"ax",@progbits
+ 501               	.global	flashGetOffsetAddress
+ 503               	flashGetOffsetAddress:
+ 504               	.LFB247:
+ 166:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 167:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /**
+ 168:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @brief   Get absolute address from offset
+ 169:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+ 170:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @param[in] devp      pointer to a @p BaseFlash object
+ 171:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @param[in] offset    flash offset
+ 172:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @return              A pointer to the offset.
+ 173:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+ 174:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @deprecated
+ 175:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  */
+ 176:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** void *flashGetOffsetAddress(BaseFlash *devp, flash_offset_t offset) {
+ 505               		.loc 1 176 0
+ 506               		.cfi_startproc
+ 507               	.LVL36:
+ 508 0000 CF92      		push r12
+ 509               	.LCFI28:
+ 510               		.cfi_def_cfa_offset 3
+ 511               		.cfi_offset 12, -2
+ 512 0002 DF92      		push r13
+ 513               	.LCFI29:
+ 514               		.cfi_def_cfa_offset 4
+ 515               		.cfi_offset 13, -3
+ 516 0004 EF92      		push r14
+ 517               	.LCFI30:
+ 518               		.cfi_def_cfa_offset 5
+ 519               		.cfi_offset 14, -4
+ 520 0006 FF92      		push r15
+ 521               	.LCFI31:
+ 522               		.cfi_def_cfa_offset 6
+ 523               		.cfi_offset 15, -5
+ 524               	/* prologue: function */
+ 525               	/* frame size = 0 */
+ 526               	/* stack size = 4 */
+ 527               	.L__stack_usage = 4
+ 528 0008 6A01      		movw r12,r20
+ 529 000a 7B01      		movw r14,r22
+ 177:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   const flash_descriptor_t *descriptor = flashGetDescriptor(devp);
+ 530               		.loc 1 177 0
+ 531 000c DC01      		movw r26,r24
+ 532 000e ED91      		ld r30,X+
+ 533 0010 FC91      		ld r31,X
+ 534 0012 0280      		ldd __tmp_reg__,Z+2
+ 535 0014 F381      		ldd r31,Z+3
+ 536 0016 E02D      		mov r30,__tmp_reg__
+ 537 0018 0995      		icall
+ 538               	.LVL37:
+ 178:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 179:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   osalDbgAssert(offset < descriptor->size, "invalid offset");
+ 180:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 181:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   return (void *)((flash_offset_t)descriptor->address + offset);
+ 539               		.loc 1 181 0
+ 540 001a FC01      		movw r30,r24
+ 541 001c 8289      		ldd r24,Z+18
+ 542 001e 9389      		ldd r25,Z+19
+ 543               	.LVL38:
+ 544 0020 092E      		mov __tmp_reg__,r25
+ 545 0022 000C      		lsl r0
+ 546 0024 AA0B      		sbc r26,r26
+ 547 0026 BB0B      		sbc r27,r27
+ 548 0028 8C0D      		add r24,r12
+ 549 002a 9D1D      		adc r25,r13
+ 550 002c AE1D      		adc r26,r14
+ 551 002e BF1D      		adc r27,r15
+ 552               	/* epilogue start */
+ 182:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** }
+ 553               		.loc 1 182 0
+ 554 0030 FF90      		pop r15
+ 555 0032 EF90      		pop r14
+ 556 0034 DF90      		pop r13
+ 557 0036 CF90      		pop r12
+ 558 0038 0895      		ret
+ 559               		.cfi_endproc
+ 560               	.LFE247:
+ 562               		.section	.text.flashGetAddressOffset,"ax",@progbits
+ 563               	.global	flashGetAddressOffset
+ 565               	flashGetAddressOffset:
+ 566               	.LFB248:
+ 183:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 184:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** /**
+ 185:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @brief   Get offset from absolute address
+ 186:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+ 187:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @param[in] devp      pointer to a @p BaseFlash object
+ 188:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @param[in] addr      pointer
+ 189:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @return              flash offset
+ 190:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  *
+ 191:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  * @deprecated
+ 192:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****  */
+ 193:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** flash_offset_t flashGetAddressOffset(BaseFlash *devp, void *addr) {
+ 567               		.loc 1 193 0
+ 568               		.cfi_startproc
+ 569               	.LVL39:
+ 570 0000 0F93      		push r16
+ 571               	.LCFI32:
+ 572               		.cfi_def_cfa_offset 3
+ 573               		.cfi_offset 16, -2
+ 574 0002 1F93      		push r17
+ 575               	.LCFI33:
+ 576               		.cfi_def_cfa_offset 4
+ 577               		.cfi_offset 17, -3
+ 578 0004 CF93      		push r28
+ 579               	.LCFI34:
+ 580               		.cfi_def_cfa_offset 5
+ 581               		.cfi_offset 28, -4
+ 582 0006 DF93      		push r29
+ 583               	.LCFI35:
+ 584               		.cfi_def_cfa_offset 6
+ 585               		.cfi_offset 29, -5
+ 586               	/* prologue: function */
+ 587               	/* frame size = 0 */
+ 588               	/* stack size = 4 */
+ 589               	.L__stack_usage = 4
+ 590 0008 EB01      		movw r28,r22
+ 194:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   const flash_descriptor_t *descriptor = flashGetDescriptor(devp);
+ 591               		.loc 1 194 0
+ 592 000a DC01      		movw r26,r24
+ 593 000c ED91      		ld r30,X+
+ 594 000e FC91      		ld r31,X
+ 595 0010 0280      		ldd __tmp_reg__,Z+2
+ 596 0012 F381      		ldd r31,Z+3
+ 597 0014 E02D      		mov r30,__tmp_reg__
+ 598 0016 0995      		icall
+ 599               	.LVL40:
+ 195:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 196:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   osalDbgAssert(((flash_offset_t)addr >= (flash_offset_t)descriptor->address) &&
+ 197:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****                 ((flash_offset_t)addr <= (flash_offset_t)descriptor->address +
+ 198:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****                                          descriptor->size),
+ 199:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****                 "invalid address");
+ 200:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** 
+ 201:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c ****   return (flash_offset_t)addr - (flash_offset_t)descriptor->address;
+ 600               		.loc 1 201 0
+ 601 0018 AE01      		movw r20,r28
+ 602 001a DD0F      		lsl r29
+ 603 001c 660B      		sbc r22,r22
+ 604 001e 770B      		sbc r23,r23
+ 605 0020 FC01      		movw r30,r24
+ 606 0022 8289      		ldd r24,Z+18
+ 607 0024 9389      		ldd r25,Z+19
+ 608               	.LVL41:
+ 609 0026 092E      		mov __tmp_reg__,r25
+ 610 0028 000C      		lsl r0
+ 611 002a AA0B      		sbc r26,r26
+ 612 002c BB0B      		sbc r27,r27
+ 613 002e 8A01      		movw r16,r20
+ 614 0030 9B01      		movw r18,r22
+ 615 0032 081B      		sub r16,r24
+ 616 0034 190B      		sbc r17,r25
+ 617 0036 2A0B      		sbc r18,r26
+ 618 0038 3B0B      		sbc r19,r27
+ 619 003a C901      		movw r24,r18
+ 620 003c B801      		movw r22,r16
+ 621               	/* epilogue start */
+ 202:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_flash.c **** }
+ 622               		.loc 1 202 0
+ 623 003e DF91      		pop r29
+ 624 0040 CF91      		pop r28
+ 625               	.LVL42:
+ 626 0042 1F91      		pop r17
+ 627 0044 0F91      		pop r16
+ 628 0046 0895      		ret
+ 629               		.cfi_endproc
+ 630               	.LFE248:
+ 632               		.text
+ 633               	.Letext0:
+ 634               		.file 3 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
+ 635               		.file 4 "/usr/lib/avr/include/stdint.h"
+ 636               		.file 5 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
+ 637               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
+ 638               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
+ 639               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
+ 640               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
+ 641               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
+ 642               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
+ 643               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
+ 644               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
+ 645               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
+ 646               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
+ 647               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
+ 648               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chevents.h"
+ 649               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
+ 650               		.file 19 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_flash.h"
+ 651               		.file 20 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_queues.h"
+ 652               		.file 21 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPI
+ 653               		.file 22 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_serial.h"
+ 654               		.file 23 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
+ 655               		.file 24 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chthreads.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 hal_flash.c
+     /tmp/ccnbgiVc.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccnbgiVc.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccnbgiVc.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccnbgiVc.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccnbgiVc.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccnbgiVc.s:13     .text.flashWaitErase:0000000000000000 flashWaitErase
+     /tmp/ccnbgiVc.s:140    .text.flashGetSectorOffset:0000000000000000 flashGetSectorOffset
+     /tmp/ccnbgiVc.s:230    .text.flashGetSectorSize:0000000000000000 flashGetSectorSize
+     /tmp/ccnbgiVc.s:318    .text.flashGetOffsetSector:0000000000000000 flashGetOffsetSector
+     /tmp/ccnbgiVc.s:503    .text.flashGetOffsetAddress:0000000000000000 flashGetOffsetAddress
+     /tmp/ccnbgiVc.s:565    .text.flashGetAddressOffset:0000000000000000 flashGetAddressOffset
+
+UNDEFINED SYMBOLS
+__muluhisi3
+__udivmodsi4
+chThdSleep
+__mulsi3

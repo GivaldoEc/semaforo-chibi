@@ -1,0 +1,397 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.rodata.Thread1.str1.1,"aMS",@progbits,1
+  11               	.LC0:
+  12 0000 426C 696E 		.string	"Blinker"
+  12      6B65 7200 
+  13               		.section	.text.Thread1,"ax",@progbits
+  15               	Thread1:
+  16               	.LFB243:
+  17               		.file 1 "main.c"
+   1:main.c        **** /*
+   2:main.c        ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
+   3:main.c        **** 
+   4:main.c        ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:main.c        ****     you may not use this file except in compliance with the License.
+   6:main.c        ****     You may obtain a copy of the License at
+   7:main.c        **** 
+   8:main.c        ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:main.c        **** 
+  10:main.c        ****     Unless required by applicable law or agreed to in writing, software
+  11:main.c        ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:main.c        ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:main.c        ****     See the License for the specific language governing permissions and
+  14:main.c        ****     limitations under the License.
+  15:main.c        **** */
+  16:main.c        **** 
+  17:main.c        **** #include "ch.h"
+  18:main.c        **** #include "hal.h"
+  19:main.c        **** 
+  20:main.c        **** /*
+  21:main.c        ****  * LED blinker thread, times are in milliseconds.
+  22:main.c        ****  */
+  23:main.c        **** static THD_WORKING_AREA(waThread1, 32);
+  24:main.c        **** static THD_FUNCTION(Thread1, arg) {
+  18               		.loc 1 24 0
+  19               		.cfi_startproc
+  20               	.LVL0:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	/* stack size = 0 */
+  24               	.L__stack_usage = 0
+  25               	.LBB4:
+  26               	.LBB5:
+  27               		.file 2 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
+   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*
+   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
+   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****               2015,2016,2017,2018,2019,2020,2021 Giovanni Di Sirio.
+   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****     This file is part of ChibiOS.
+   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****     ChibiOS is free software; you can redistribute it and/or modify
+   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****     it under the terms of the GNU General Public License as published by
+   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****     the Free Software Foundation version 3 of the License.
+  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****     ChibiOS is distributed in the hope that it will be useful,
+  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****     GNU General Public License for more details.
+  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****     You should have received a copy of the GNU General Public License
+  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** */
+  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /**
+  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @file    rt/include/chregistry.h
+  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @brief   Threads registry macros and structures.
+  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  *
+  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @addtogroup registry
+  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @{
+  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  */
+  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #ifndef CHREGISTRY_H
+  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #define CHREGISTRY_H
+  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #if (CH_CFG_USE_REGISTRY == TRUE) || defined(__DOXYGEN__)
+  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /* Module constants.                                                         */
+  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /* Module pre-compile time settings.                                         */
+  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /* Derived constants and error checks.                                       */
+  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /* Module data structures and types.                                         */
+  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /**
+  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @brief   ChibiOS/RT memory signature record.
+  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  */
+  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** typedef struct {
+  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   char      identifier[4];          /**< @brief Always set to "main".       */
+  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   zero;                   /**< @brief Must be zero.               */
+  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   size;                   /**< @brief Size of this structure.     */
+  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint16_t  version;                /**< @brief Encoded ChibiOS/RT version. */
+  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   ptrsize;                /**< @brief Size of a pointer.          */
+  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   timesize;               /**< @brief Size of a @p systime_t.     */
+  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   threadsize;             /**< @brief Size of a @p thread_t.      */
+  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_prio;               /**< @brief Offset of @p prio field.    */
+  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_ctx;                /**< @brief Offset of @p ctx field.     */
+  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_newer;              /**< @brief Offset of @p newer field.   */
+  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_older;              /**< @brief Offset of @p older field.   */
+  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_name;               /**< @brief Offset of @p name field.    */
+  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_stklimit;           /**< @brief Offset of @p stklimit field.*/
+  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_state;              /**< @brief Offset of @p state field.   */
+  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_flags;              /**< @brief Offset of @p flags field.   */
+  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_refs;               /**< @brief Offset of @p refs field.    */
+  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_preempt;            /**< @brief Offset of @p ticks field.   */
+  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_time;               /**< @brief Offset of @p time field.    */
+  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_reserved[4];
+  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   intctxsize;             /**< @brief Size of a @p port_intctx.   */
+  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   intervalsize;           /**< @brief Size of a @p sysinterval_t. */
+  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   instancesnum;           /**< @brief Number of instances.        */
+  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_sys_state;          /**< @brief Offset of @p state field.   */
+  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_sys_instances;      /**< @brief Offset of @p instances array
+  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****                                                 field.                      */
+  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_sys_reglist;        /**< @brief Offset of @p reglist field. */
+  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_sys_rfcu;           /**< @brief Offset of @p rfcu field.    */
+  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_sys_reserved[4];
+  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_inst_rlist_current; /**< @brief Offset of @p rlist.current
+  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****                                                 field.                      */
+  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_inst_rlist;         /**< @brief Offset of @p rlist field.   */
+  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_inst_vtlist;        /**< @brief Offset of @p vtlist field.  */
+  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_inst_reglist;       /**< @brief Offset of @p reglist field. */
+  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_inst_core_id;       /**< @brief Offset of @p core_id field. */
+  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   uint8_t   off_inst_rfcu;          /**< @brief Offset of @p rfcu field.    */
+  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** } chdebug_t;
+  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /* Module macros.                                                            */
+  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /**
+  95:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @brief   Access to the registry list header.
+  96:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  */
+  97:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #if (CH_CFG_SMP_MODE == TRUE) || defined(__DOXYGEN__)
+  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #define REG_HEADER(oip) (&ch_system.reglist.queue)
+  99:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #else
+ 100:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #define REG_HEADER(oip) (&(oip)->reglist.queue)
+ 101:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #endif
+ 102:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+ 103:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /**
+ 104:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @brief   Removes a thread from the registry list.
+ 105:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @note    This macro is not meant for use in application code.
+ 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  *
+ 107:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @param[in] tp        thread to remove from the registry
+ 108:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  */
+ 109:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #define REG_REMOVE(tp) (void) ch_queue_dequeue(&(tp)->rqueue)
+ 110:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+ 111:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /**
+ 112:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @brief   Adds a thread to the registry list.
+ 113:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @note    This macro is not meant for use in application code.
+ 114:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  *
+ 115:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @param[in] oip       pointer to the OS instance
+ 116:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @param[in] tp        thread to add to the registry
+ 117:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  */
+ 118:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #define REG_INSERT(oip, tp) ch_queue_insert(REG_HEADER(oip), &(tp)->rqueue)
+ 119:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+ 120:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+ 121:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /* External declarations.                                                    */
+ 122:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+ 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+ 124:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #ifdef __cplusplus
+ 125:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** extern "C" {
+ 126:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #endif
+ 127:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   extern ROMCONST chdebug_t ch_debug;
+ 128:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   thread_t *chRegFirstThread(void);
+ 129:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   thread_t *chRegNextThread(thread_t *tp);
+ 130:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   thread_t *chRegFindThreadByName(const char *name);
+ 131:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   thread_t *chRegFindThreadByPointer(thread_t *tp);
+ 132:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   thread_t *chRegFindThreadByWorkingArea(stkalign_t *wa);
+ 133:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #ifdef __cplusplus
+ 134:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** }
+ 135:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #endif
+ 136:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+ 137:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #endif /* CH_CFG_USE_REGISTRY == TRUE */
+ 138:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+ 139:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+ 140:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /* Module inline functions.                                                  */
+ 141:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /*===========================================================================*/
+ 142:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+ 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /**
+ 144:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @brief   Initializes a registry.
+ 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @note    Internal use only.
+ 146:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  *
+ 147:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @param[out] rp       pointer to a @p registry_t structure
+ 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  *
+ 149:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @init
+ 150:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  */
+ 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** static inline void __reg_object_init(registry_t *rp) {
+ 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+ 153:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   ch_queue_init(&rp->queue);
+ 154:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** }
+ 155:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+ 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** /**
+ 157:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @brief   Sets the current thread name.
+ 158:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @pre     This function only stores the pointer to the name if the option
+ 159:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  *          @p CH_CFG_USE_REGISTRY is enabled else no action is performed.
+ 160:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  *
+ 161:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @param[in] name      thread name as a zero terminated string
+ 162:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  *
+ 163:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  * @api
+ 164:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****  */
+ 165:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** static inline void chRegSetThreadName(const char *name) {
+ 166:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** 
+ 167:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h **** #if CH_CFG_USE_REGISTRY == TRUE
+ 168:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h ****   __sch_get_currthread()->name = name;
+  28               		.loc 2 168 0
+  29 0000 E091 0000 		lds r30,ch0+5
+  30 0004 F091 0000 		lds r31,ch0+5+1
+  31 0008 80E0      		ldi r24,lo8(.LC0)
+  32 000a 90E0      		ldi r25,hi8(.LC0)
+  33               	.LVL1:
+  34 000c 9687      		std Z+14,r25
+  35 000e 8587      		std Z+13,r24
+  36               	.LBE5:
+  37               	.LBE4:
+  25:main.c        **** 
+  26:main.c        ****   (void)arg;
+  27:main.c        ****   chRegSetThreadName("Blinker");
+  28:main.c        ****   while (true) {
+  29:main.c        ****     palTogglePad(IOPORT2, PORTB_LED1);
+  38               		.loc 1 29 0
+  39 0010 C0E2      		ldi r28,lo8(32)
+  40               	.L2:
+  41               		.loc 1 29 0 is_stmt 0 discriminator 1
+  42 0012 85B1      		in r24,0x5
+  43 0014 8C27      		eor r24,r28
+  44 0016 85B9      		out 0x5,r24
+  30:main.c        ****     chThdSleepMilliseconds(100);
+  45               		.loc 1 30 0 is_stmt 1 discriminator 1
+  46 0018 8BE1      		ldi r24,lo8(27)
+  47 001a 96E0      		ldi r25,lo8(6)
+  48 001c 0E94 0000 		call chThdSleep
+  49               	.LVL2:
+  50 0020 00C0      		rjmp .L2
+  51               		.cfi_endproc
+  52               	.LFE243:
+  54               		.section	.rodata.main.str1.1,"aMS",@progbits,1
+  55               	.LC1:
+  56 0000 4865 6C6C 		.string	"Hello World!\r\n"
+  56      6F20 576F 
+  56      726C 6421 
+  56      0D0A 00
+  57               		.section	.text.startup.main,"ax",@progbits
+  58               	.global	main
+  60               	main:
+  61               	.LFB244:
+  31:main.c        ****   }
+  32:main.c        **** }
+  33:main.c        **** 
+  34:main.c        **** /*
+  35:main.c        ****  * Application entry point.
+  36:main.c        ****  */
+  37:main.c        **** int main(void) {
+  62               		.loc 1 37 0
+  63               		.cfi_startproc
+  64               	/* prologue: function */
+  65               	/* frame size = 0 */
+  66               	/* stack size = 0 */
+  67               	.L__stack_usage = 0
+  38:main.c        **** 
+  39:main.c        ****   /*
+  40:main.c        ****    * System initializations.
+  41:main.c        ****    * - HAL initialization, this also initializes the configured device drivers
+  42:main.c        ****    *   and performs the board-specific initializations.
+  43:main.c        ****    * - Kernel initialization, the main() function becomes a thread and the
+  44:main.c        ****    *   RTOS is active.
+  45:main.c        ****    */
+  46:main.c        ****   halInit();
+  68               		.loc 1 46 0
+  69 0000 0E94 0000 		call halInit
+  70               	.LVL3:
+  47:main.c        ****   chSysInit();
+  71               		.loc 1 47 0
+  72 0004 0E94 0000 		call chSysInit
+  73               	.LVL4:
+  48:main.c        **** 
+  49:main.c        ****   /*
+  50:main.c        ****    * Activates the serial driver 1 using the driver default configuration.
+  51:main.c        ****    */
+  52:main.c        ****   sdStart(&SD1, NULL);
+  74               		.loc 1 52 0
+  75 0008 70E0      		ldi r23,0
+  76 000a 60E0      		ldi r22,0
+  77 000c 80E0      		ldi r24,lo8(SD1)
+  78 000e 90E0      		ldi r25,hi8(SD1)
+  79 0010 0E94 0000 		call sdStart
+  80               	.LVL5:
+  53:main.c        **** 
+  54:main.c        ****   /*
+  55:main.c        ****    * Starts the LED blinker thread.
+  56:main.c        ****    */
+  57:main.c        ****   chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, Thread1, NULL);
+  81               		.loc 1 57 0
+  82 0014 10E0      		ldi r17,0
+  83 0016 00E0      		ldi r16,0
+  84 0018 20E0      		ldi r18,lo8(gs(Thread1))
+  85 001a 30E0      		ldi r19,hi8(gs(Thread1))
+  86 001c 40E8      		ldi r20,lo8(-128)
+  87 001e 63E8      		ldi r22,lo8(-125)
+  88 0020 70E0      		ldi r23,0
+  89 0022 80E0      		ldi r24,lo8(waThread1)
+  90 0024 90E0      		ldi r25,hi8(waThread1)
+  91 0026 0E94 0000 		call chThdCreateStatic
+  92               	.LVL6:
+  58:main.c        **** 
+  59:main.c        ****   chnWrite(&SD1, (const uint8_t *)"Hello World!\r\n", 14);
+  93               		.loc 1 59 0
+  94 002a E091 0000 		lds r30,SD1
+  95 002e F091 0000 		lds r31,SD1+1
+  96 0032 0280      		ldd __tmp_reg__,Z+2
+  97 0034 F381      		ldd r31,Z+3
+  98 0036 E02D      		mov r30,__tmp_reg__
+  99 0038 4EE0      		ldi r20,lo8(14)
+ 100 003a 50E0      		ldi r21,0
+ 101 003c 60E0      		ldi r22,lo8(.LC1)
+ 102 003e 70E0      		ldi r23,hi8(.LC1)
+ 103 0040 80E0      		ldi r24,lo8(SD1)
+ 104 0042 90E0      		ldi r25,hi8(SD1)
+ 105 0044 0995      		icall
+ 106               	.LVL7:
+ 107               	.L5:
+  60:main.c        **** 
+  61:main.c        ****   while (true) {
+  62:main.c        ****     chThdSleepMilliseconds(1000);
+ 108               		.loc 1 62 0 discriminator 1
+ 109 0046 88E0      		ldi r24,lo8(8)
+ 110 0048 9DE3      		ldi r25,lo8(61)
+ 111 004a 0E94 0000 		call chThdSleep
+ 112               	.LVL8:
+ 113 004e 00C0      		rjmp .L5
+ 114               		.cfi_endproc
+ 115               	.LFE244:
+ 117               		.section	.bss.waThread1,"aw",@nobits
+ 120               	waThread1:
+ 121 0000 0000 0000 		.zero	131
+ 121      0000 0000 
+ 121      0000 0000 
+ 121      0000 0000 
+ 121      0000 0000 
+ 122               		.text
+ 123               	.Letext0:
+ 124               		.file 3 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
+ 125               		.file 4 "/usr/lib/avr/include/stdint.h"
+ 126               		.file 5 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
+ 127               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
+ 128               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
+ 129               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
+ 130               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
+ 131               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
+ 132               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
+ 133               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
+ 134               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
+ 135               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
+ 136               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
+ 137               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chevents.h"
+ 138               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
+ 139               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_queues.h"
+ 140               		.file 19 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPI
+ 141               		.file 20 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_serial.h"
+ 142               		.file 21 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
+ 143               		.file 22 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal.h"
+ 144               		.file 23 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chthreads.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/ccYrhUg3.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccYrhUg3.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccYrhUg3.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccYrhUg3.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccYrhUg3.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccYrhUg3.s:15     .text.Thread1:0000000000000000 Thread1
+     /tmp/ccYrhUg3.s:60     .text.startup.main:0000000000000000 main
+     /tmp/ccYrhUg3.s:120    .bss.waThread1:0000000000000000 waThread1
+
+UNDEFINED SYMBOLS
+ch0
+chThdSleep
+halInit
+chSysInit
+SD1
+sdStart
+chThdCreateStatic
+__do_copy_data
+__do_clear_bss

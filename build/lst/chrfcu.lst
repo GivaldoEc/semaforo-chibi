@@ -1,0 +1,250 @@
+   1               		.file	"chrfcu.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.chRFCUCollectFaultsI,"ax",@progbits
+  11               	.global	chRFCUCollectFaultsI
+  13               	chRFCUCollectFaultsI:
+  14               	.LFB195:
+  15               		.file 1 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c"
+   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /*
+   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
+   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****               2015,2016,2017,2018,2019,2020,2021 Giovanni Di Sirio.
+   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****     This file is part of ChibiOS.
+   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****     ChibiOS is free software; you can redistribute it and/or modify
+   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****     it under the terms of the GNU General Public License as published by
+   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****     the Free Software Foundation version 3 of the License.
+  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****     ChibiOS is distributed in the hope that it will be useful,
+  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****     GNU General Public License for more details.
+  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****     You should have received a copy of the GNU General Public License
+  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** */
+  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /**
+  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  * @file    rt/src/chrfcu.c
+  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  * @brief   Runtime Faults Collection Unit code.
+  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  *
+  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  * @addtogroup rfcu
+  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  * @details Runtime Faults Collection Unit service.
+  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  * @{
+  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  */
+  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** #include "ch.h"
+  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /*===========================================================================*/
+  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /* Module local definitions.                                                 */
+  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /*===========================================================================*/
+  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /*===========================================================================*/
+  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /* Module exported variables.                                                */
+  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /*===========================================================================*/
+  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /*===========================================================================*/
+  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /* Module local types.                                                       */
+  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /*===========================================================================*/
+  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /*===========================================================================*/
+  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /* Module local variables.                                                   */
+  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /*===========================================================================*/
+  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /*===========================================================================*/
+  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /* Module local functions.                                                   */
+  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /*===========================================================================*/
+  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /*===========================================================================*/
+  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /* Module exported functions.                                                */
+  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /*===========================================================================*/
+  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /**
+  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  * @brief   Adds fault flags to the current mask.
+  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  *
+  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  * @param[in] mask      fault flags to be added
+  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  */
+  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** void chRFCUCollectFaultsI(rfcu_mask_t mask) {
+  16               		.loc 1 60 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19 0000 0F93      		push r16
+  20               	.LCFI0:
+  21               		.cfi_def_cfa_offset 3
+  22               		.cfi_offset 16, -2
+  23 0002 1F93      		push r17
+  24               	.LCFI1:
+  25               		.cfi_def_cfa_offset 4
+  26               		.cfi_offset 17, -3
+  27               	/* prologue: function */
+  28               	/* frame size = 0 */
+  29               	/* stack size = 2 */
+  30               	.L__stack_usage = 2
+  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** #if CH_CFG_SMP_MODE == FALSE
+  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****   currcore->rfcu.mask |= mask;
+  31               		.loc 1 63 0
+  32 0004 E0E0      		ldi r30,lo8(ch0)
+  33 0006 F0E0      		ldi r31,hi8(ch0)
+  34 0008 058D      		ldd r16,Z+29
+  35 000a 168D      		ldd r17,Z+30
+  36 000c 278D      		ldd r18,Z+31
+  37 000e 30A1      		ldd r19,Z+32
+  38 0010 DC01      		movw r26,r24
+  39 0012 CB01      		movw r24,r22
+  40 0014 802B      		or r24,r16
+  41 0016 912B      		or r25,r17
+  42 0018 A22B      		or r26,r18
+  43 001a B32B      		or r27,r19
+  44 001c 858F      		std Z+29,r24
+  45 001e 968F      		std Z+30,r25
+  46 0020 A78F      		std Z+31,r26
+  47 0022 B0A3      		std Z+32,r27
+  48               	/* epilogue start */
+  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** #else
+  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****   ch_system.rfcu.mask |= mask;
+  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** #endif
+  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****   CH_CFG_RUNTIME_FAULTS_HOOK(mask);
+  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** }
+  49               		.loc 1 69 0
+  50 0024 1F91      		pop r17
+  51 0026 0F91      		pop r16
+  52 0028 0895      		ret
+  53               		.cfi_endproc
+  54               	.LFE195:
+  56               		.section	.text.chRFCUGetAndClearFaultsI,"ax",@progbits
+  57               	.global	chRFCUGetAndClearFaultsI
+  59               	chRFCUGetAndClearFaultsI:
+  60               	.LFB196:
+  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** /**
+  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  * @brief   Returns the current faults mask clearing it.
+  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  *
+  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  * @param[in] mask      mask of faults to be read and cleared
+  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  * @return              The current faults mask.
+  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  * @retval 0            if no faults were collected since last call to this
+  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  *                      function.
+  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****  */
+  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** rfcu_mask_t chRFCUGetAndClearFaultsI(rfcu_mask_t mask) {
+  61               		.loc 1 79 0
+  62               		.cfi_startproc
+  63               	.LVL1:
+  64 0000 CF92      		push r12
+  65               	.LCFI2:
+  66               		.cfi_def_cfa_offset 3
+  67               		.cfi_offset 12, -2
+  68 0002 DF92      		push r13
+  69               	.LCFI3:
+  70               		.cfi_def_cfa_offset 4
+  71               		.cfi_offset 13, -3
+  72 0004 EF92      		push r14
+  73               	.LCFI4:
+  74               		.cfi_def_cfa_offset 5
+  75               		.cfi_offset 14, -4
+  76 0006 FF92      		push r15
+  77               	.LCFI5:
+  78               		.cfi_def_cfa_offset 6
+  79               		.cfi_offset 15, -5
+  80 0008 0F93      		push r16
+  81               	.LCFI6:
+  82               		.cfi_def_cfa_offset 7
+  83               		.cfi_offset 16, -6
+  84 000a 1F93      		push r17
+  85               	.LCFI7:
+  86               		.cfi_def_cfa_offset 8
+  87               		.cfi_offset 17, -7
+  88               	/* prologue: function */
+  89               	/* frame size = 0 */
+  90               	/* stack size = 6 */
+  91               	.L__stack_usage = 6
+  92               	.LVL2:
+  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****   rfcu_mask_t m;
+  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** #if CH_CFG_SMP_MODE == FALSE
+  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****   os_instance_t *oip = currcore;
+  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****   m = oip->rfcu.mask & mask;
+  93               		.loc 1 85 0
+  94 000c E0E0      		ldi r30,lo8(ch0)
+  95 000e F0E0      		ldi r31,hi8(ch0)
+  96 0010 C58C      		ldd r12,Z+29
+  97 0012 D68C      		ldd r13,Z+30
+  98 0014 E78C      		ldd r14,Z+31
+  99 0016 F0A0      		ldd r15,Z+32
+ 100 0018 6C21      		and r22,r12
+ 101               	.LVL3:
+ 102 001a 7D21      		and r23,r13
+ 103 001c 8E21      		and r24,r14
+ 104 001e 9F21      		and r25,r15
+ 105               	.LVL4:
+  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****   oip->rfcu.mask &= ~m;
+ 106               		.loc 1 86 0
+ 107 0020 8B01      		movw r16,r22
+ 108 0022 9C01      		movw r18,r24
+ 109 0024 0095      		com r16
+ 110 0026 1095      		com r17
+ 111 0028 2095      		com r18
+ 112 002a 3095      		com r19
+ 113 002c 0C21      		and r16,r12
+ 114 002e 1D21      		and r17,r13
+ 115 0030 2E21      		and r18,r14
+ 116 0032 3F21      		and r19,r15
+ 117 0034 058F      		std Z+29,r16
+ 118 0036 168F      		std Z+30,r17
+ 119 0038 278F      		std Z+31,r18
+ 120 003a 30A3      		std Z+32,r19
+ 121               	/* epilogue start */
+  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** #else
+  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****   m = ch_system.rfcu.mask & mask;
+  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****   ch_system.rfcu.mask &= ~m;
+  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** #endif
+  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** 
+  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c ****   return m;
+  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/src/chrfcu.c **** }
+ 122               		.loc 1 94 0
+ 123 003c 1F91      		pop r17
+ 124 003e 0F91      		pop r16
+ 125 0040 FF90      		pop r15
+ 126 0042 EF90      		pop r14
+ 127 0044 DF90      		pop r13
+ 128 0046 CF90      		pop r12
+ 129 0048 0895      		ret
+ 130               		.cfi_endproc
+ 131               	.LFE196:
+ 133               		.text
+ 134               	.Letext0:
+ 135               		.file 2 "/usr/lib/avr/include/stdint.h"
+ 136               		.file 3 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
+ 137               		.file 4 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
+ 138               		.file 5 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
+ 139               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
+ 140               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
+ 141               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
+ 142               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
+ 143               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
+ 144               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
+ 145               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
+ 146               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
+ 147               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
+ 148               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 chrfcu.c
+     /tmp/ccZO0qjw.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccZO0qjw.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccZO0qjw.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccZO0qjw.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccZO0qjw.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccZO0qjw.s:13     .text.chRFCUCollectFaultsI:0000000000000000 chRFCUCollectFaultsI
+     /tmp/ccZO0qjw.s:59     .text.chRFCUGetAndClearFaultsI:0000000000000000 chRFCUGetAndClearFaultsI
+
+UNDEFINED SYMBOLS
+ch0

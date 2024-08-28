@@ -1,0 +1,2155 @@
+   1               		.file	"chobjcaches.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.chCacheObjectInit,"ax",@progbits
+  11               	.global	chCacheObjectInit
+  13               	chCacheObjectInit:
+  14               	.LFB197:
+  15               		.file 1 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c"
+   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /*
+   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
+   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****               2015,2016,2017,2018,2019,2020,2021 Giovanni Di Sirio.
+   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     This file is part of ChibiOS.
+   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     ChibiOS is free software; you can redistribute it and/or modify
+   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     it under the terms of the GNU General Public License as published by
+   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     the Free Software Foundation version 3 of the License.
+  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     ChibiOS is distributed in the hope that it will be useful,
+  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     GNU General Public License for more details.
+  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     You should have received a copy of the GNU General Public License
+  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** */
+  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /**
+  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @file    oslib/src/chobjcaches.c
+  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @brief   Objects Caches code.
+  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @details Objects caches.
+  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          <h2>Operation mode</h2>
+  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          An object cache allows to retrieve and release objects from a
+  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          slow media, for example a disk or flash.<br>
+  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          The most recently used objects are kept in a series of RAM
+  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          buffers making access faster. Objects are identified by a
+  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          pair <group, key> which could be mapped, for example, to a
+  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          disk drive identifier and sector identifier.<br>
+  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          Read and write operations are performed using externally-supplied
+  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          functions, the cache is device-agnostic.<br>
+  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          The cache uses internally an hash table, the size of the table
+  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          should be dimensioned to minimize the risk of hash collisions,
+  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          a factor of two is usually acceptable, it depends on the specific
+  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          application requirements.<br>
+  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          Operations defined for caches:
+  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          - <b>Get Object</b>: Retrieves an object from cache, if not
+  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *            present then an empty buffer is returned.
+  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          - <b>Read Object</b>: Retrieves an object from cache, if not
+  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *            present a buffer is allocated and the object is read from the
+  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *            media.
+  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          - <b>Release Object</b>: Releases an object to the cache handling
+  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *            the media update, if required.
+  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          .
+  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @pre     In order to use the pipes APIs the @p CH_CFG_USE_OBJ_CACHES
+  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          option must be enabled in @p chconf.h.
+  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @note    Compatible with RT and NIL.
+  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @addtogroup oslib_objchaches
+  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @{
+  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  */
+  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** #include "ch.h"
+  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** #if (CH_CFG_USE_OBJ_CACHES == TRUE) || defined(__DOXYGEN__)
+  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /*===========================================================================*/
+  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /* Module local definitions.                                                 */
+  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /*===========================================================================*/
+  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /* Default hash function.*/
+  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** #if !defined(OC_HASH_FUNCTION) || defined(__DOXYGEN__)
+  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** #define OC_HASH_FUNCTION(ocp, group, key)                                   \
+  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (((unsigned)(group) + (unsigned)(key)) & ((unsigned)(ocp)->hashn - 1U))
+  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** #endif
+  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /* Insertion into an hash slot list.*/
+  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** #define HASH_INSERT(ocp, objp, group, key) {                                \
+  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   oc_hash_header_t *hhp;                                                    \
+  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (hhp) = &(ocp)->hashp[OC_HASH_FUNCTION(ocp, group, key)];                 \
+  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (objp)->hash_next = (hhp)->hash_next;                                     \
+  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (objp)->hash_prev = (oc_object_t *)(hhp);                                 \
+  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (hhp)->hash_next->hash_prev = (objp);                                     \
+  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (hhp)->hash_next = (objp);                                                \
+  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /* Removal of an object from the hash.*/
+  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** #define HASH_REMOVE(objp) {                                                 \
+  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (objp)->hash_prev->hash_next = (objp)->hash_next;                         \
+  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (objp)->hash_next->hash_prev = (objp)->hash_prev;                         \
+  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /* Insertion on LRU list head (newer objects).*/
+  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** #define LRU_INSERT_HEAD(ocp, objp) {                                        \
+  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (objp)->lru_next = (ocp)->lru.lru_next;                                   \
+  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (objp)->lru_prev = (oc_object_t *)&(ocp)->lru;                            \
+  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (ocp)->lru.lru_next->lru_prev = (objp);                                   \
+  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (ocp)->lru.lru_next = (objp);                                             \
+  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /* Insertion on LRU list head (newer objects).*/
+  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** #define LRU_INSERT_TAIL(ocp, objp) {                                        \
+  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (objp)->lru_prev = (ocp)->lru.lru_prev;                                   \
+  95:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (objp)->lru_next = (oc_object_t *)&(ocp)->lru;                            \
+  96:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (ocp)->lru.lru_prev->lru_next = (objp);                                   \
+  97:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (ocp)->lru.lru_prev = (objp);                                             \
+  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+  99:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 100:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /* Removal of an object from the LRU list.*/
+ 101:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** #define LRU_REMOVE(objp) {                                                  \
+ 102:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (objp)->lru_prev->lru_next = (objp)->lru_next;                            \
+ 103:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   (objp)->lru_next->lru_prev = (objp)->lru_prev;                            \
+ 104:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+ 105:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /*===========================================================================*/
+ 107:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /* Module exported variables.                                                */
+ 108:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /*===========================================================================*/
+ 109:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 110:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /*===========================================================================*/
+ 111:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /* Module local types.                                                       */
+ 112:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /*===========================================================================*/
+ 113:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 114:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /*===========================================================================*/
+ 115:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /* Module local variables.                                                   */
+ 116:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /*===========================================================================*/
+ 117:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 118:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /*===========================================================================*/
+ 119:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /* Module local functions.                                                   */
+ 120:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /*===========================================================================*/
+ 121:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 122:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /**
+ 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @brief   Returns an object pointer from the cache, if present.
+ 124:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 125:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[out] ocp      pointer to the @p objects_cache_t structure to be
+ 126:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] group     object group identifier
+ 127:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] key       object identifier within the group
+ 128:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *                      initialized
+ 129:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @return              The pointer to the retrieved object.
+ 130:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @retval NULL         if the object is not in cache.
+ 131:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 132:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @notapi
+ 133:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  */
+ 134:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** static oc_object_t *hash_get_s(objects_cache_t *ocp,
+ 135:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                                uint32_t group,
+ 136:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                                uint32_t key) {
+ 137:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   oc_hash_header_t *hhp;
+ 138:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   oc_object_t *objp;
+ 139:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 140:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* Hash slot where to search for an hit.*/
+ 141:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   hhp  = &ocp->hashp[OC_HASH_FUNCTION(ocp, group, key)];
+ 142:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   objp = hhp->hash_next;
+ 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 144:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* Scanning the siblings collision list.*/
+ 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   while (objp != (oc_object_t *)hhp) {
+ 146:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     if ((objp->obj_key == key) && (objp->obj_group == group)) {
+ 147:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       /* Cache hit.*/
+ 149:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       return objp;
+ 150:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     }
+ 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp = objp->hash_next;
+ 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   }
+ 153:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 154:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   return NULL;
+ 155:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+ 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 157:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /**
+ 158:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @brief   Gets the least recently used object buffer from the LRU list.
+ 159:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 160:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[out] ocp      pointer to the @p objects_cache_t structure to be
+ 161:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @return              The pointer to the retrieved object.
+ 162:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 163:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @notapi
+ 164:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  */
+ 165:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** static oc_object_t *lru_get_last_s(objects_cache_t *ocp) {
+ 166:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   oc_object_t *objp;
+ 167:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 168:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   while (true) {
+ 169:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     /* Waiting for an object buffer to become available in the LRU.*/
+ 170:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     (void) chSemWaitS(&ocp->lru_sem);
+ 171:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 172:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     /* Now an object buffer is in the LRU for sure, taking it from the
+ 173:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****        LRU tail.*/
+ 174:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp = ocp->lru.lru_prev;
+ 175:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 176:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     chDbgAssert((objp->obj_flags & OC_FLAG_INLRU) == OC_FLAG_INLRU,
+ 177:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                 "not in LRU");
+ 178:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     chDbgAssert(chSemGetCounterI(&objp->obj_sem) == (cnt_t)1,
+ 179:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                 "semaphore counter not 1");
+ 180:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 181:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     LRU_REMOVE(objp);
+ 182:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_flags &= ~OC_FLAG_INLRU;
+ 183:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 184:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     /* Getting the object semaphore, we know there is no wait so
+ 185:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****        using the "fast" variant.*/
+ 186:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     chSemFastWaitI(&objp->obj_sem);
+ 187:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 188:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     /* If it is a buffer not needing (lazy) write then it can be used
+ 189:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****        right away.*/
+ 190:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     if ((objp->obj_flags & OC_FLAG_LAZYWRITE) == 0U) {
+ 191:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 192:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       /* Removing from hash table if required.*/
+ 193:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       if ((objp->obj_flags & OC_FLAG_INHASH) != 0U) {
+ 194:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****         HASH_REMOVE(objp);
+ 195:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       }
+ 196:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 197:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       /* Removing all flags, it is "new" now.*/
+ 198:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       objp->obj_flags = 0U;
+ 199:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 200:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       return objp;
+ 201:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     }
+ 202:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 203:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     /* Out of critical section.*/
+ 204:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     chSysUnlock();
+ 205:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 206:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****    /* Invoking the writer asynchronously, it will release the buffer once it
+ 207:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       is written. It is responsibility of the write function to release
+ 208:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       the buffer.*/
+ 209:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_flags = OC_FLAG_INHASH | OC_FLAG_FORGET;
+ 210:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     (void) ocp->writef(ocp, objp, true);
+ 211:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 212:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     /* Critical section enter again.*/
+ 213:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     chSysLock();
+ 214:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   }
+ 215:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+ 216:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 217:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /*===========================================================================*/
+ 218:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /* Module exported functions.                                                */
+ 219:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /*===========================================================================*/
+ 220:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 221:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /**
+ 222:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @brief   Initializes a @p objects_cache_t object.
+ 223:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 224:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[out] ocp      pointer to the @p objects_cache_t structure to be
+ 225:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *                      initialized
+ 226:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] hashn     number of elements in the hash table array, must be
+ 227:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *                      a power of two and not lower than @p objn
+ 228:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] hashp     pointer to the hash table as an array of
+ 229:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *                      @p oc_hash_header_t
+ 230:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] objn      number of elements in the objects table array
+ 231:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] objsz     size of elements in the objects table array, the
+ 232:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *                      minimum value is <tt>sizeof (oc_object_t)</tt>.
+ 233:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] objvp     pointer to the hash objects as an array of structures
+ 234:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *                      starting with an @p oc_object_t
+ 235:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] readf     pointer to an object reader function
+ 236:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] writef    pointer to an object writer function
+ 237:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 238:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @init
+ 239:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  */
+ 240:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** void chCacheObjectInit(objects_cache_t *ocp,
+ 241:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                        ucnt_t hashn,
+ 242:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                        oc_hash_header_t *hashp,
+ 243:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                        ucnt_t objn,
+ 244:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                        size_t objsz,
+ 245:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                        void *objvp,
+ 246:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                        oc_readf_t readf,
+ 247:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                        oc_writef_t writef) {
+  16               		.loc 1 247 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19 0000 2F92      		push r2
+  20               	.LCFI0:
+  21               		.cfi_def_cfa_offset 3
+  22               		.cfi_offset 2, -2
+  23 0002 3F92      		push r3
+  24               	.LCFI1:
+  25               		.cfi_def_cfa_offset 4
+  26               		.cfi_offset 3, -3
+  27 0004 4F92      		push r4
+  28               	.LCFI2:
+  29               		.cfi_def_cfa_offset 5
+  30               		.cfi_offset 4, -4
+  31 0006 5F92      		push r5
+  32               	.LCFI3:
+  33               		.cfi_def_cfa_offset 6
+  34               		.cfi_offset 5, -5
+  35 0008 6F92      		push r6
+  36               	.LCFI4:
+  37               		.cfi_def_cfa_offset 7
+  38               		.cfi_offset 6, -6
+  39 000a 7F92      		push r7
+  40               	.LCFI5:
+  41               		.cfi_def_cfa_offset 8
+  42               		.cfi_offset 7, -7
+  43 000c 8F92      		push r8
+  44               	.LCFI6:
+  45               		.cfi_def_cfa_offset 9
+  46               		.cfi_offset 8, -8
+  47 000e 9F92      		push r9
+  48               	.LCFI7:
+  49               		.cfi_def_cfa_offset 10
+  50               		.cfi_offset 9, -9
+  51 0010 AF92      		push r10
+  52               	.LCFI8:
+  53               		.cfi_def_cfa_offset 11
+  54               		.cfi_offset 10, -10
+  55 0012 BF92      		push r11
+  56               	.LCFI9:
+  57               		.cfi_def_cfa_offset 12
+  58               		.cfi_offset 11, -11
+  59 0014 CF92      		push r12
+  60               	.LCFI10:
+  61               		.cfi_def_cfa_offset 13
+  62               		.cfi_offset 12, -12
+  63 0016 DF92      		push r13
+  64               	.LCFI11:
+  65               		.cfi_def_cfa_offset 14
+  66               		.cfi_offset 13, -13
+  67 0018 EF92      		push r14
+  68               	.LCFI12:
+  69               		.cfi_def_cfa_offset 15
+  70               		.cfi_offset 14, -14
+  71 001a FF92      		push r15
+  72               	.LCFI13:
+  73               		.cfi_def_cfa_offset 16
+  74               		.cfi_offset 15, -15
+  75 001c 0F93      		push r16
+  76               	.LCFI14:
+  77               		.cfi_def_cfa_offset 17
+  78               		.cfi_offset 16, -16
+  79 001e 1F93      		push r17
+  80               	.LCFI15:
+  81               		.cfi_def_cfa_offset 18
+  82               		.cfi_offset 17, -17
+  83 0020 CF93      		push r28
+  84               	.LCFI16:
+  85               		.cfi_def_cfa_offset 19
+  86               		.cfi_offset 28, -18
+  87 0022 DF93      		push r29
+  88               	.LCFI17:
+  89               		.cfi_def_cfa_offset 20
+  90               		.cfi_offset 29, -19
+  91               	/* prologue: function */
+  92               	/* frame size = 0 */
+  93               	/* stack size = 18 */
+  94               	.L__stack_usage = 18
+  95 0024 4C01      		movw r8,r24
+  96 0026 662E      		mov r6,r22
+  97 0028 EA01      		movw r28,r20
+  98 002a 722E      		mov r7,r18
+ 248:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 249:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   chDbgCheck((ocp != NULL) && (hashp != NULL) && (objvp != NULL) &&
+ 250:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****              ((hashn & (hashn - (ucnt_t)1)) == (ucnt_t)0) &&
+ 251:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****              (objn > (ucnt_t)0) && (hashn >= objn) &&
+ 252:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****              (objsz >= sizeof (oc_object_t)) &&
+ 253:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****              ((objsz & (PORT_NATURAL_ALIGN - 1U)) == 0U));
+ 254:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 255:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   chSemObjectInit(&ocp->cache_sem, (cnt_t)1);
+  99               		.loc 1 255 0
+ 100 002c 61E0      		ldi r22,lo8(1)
+ 101               	.LVL1:
+ 102 002e 4096      		adiw r24,16
+ 103               	.LVL2:
+ 104 0030 0E94 0000 		call chSemObjectInit
+ 105               	.LVL3:
+ 256:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   chSemObjectInit(&ocp->lru_sem, (cnt_t)objn);
+ 106               		.loc 1 256 0
+ 107 0034 672D      		mov r22,r7
+ 108 0036 C401      		movw r24,r8
+ 109 0038 4596      		adiw r24,21
+ 110 003a 0E94 0000 		call chSemObjectInit
+ 111               	.LVL4:
+ 257:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   ocp->hashn            = hashn;
+ 112               		.loc 1 257 0
+ 113 003e D401      		movw r26,r8
+ 114 0040 6C92      		st X,r6
+ 258:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   ocp->hashp            = hashp;
+ 115               		.loc 1 258 0
+ 116 0042 1296      		adiw r26,1+1
+ 117 0044 DC93      		st X,r29
+ 118 0046 CE93      		st -X,r28
+ 119 0048 1197      		sbiw r26,1
+ 259:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   ocp->objn             = objn;
+ 120               		.loc 1 259 0
+ 121 004a 1396      		adiw r26,3
+ 122 004c 7C92      		st X,r7
+ 123 004e 1397      		sbiw r26,3
+ 260:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   ocp->objvp            = objvp;
+ 124               		.loc 1 260 0
+ 125 0050 1796      		adiw r26,6+1
+ 126 0052 FC92      		st X,r15
+ 127 0054 EE92      		st -X,r14
+ 128 0056 1697      		sbiw r26,6
+ 261:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   ocp->readf            = readf;
+ 129               		.loc 1 261 0
+ 130 0058 5B96      		adiw r26,26+1
+ 131 005a DC92      		st X,r13
+ 132 005c CE92      		st -X,r12
+ 133 005e 5A97      		sbiw r26,26
+ 262:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   ocp->writef           = writef;
+ 134               		.loc 1 262 0
+ 135 0060 5D96      		adiw r26,28+1
+ 136 0062 BC92      		st X,r11
+ 137 0064 AE92      		st -X,r10
+ 138 0066 5C97      		sbiw r26,28
+ 263:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   ocp->lru.hash_next    = NULL;
+ 139               		.loc 1 263 0
+ 140 0068 1996      		adiw r26,8+1
+ 141 006a 1C92      		st X,__zero_reg__
+ 142 006c 1E92      		st -X,__zero_reg__
+ 143 006e 1897      		sbiw r26,8
+ 264:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   ocp->lru.hash_prev    = NULL;
+ 144               		.loc 1 264 0
+ 145 0070 1B96      		adiw r26,10+1
+ 146 0072 1C92      		st X,__zero_reg__
+ 147 0074 1E92      		st -X,__zero_reg__
+ 148 0076 1A97      		sbiw r26,10
+ 265:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   ocp->lru.lru_next     = (oc_object_t *)&ocp->lru;
+ 149               		.loc 1 265 0
+ 150 0078 6401      		movw r12,r8
+ 151               	.LVL5:
+ 152 007a B8E0      		ldi r27,8
+ 153 007c CB0E      		add r12,r27
+ 154 007e D11C      		adc r13,__zero_reg__
+ 155 0080 F401      		movw r30,r8
+ 156 0082 D586      		std Z+13,r13
+ 157 0084 C486      		std Z+12,r12
+ 266:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   ocp->lru.lru_prev     = (oc_object_t *)&ocp->lru;
+ 158               		.loc 1 266 0
+ 159 0086 D786      		std Z+15,r13
+ 160 0088 C686      		std Z+14,r12
+ 267:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 268:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* Hash headers initialization.*/
+ 269:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   do {
+ 270:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     hashp->hash_next = (oc_object_t *)hashp;
+ 271:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     hashp->hash_prev = (oc_object_t *)hashp;
+ 272:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     hashp++;
+ 273:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   } while (hashp < &ocp->hashp[ocp->hashn]);
+ 161               		.loc 1 273 0
+ 162 008a 862D      		mov r24,r6
+ 163 008c 90E0      		ldi r25,0
+ 164 008e 880F      		lsl r24
+ 165 0090 991F      		rol r25
+ 166 0092 880F      		lsl r24
+ 167 0094 991F      		rol r25
+ 168 0096 8C0F      		add r24,r28
+ 169 0098 9D1F      		adc r25,r29
+ 170               	.L2:
+ 270:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     hashp->hash_prev = (oc_object_t *)hashp;
+ 171               		.loc 1 270 0 discriminator 1
+ 172 009a D983      		std Y+1,r29
+ 173 009c C883      		st Y,r28
+ 271:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     hashp++;
+ 174               		.loc 1 271 0 discriminator 1
+ 175 009e DB83      		std Y+3,r29
+ 176 00a0 CA83      		std Y+2,r28
+ 272:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   } while (hashp < &ocp->hashp[ocp->hashn]);
+ 177               		.loc 1 272 0 discriminator 1
+ 178 00a2 2496      		adiw r28,4
+ 179               	.LVL6:
+ 180               		.loc 1 273 0 discriminator 1
+ 181 00a4 C817      		cp r28,r24
+ 182 00a6 D907      		cpc r29,r25
+ 183 00a8 00F0      		brlo .L2
+ 184               	.LBB35:
+ 274:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 275:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* Object headers initialization.*/
+ 276:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   do {
+ 277:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     oc_object_t *objp = (oc_object_t *)objvp;
+ 278:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 279:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     chSemObjectInit(&objp->obj_sem, (cnt_t)1);
+ 280:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     LRU_INSERT_HEAD(ocp, objp);
+ 281:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_group = 0U;
+ 282:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_key   = 0U;
+ 283:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_flags = OC_FLAG_INLRU;
+ 185               		.loc 1 283 0
+ 186 00aa 212C      		mov r2,__zero_reg__
+ 187 00ac 312C      		mov r3,__zero_reg__
+ 188 00ae 2101      		movw r4,r2
+ 189 00b0 2394      		inc r2
+ 190               	.LVL7:
+ 191               	.L3:
+ 279:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     LRU_INSERT_HEAD(ocp, objp);
+ 192               		.loc 1 279 0 discriminator 1
+ 193 00b2 61E0      		ldi r22,lo8(1)
+ 194 00b4 C701      		movw r24,r14
+ 195 00b6 4096      		adiw r24,16
+ 196 00b8 0E94 0000 		call chSemObjectInit
+ 197               	.LVL8:
+ 280:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_group = 0U;
+ 198               		.loc 1 280 0 discriminator 1
+ 199 00bc D401      		movw r26,r8
+ 200 00be 1C96      		adiw r26,12
+ 201 00c0 ED91      		ld r30,X+
+ 202 00c2 FC91      		ld r31,X
+ 203 00c4 D701      		movw r26,r14
+ 204 00c6 1596      		adiw r26,4+1
+ 205 00c8 FC93      		st X,r31
+ 206 00ca EE93      		st -X,r30
+ 207 00cc 1497      		sbiw r26,4
+ 208 00ce 1796      		adiw r26,6+1
+ 209 00d0 DC92      		st X,r13
+ 210 00d2 CE92      		st -X,r12
+ 211 00d4 1697      		sbiw r26,6
+ 212 00d6 F782      		std Z+7,r15
+ 213 00d8 E682      		std Z+6,r14
+ 214 00da F401      		movw r30,r8
+ 215 00dc F586      		std Z+13,r15
+ 216 00de E486      		std Z+12,r14
+ 281:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_key   = 0U;
+ 217               		.loc 1 281 0 discriminator 1
+ 218 00e0 1896      		adiw r26,8
+ 219 00e2 1D92      		st X+,__zero_reg__
+ 220 00e4 1D92      		st X+,__zero_reg__
+ 221 00e6 1D92      		st X+,__zero_reg__
+ 222 00e8 1C92      		st X,__zero_reg__
+ 223 00ea 1B97      		sbiw r26,8+3
+ 282:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_flags = OC_FLAG_INLRU;
+ 224               		.loc 1 282 0 discriminator 1
+ 225 00ec F701      		movw r30,r14
+ 226 00ee 1486      		std Z+12,__zero_reg__
+ 227 00f0 1586      		std Z+13,__zero_reg__
+ 228 00f2 1686      		std Z+14,__zero_reg__
+ 229 00f4 1786      		std Z+15,__zero_reg__
+ 230               		.loc 1 283 0 discriminator 1
+ 231 00f6 5596      		adiw r26,21
+ 232 00f8 2D92      		st X+,r2
+ 233 00fa 3D92      		st X+,r3
+ 234 00fc 4D92      		st X+,r4
+ 235 00fe 5C92      		st X,r5
+ 236 0100 5897      		sbiw r26,21+3
+ 284:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->dptr      = NULL;
+ 237               		.loc 1 284 0 discriminator 1
+ 238 0102 5A96      		adiw r26,25+1
+ 239 0104 1C92      		st X,__zero_reg__
+ 240 0106 1E92      		st -X,__zero_reg__
+ 241 0108 5997      		sbiw r26,25
+ 285:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objvp = (void *)((uint8_t *)objvp + objsz);
+ 242               		.loc 1 285 0 discriminator 1
+ 243 010a E00E      		add r14,r16
+ 244 010c F11E      		adc r15,r17
+ 245               	.LVL9:
+ 286:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objn--;
+ 246               		.loc 1 286 0 discriminator 1
+ 247 010e 7A94      		dec r7
+ 248               	.LVL10:
+ 249               	.LBE35:
+ 287:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   } while (objn > (ucnt_t)0);
+ 250               		.loc 1 287 0 discriminator 1
+ 251 0110 7110      		cpse r7,__zero_reg__
+ 252 0112 00C0      		rjmp .L3
+ 253               	/* epilogue start */
+ 288:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+ 254               		.loc 1 288 0
+ 255 0114 DF91      		pop r29
+ 256 0116 CF91      		pop r28
+ 257               	.LVL11:
+ 258 0118 1F91      		pop r17
+ 259 011a 0F91      		pop r16
+ 260               	.LVL12:
+ 261 011c FF90      		pop r15
+ 262 011e EF90      		pop r14
+ 263               	.LVL13:
+ 264 0120 DF90      		pop r13
+ 265 0122 CF90      		pop r12
+ 266 0124 BF90      		pop r11
+ 267 0126 AF90      		pop r10
+ 268               	.LVL14:
+ 269 0128 9F90      		pop r9
+ 270 012a 8F90      		pop r8
+ 271               	.LVL15:
+ 272 012c 7F90      		pop r7
+ 273               	.LVL16:
+ 274 012e 6F90      		pop r6
+ 275               	.LVL17:
+ 276 0130 5F90      		pop r5
+ 277 0132 4F90      		pop r4
+ 278 0134 3F90      		pop r3
+ 279 0136 2F90      		pop r2
+ 280 0138 0895      		ret
+ 281               		.cfi_endproc
+ 282               	.LFE197:
+ 284               		.section	.text.chCacheGetObject,"ax",@progbits
+ 285               	.global	chCacheGetObject
+ 287               	chCacheGetObject:
+ 288               	.LFB198:
+ 289:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 290:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /**
+ 291:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @brief   Retrieves an object from the cache.
+ 292:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @note    If the object is not in cache then the returned object is marked
+ 293:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          as @p OC_FLAG_NOTSYNC meaning that its data contains garbage and
+ 294:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          must be initialized.
+ 295:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 296:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] ocp       pointer to the @p objects_cache_t structure
+ 297:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] group     object group identifier
+ 298:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] key       object identifier within the group
+ 299:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @return              The pointer to the retrieved object.
+ 300:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 301:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @api
+ 302:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  */
+ 303:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** oc_object_t *chCacheGetObject(objects_cache_t *ocp,
+ 304:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                               uint32_t group,
+ 305:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                               uint32_t key) {
+ 289               		.loc 1 305 0
+ 290               		.cfi_startproc
+ 291               	.LVL18:
+ 292 0000 4F92      		push r4
+ 293               	.LCFI18:
+ 294               		.cfi_def_cfa_offset 3
+ 295               		.cfi_offset 4, -2
+ 296 0002 5F92      		push r5
+ 297               	.LCFI19:
+ 298               		.cfi_def_cfa_offset 4
+ 299               		.cfi_offset 5, -3
+ 300 0004 6F92      		push r6
+ 301               	.LCFI20:
+ 302               		.cfi_def_cfa_offset 5
+ 303               		.cfi_offset 6, -4
+ 304 0006 7F92      		push r7
+ 305               	.LCFI21:
+ 306               		.cfi_def_cfa_offset 6
+ 307               		.cfi_offset 7, -5
+ 308 0008 8F92      		push r8
+ 309               	.LCFI22:
+ 310               		.cfi_def_cfa_offset 7
+ 311               		.cfi_offset 8, -6
+ 312 000a 9F92      		push r9
+ 313               	.LCFI23:
+ 314               		.cfi_def_cfa_offset 8
+ 315               		.cfi_offset 9, -7
+ 316 000c AF92      		push r10
+ 317               	.LCFI24:
+ 318               		.cfi_def_cfa_offset 9
+ 319               		.cfi_offset 10, -8
+ 320 000e BF92      		push r11
+ 321               	.LCFI25:
+ 322               		.cfi_def_cfa_offset 10
+ 323               		.cfi_offset 11, -9
+ 324 0010 CF92      		push r12
+ 325               	.LCFI26:
+ 326               		.cfi_def_cfa_offset 11
+ 327               		.cfi_offset 12, -10
+ 328 0012 DF92      		push r13
+ 329               	.LCFI27:
+ 330               		.cfi_def_cfa_offset 12
+ 331               		.cfi_offset 13, -11
+ 332 0014 EF92      		push r14
+ 333               	.LCFI28:
+ 334               		.cfi_def_cfa_offset 13
+ 335               		.cfi_offset 14, -12
+ 336 0016 FF92      		push r15
+ 337               	.LCFI29:
+ 338               		.cfi_def_cfa_offset 14
+ 339               		.cfi_offset 15, -13
+ 340 0018 0F93      		push r16
+ 341               	.LCFI30:
+ 342               		.cfi_def_cfa_offset 15
+ 343               		.cfi_offset 16, -14
+ 344 001a 1F93      		push r17
+ 345               	.LCFI31:
+ 346               		.cfi_def_cfa_offset 16
+ 347               		.cfi_offset 17, -15
+ 348 001c CF93      		push r28
+ 349               	.LCFI32:
+ 350               		.cfi_def_cfa_offset 17
+ 351               		.cfi_offset 28, -16
+ 352 001e DF93      		push r29
+ 353               	.LCFI33:
+ 354               		.cfi_def_cfa_offset 18
+ 355               		.cfi_offset 29, -17
+ 356               	/* prologue: function */
+ 357               	/* frame size = 0 */
+ 358               	/* stack size = 16 */
+ 359               	.L__stack_usage = 16
+ 360 0020 5C01      		movw r10,r24
+ 361 0022 2A01      		movw r4,r20
+ 362 0024 3B01      		movw r6,r22
+ 363 0026 6801      		movw r12,r16
+ 364 0028 7901      		movw r14,r18
+ 365               	.LBB59:
+ 366               	.LBB60:
+ 367               	.LBB61:
+ 368               		.file 2 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
+   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*
+   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
+   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****               2015,2016,2017,2018,2019,2020,2021 Giovanni Di Sirio.
+   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     This file is part of ChibiOS.
+   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     ChibiOS is free software; you can redistribute it and/or modify
+   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     it under the terms of the GNU General Public License as published by
+   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     the Free Software Foundation version 3 of the License.
+  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     ChibiOS is distributed in the hope that it will be useful,
+  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     GNU General Public License for more details.
+  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     You should have received a copy of the GNU General Public License
+  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** */
+  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @file    chcore.h
+  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   AVR port macros and structures.
+  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
+  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @addtogroup AVR_CORE
+  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @{
+  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #ifndef CHCORE_H
+  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define CHCORE_H
+  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #include <avr/io.h>
+  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #include <avr/interrupt.h>
+  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** extern bool __avr_in_isr;
+  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* Module constants.                                                         */
+  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @name    Port Capabilities and Constants
+  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @{
+  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   This port supports a realtime counter.
+  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_SUPPORTS_RT                FALSE
+  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Natural alignment constant.
+  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    It is the minimum alignment for pointer-size variables.
+  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_NATURAL_ALIGN              1U
+  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Stack alignment constant.
+  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    It is the alignment required for the stack pointer.
+  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_STACK_ALIGN                1U
+  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Working Areas alignment constant.
+  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    It is the alignment to be enforced for thread working areas.
+  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_WORKING_AREA_ALIGN         1U
+  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /** @} */
+  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @name    Architecture and Compiler
+  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @{
+  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Macro defining an AVR architecture.
+  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_AVR
+  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Macro defining the specific AVR architecture.
+  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_AVR_MEGAAVR
+  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Name of the implemented architecture.
+  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_NAME          "AVR"
+  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Name of the architecture variant.
+  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_CORE_VARIANT_NAME          "MegaAVR"
+  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Compiler name and version.
+  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+  95:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if defined(__GNUC__) || defined(__DOXYGEN__)
+  96:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_COMPILER_NAME              "GCC " __VERSION__
+  97:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #else
+  99:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #error "unsupported compiler"
+ 100:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
+ 101:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 102:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 103:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Port-specific information string.
+ 104:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 105:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_INFO                       "None"
+ 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /** @} */
+ 107:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 108:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 109:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* Module pre-compile time settings.                                         */
+ 110:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 111:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 112:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 113:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Stack size for the system idle thread.
+ 114:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This size depends on the idle thread implementation, usually
+ 115:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          the idle thread should take no more space than those reserved
+ 116:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          by @p PORT_INT_REQUIRED_STACK.
+ 117:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 118:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if !defined(PORT_IDLE_THREAD_STACK_SIZE) || defined(__DOXYGEN__)
+ 119:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_IDLE_THREAD_STACK_SIZE     8
+ 120:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
+ 121:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 122:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Per-thread stack overhead for interrupts servicing.
+ 124:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This constant is used in the calculation of the correct working
+ 125:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          area size.
+ 126:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 127:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if !defined(PORT_INT_REQUIRED_STACK) || defined(__DOXYGEN__)
+ 128:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_INT_REQUIRED_STACK         32
+ 129:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
+ 130:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 131:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 132:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Enables a "wait for interrupt" instruction in the idle loop.
+ 133:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 134:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if !defined(PORT_AVR_WFI_SLEEP_IDLE) || defined(__DOXYGEN__)
+ 135:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_AVR_WFI_SLEEP_IDLE      FALSE
+ 136:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
+ 137:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 138:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 139:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* Derived constants and error checks.                                       */
+ 140:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 141:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 142:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* Module data structures and types.                                         */
+ 144:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 146:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
+ 147:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****    asm module.*/
+ 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
+ 149:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 150:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Type of stack and memory alignment enforcement.
+ 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    In this architecture the stack alignment is enforced to 8 bits.
+ 153:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 154:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** typedef uint8_t stkalign_t;
+ 155:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 157:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Interrupt saved context.
+ 158:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This structure represents the stack frame saved during a
+ 159:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          preemption-capable interrupt handler.
+ 160:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    R2 and R13 are not saved because those are assumed to be immutable
+ 161:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          during the system life cycle.
+ 162:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 163:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** struct port_extctx {
+ 164:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       _next;
+ 165:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r31;
+ 166:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r30;
+ 167:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r27;
+ 168:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r26;
+ 169:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r25;
+ 170:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r24;
+ 171:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r23;
+ 172:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r22;
+ 173:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r21;
+ 174:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r20;
+ 175:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r19;
+ 176:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r18;
+ 177:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       sr;
+ 178:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r1;
+ 179:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r0;
+ 180:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__)
+ 181:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       pcx;
+ 182:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
+ 183:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint16_t      pc;
+ 184:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** };
+ 185:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 186:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 187:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   System saved context.
+ 188:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This structure represents the inner stack frame during a context
+ 189:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          switching.
+ 190:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    R2 and R13 are not saved because those are assumed to be immutable
+ 191:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          during the system life cycle.
+ 192:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    LR is stored in the caller context so it is not present in this
+ 193:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          structure.
+ 194:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 195:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** struct port_intctx {
+ 196:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       _next;
+ 197:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r29;
+ 198:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r28;
+ 199:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r17;
+ 200:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r16;
+ 201:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r15;
+ 202:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r14;
+ 203:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r13;
+ 204:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r12;
+ 205:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r11;
+ 206:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r10;
+ 207:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r9;
+ 208:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r8;
+ 209:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r7;
+ 210:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r6;
+ 211:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r5;
+ 212:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r4;
+ 213:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r3;
+ 214:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r2;
+ 215:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__)
+ 216:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       pcx;
+ 217:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
+ 218:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       pcl;
+ 219:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       pch;
+ 220:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** };
+ 221:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 222:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 223:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Platform dependent part of the @p thread_t structure.
+ 224:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This structure usually contains just the saved stack pointer
+ 225:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          defined as a pointer to a @p port_intctx structure.
+ 226:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 227:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** struct port_context {
+ 228:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   struct port_intctx *sp;
+ 229:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** };
+ 230:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 231:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif /* !defined(_FROM_ASM_) */
+ 232:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 233:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 234:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* Module macros.                                                            */
+ 235:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 236:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 237:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 238:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Platform dependent part of the @p chThdCreateI() API.
+ 239:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This code usually setup the context switching frame represented
+ 240:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          by an @p port_intctx structure.
+ 241:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 242:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__) || defined(__DOXYGEN__)
+ 243:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_SETUP_CONTEXT(tp, wbase, wtop, pf, arg) {                      \
+ 244:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp = (struct port_intctx *)((uint8_t *)(wtop) -                   \
+ 245:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****                                       sizeof(struct port_intctx));          \
+ 246:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r2  = (uint8_t)(0xff & (uint16_t)pf);                         \
+ 247:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r3  = (uint8_t)((uint16_t)(pf) >> 8);                         \
+ 248:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r4  = (uint8_t)(0xff & (uint16_t)arg);                        \
+ 249:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r5  = (uint8_t)((uint16_t)(arg) >> 8);                        \
+ 250:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcx = (uint8_t)0;                                             \
+ 251:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcl = (uint16_t)_port_thread_start >> 8;                      \
+ 252:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pch = (uint8_t)(0xff & (uint16_t)_port_thread_start);         \
+ 253:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
+ 254:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #else /* !__AVR_3_BYTE_PC__ */
+ 255:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_SETUP_CONTEXT(tp, wbase, wtop, pf, arg) {                      \
+ 256:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp = (struct port_intctx *)((uint8_t *)(wtop) -                   \
+ 257:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****                                       sizeof(struct port_intctx));          \
+ 258:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r2  = (uint8_t)(0xff & (uint16_t)pf);                         \
+ 259:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r3  = (uint8_t)((uint16_t)(pf) >> 8);                         \
+ 260:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r4  = (uint8_t)(0xff & (uint16_t)arg);                        \
+ 261:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r5  = (uint8_t)((uint16_t)(arg) >> 8);                        \
+ 262:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcl = (uint16_t)_port_thread_start >> 8;                      \
+ 263:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pch = (uint8_t)(0xff & (uint16_t)_port_thread_start);         \
+ 264:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
+ 265:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif /* !__AVR_3_BYTE_PC__ */
+ 266:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 267:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 268:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Computes the thread working area global size.
+ 269:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    There is no need to perform alignments in this macro.
+ 270:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 271:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_WA_SIZE(n) ((sizeof(struct port_intctx) - 1) +                \
+ 272:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****                          (sizeof(struct port_extctx) - 1) +                \
+ 273:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****                          ((size_t)(n)) + ((size_t)(PORT_INT_REQUIRED_STACK)))
+ 274:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 275:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 276:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Static working area allocation.
+ 277:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This macro is used to allocate a static thread working area
+ 278:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          aligned as both position and size.
+ 279:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
+ 280:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @param[in] s         the name to be assigned to the stack array
+ 281:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @param[in] n         the stack size to be assigned to the thread
+ 282:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 283:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_WORKING_AREA(s, n)                                             \
+ 284:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   stkalign_t s[THD_WORKING_AREA_SIZE(n) / sizeof (stkalign_t)]
+ 285:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 286:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 287:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Priority level verification macro.
+ 288:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 289:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_IRQ_IS_VALID_PRIORITY(n) false
+ 290:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 291:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 292:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Priority level verification macro.
+ 293:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 294:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_IRQ_IS_VALID_KERNEL_PRIORITY(n) false
+ 295:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 296:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 297:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   IRQ prologue code.
+ 298:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This macro must be inserted at the start of all IRQ handlers
+ 299:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          enabled to invoke system APIs.
+ 300:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    This code tricks the compiler to save all the specified registers
+ 301:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          by "touching" them.
+ 302:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 303:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_IRQ_PROLOGUE() {                                               \
+ 304:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   asm ("" : : : "r18", "r19", "r20", "r21", "r22", "r23", "r24",            \
+ 305:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****                 "r25", "r26", "r27", "r30", "r31");                         \
+ 306:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   __avr_in_isr = true;                                                      \
+ 307:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
+ 308:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 309:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 310:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   IRQ epilogue code.
+ 311:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This macro must be inserted at the end of all IRQ handlers
+ 312:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          enabled to invoke system APIs.
+ 313:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 314:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_IRQ_EPILOGUE() {                                               \
+ 315:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   __avr_in_isr = false;                                                     \
+ 316:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   __dbg_check_lock();                                                       \
+ 317:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   if (chSchIsPreemptionRequired())                                          \
+ 318:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     chSchDoPreemption();                                                    \
+ 319:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   __dbg_check_unlock();                                                     \
+ 320:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
+ 321:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 322:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 323:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   IRQ handler function declaration.
+ 324:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    @p id can be a function name or a vector number depending on the
+ 325:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          port implementation.
+ 326:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 327:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_IRQ_HANDLER(id) ISR(id)
+ 328:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 329:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 330:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Fast IRQ handler function declaration.
+ 331:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    @p id can be a function name or a vector number depending on the
+ 332:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          port implementation.
+ 333:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 334:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_FAST_IRQ_HANDLER(id) ISR(id)
+ 335:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 336:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 337:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Performs a context switch between two threads.
+ 338:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This is the most critical code in any port, this function
+ 339:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          is responsible for the context switch between 2 threads.
+ 340:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    The implementation of this code affects <b>directly</b> the context
+ 341:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          switch performance so optimize here as much as you can.
+ 342:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
+ 343:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @param[in] ntp       the thread to be switched in
+ 344:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @param[in] otp       the thread to be switched out
+ 345:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 346:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define port_switch(ntp, otp) {                                             \
+ 347:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   _port_switch(ntp, otp);                                                   \
+ 348:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   asm volatile ("" : : : "memory");                                         \
+ 349:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
+ 350:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 351:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 352:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 353:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Port-related initialization code.
+ 354:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    This function is empty in this port.
+ 355:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 356:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define port_init(oip) {                                                    \
+ 357:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   __avr_in_isr = true;                                                      \
+ 358:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
+ 359:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 360:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 361:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* External declarations.                                                    */
+ 362:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 363:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 364:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
+ 365:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****    asm module.*/
+ 366:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
+ 367:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 368:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #ifdef __cplusplus
+ 369:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** extern "C" {
+ 370:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
+ 371:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   void _port_switch(thread_t *ntp, thread_t *otp);
+ 372:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   void _port_thread_start(void);
+ 373:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #ifdef __cplusplus
+ 374:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
+ 375:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
+ 376:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 377:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif /* !defined(_FROM_ASM_) */
+ 378:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 379:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 380:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* Module inline functions.                                                  */
+ 381:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 382:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 383:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
+ 384:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****    asm module.*/
+ 385:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
+ 386:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 387:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 388:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Returns a word encoding the current interrupts status.
+ 389:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
+ 390:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @return              The interrupts status.
+ 391:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 392:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** static inline syssts_t port_get_irq_status(void) {
+ 393:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 394:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   return SREG;
+ 395:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
+ 396:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 397:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 398:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Checks the interrupt status.
+ 399:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
+ 400:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @param[in] sts       the interrupt status word
+ 401:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
+ 402:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @return              The interrupt status.
+ 403:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @retval false        the word specified a disabled interrupts status.
+ 404:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @retval true         the word specified an enabled interrupts status.
+ 405:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 406:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** static inline bool port_irq_enabled(syssts_t sts) {
+ 407:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 408:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   return (bool)((sts & 0x80) != 0);
+ 409:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
+ 410:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 411:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 412:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Determines the current execution context.
+ 413:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
+ 414:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @return              The execution context.
+ 415:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @retval false        not running in ISR mode.
+ 416:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @retval true         running in ISR mode.
+ 417:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 418:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** static inline bool port_is_isr_context(void) {
+ 419:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 420:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   return __avr_in_isr;
+ 421:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
+ 422:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 423:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 424:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Kernel-lock action.
+ 425:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details Usually this function just disables interrupts but may perform more
+ 426:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          actions.
+ 427:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 428:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** static inline void port_lock(void) {
+ 429:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 430:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   asm volatile ("cli" : : : "memory");
+ 369               		.loc 2 430 0
+ 370               	/* #APP */
+ 371               	 ;  430 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
+ 372 002a F894      		cli
+ 373               	 ;  0 "" 2
+ 374               	.LVL19:
+ 375               	/* #NOAPP */
+ 376               	.LBE61:
+ 377               	.LBE60:
+ 378               	.LBE59:
+ 379               	.LBB62:
+ 380               	.LBB63:
+ 141:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   objp = hhp->hash_next;
+ 381               		.loc 1 141 0
+ 382 002c 4A01      		movw r8,r20
+ 383 002e 800E      		add r8,r16
+ 384 0030 911E      		adc r9,r17
+ 385 0032 DC01      		movw r26,r24
+ 386 0034 EC91      		ld r30,X
+ 387 0036 E150      		subi r30,1
+ 388 0038 FF0B      		sbc r31,r31
+ 389 003a E821      		and r30,r8
+ 390 003c F921      		and r31,r9
+ 391 003e EE0F      		lsl r30
+ 392 0040 FF1F      		rol r31
+ 393 0042 EE0F      		lsl r30
+ 394 0044 FF1F      		rol r31
+ 395 0046 1196      		adiw r26,1
+ 396 0048 8D91      		ld r24,X+
+ 397 004a 9C91      		ld r25,X
+ 398               	.LVL20:
+ 399 004c E80F      		add r30,r24
+ 400 004e F91F      		adc r31,r25
+ 401               	.LVL21:
+ 142:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 402               		.loc 1 142 0
+ 403 0050 C081      		ld r28,Z
+ 404 0052 D181      		ldd r29,Z+1
+ 405               	.LVL22:
+ 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     if ((objp->obj_key == key) && (objp->obj_group == group)) {
+ 406               		.loc 1 145 0
+ 407 0054 EC17      		cp r30,r28
+ 408 0056 FD07      		cpc r31,r29
+ 409 0058 01F4      		brne .L11
+ 410 005a 00C0      		rjmp .L8
+ 411               	.L9:
+ 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   }
+ 412               		.loc 1 151 0
+ 413 005c 0990      		ld __tmp_reg__,Y+
+ 414 005e D881      		ld r29,Y
+ 415 0060 C02D      		mov r28,__tmp_reg__
+ 416               	.LVL23:
+ 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     if ((objp->obj_key == key) && (objp->obj_group == group)) {
+ 417               		.loc 1 145 0
+ 418 0062 EC17      		cp r30,r28
+ 419 0064 FD07      		cpc r31,r29
+ 420 0066 01F4      		brne .+2
+ 421 0068 00C0      		rjmp .L8
+ 422               	.L11:
+ 146:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 423               		.loc 1 146 0
+ 424 006a 8C85      		ldd r24,Y+12
+ 425 006c 9D85      		ldd r25,Y+13
+ 426 006e AE85      		ldd r26,Y+14
+ 427 0070 BF85      		ldd r27,Y+15
+ 428 0072 C816      		cp r12,r24
+ 429 0074 D906      		cpc r13,r25
+ 430 0076 EA06      		cpc r14,r26
+ 431 0078 FB06      		cpc r15,r27
+ 432 007a 01F4      		brne .L9
+ 433 007c 8885      		ldd r24,Y+8
+ 434 007e 9985      		ldd r25,Y+9
+ 435 0080 AA85      		ldd r26,Y+10
+ 436 0082 BB85      		ldd r27,Y+11
+ 437 0084 4816      		cp r4,r24
+ 438 0086 5906      		cpc r5,r25
+ 439 0088 6A06      		cpc r6,r26
+ 440 008a 7B06      		cpc r7,r27
+ 441 008c 01F4      		brne .L9
+ 442               	.LVL24:
+ 443               	.LBE63:
+ 444               	.LBE62:
+ 306:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   oc_object_t *objp;
+ 307:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 308:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* Critical section enter, the hash check operation is fast.*/
+ 309:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   chSysLock();
+ 310:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 311:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* Checking the cache for a hit.*/
+ 312:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   objp = hash_get_s(ocp, group, key);
+ 313:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   if (objp != NULL) {
+ 445               		.loc 1 313 0
+ 446 008e 2097      		sbiw r28,0
+ 447 0090 01F0      		breq .L8
+ 448               	.LVL25:
+ 314:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 315:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     chDbgAssert((objp->obj_flags & OC_FLAG_INHASH) == OC_FLAG_INHASH,
+ 316:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                 "not in hash");
+ 317:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 318:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     /* Cache hit, checking if the buffer is owned by some
+ 319:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****        other thread.*/
+ 320:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     if (chSemGetCounterI(&objp->obj_sem) > (cnt_t)0) {
+ 449               		.loc 1 320 0
+ 450 0092 8C89      		ldd r24,Y+20
+ 451 0094 1816      		cp __zero_reg__,r24
+ 452 0096 04F0      		brlt .+2
+ 453 0098 00C0      		rjmp .L13
+ 321:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       /* Not owned case, it is in the LRU list.*/
+ 322:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 323:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       chDbgAssert((objp->obj_flags & OC_FLAG_INLRU) == OC_FLAG_INLRU,
+ 324:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                   "not in LRU");
+ 325:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 326:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       /* Removing the object from LRU, now it is "owned".*/
+ 327:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       LRU_REMOVE(objp);
+ 454               		.loc 1 327 0
+ 455 009a EE81      		ldd r30,Y+6
+ 456 009c FF81      		ldd r31,Y+7
+ 457 009e 8C81      		ldd r24,Y+4
+ 458 00a0 9D81      		ldd r25,Y+5
+ 459 00a2 9583      		std Z+5,r25
+ 460 00a4 8483      		std Z+4,r24
+ 461 00a6 AC81      		ldd r26,Y+4
+ 462 00a8 BD81      		ldd r27,Y+5
+ 463 00aa 1796      		adiw r26,6+1
+ 464 00ac FC93      		st X,r31
+ 465 00ae EE93      		st -X,r30
+ 466 00b0 1697      		sbiw r26,6
+ 328:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       objp->obj_flags &= ~OC_FLAG_INLRU;
+ 467               		.loc 1 328 0
+ 468 00b2 8D89      		ldd r24,Y+21
+ 469 00b4 9E89      		ldd r25,Y+22
+ 470 00b6 AF89      		ldd r26,Y+23
+ 471 00b8 B88D      		ldd r27,Y+24
+ 472 00ba 8E7F      		andi r24,254
+ 473 00bc AA27      		clr r26
+ 474 00be BB27      		clr r27
+ 475 00c0 8D8B      		std Y+21,r24
+ 476 00c2 9E8B      		std Y+22,r25
+ 477 00c4 AF8B      		std Y+23,r26
+ 478 00c6 B88F      		std Y+24,r27
+ 479               	.LVL26:
+ 480               	.LBB64:
+ 481               	.LBB65:
+ 482               		.file 3 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
+   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*
+   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
+   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****               2015,2016,2017,2018,2019,2020,2021 Giovanni Di Sirio.
+   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****     This file is part of ChibiOS.
+   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****     ChibiOS is free software; you can redistribute it and/or modify
+   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****     it under the terms of the GNU General Public License as published by
+   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****     the Free Software Foundation version 3 of the License.
+  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****     ChibiOS is distributed in the hope that it will be useful,
+  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****     GNU General Public License for more details.
+  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****     You should have received a copy of the GNU General Public License
+  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** */
+  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /**
+  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @file    rt/include/chsem.h
+  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @brief   Semaphores macros and structures.
+  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *
+  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @addtogroup semaphores
+  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @{
+  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  */
+  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** #ifndef CHSEM_H
+  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** #define CHSEM_H
+  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** #if (CH_CFG_USE_SEMAPHORES == TRUE) || defined(__DOXYGEN__)
+  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /* Module constants.                                                         */
+  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /* Module pre-compile time settings.                                         */
+  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /* Derived constants and error checks.                                       */
+  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /* Module data structures and types.                                         */
+  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /**
+  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @brief   Semaphore structure.
+  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  */
+  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** typedef struct ch_semaphore {
+  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   ch_queue_t            queue;      /**< @brief Queue of the threads sleeping
+  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****                                                 on this semaphore.          */
+  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   cnt_t                 cnt;        /**< @brief The semaphore counter.      */
+  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** } semaphore_t;
+  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /* Module macros.                                                            */
+  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /**
+  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @brief   Data part of a static semaphore initializer.
+  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @details This macro should be used when statically initializing a semaphore
+  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *          that is part of a bigger structure.
+  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *
+  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @param[in] name      the name of the semaphore variable
+  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @param[in] n         the counter initial value, this value must be
+  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *                      non-negative
+  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  */
+  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** #define __SEMAPHORE_DATA(name, n) {__CH_QUEUE_DATA(name.queue), n}
+  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /**
+  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @brief   Static semaphore initializer.
+  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @details Statically initialized semaphores require no explicit
+  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *          initialization using @p chSemInit().
+  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *
+  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @param[in] name      the name of the semaphore variable
+  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @param[in] n         the counter initial value, this value must be
+  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *                      non-negative
+  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  */
+  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** #define SEMAPHORE_DECL(name, n) semaphore_t name = __SEMAPHORE_DATA(name, n)
+  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /* External declarations.                                                    */
+  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** #ifdef __cplusplus
+  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** extern "C" {
+  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** #endif
+  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   void chSemObjectInit(semaphore_t *sp, cnt_t n);
+  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   void chSemResetWithMessage(semaphore_t *sp, cnt_t n, msg_t msg);
+  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   void chSemResetWithMessageI(semaphore_t *sp, cnt_t n, msg_t msg);
+  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   msg_t chSemWait(semaphore_t *sp);
+  95:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   msg_t chSemWaitS(semaphore_t *sp);
+  96:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   msg_t chSemWaitTimeout(semaphore_t *sp, sysinterval_t timeout);
+  97:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   msg_t chSemWaitTimeoutS(semaphore_t *sp, sysinterval_t timeout);
+  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   void chSemSignal(semaphore_t *sp);
+  99:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   void chSemSignalI(semaphore_t *sp);
+ 100:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   void chSemAddCounterI(semaphore_t *sp, cnt_t n);
+ 101:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   msg_t chSemSignalWait(semaphore_t *sps, semaphore_t *spw);
+ 102:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** #ifdef __cplusplus
+ 103:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** }
+ 104:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** #endif
+ 105:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+ 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+ 107:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /* Module inline functions.                                                  */
+ 108:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /*===========================================================================*/
+ 109:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+ 110:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /**
+ 111:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @brief   Performs a reset operation on the semaphore.
+ 112:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @post    After invoking this function all the threads waiting on the
+ 113:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *          semaphore, if any, are released and the semaphore counter is set
+ 114:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *          to the specified, non negative, value.
+ 115:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @note    This function implicitly sends @p MSG_RESET as message.
+ 116:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *
+ 117:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @param[in] sp        pointer to a @p semaphore_t structure
+ 118:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @param[in] n         the new value of the semaphore counter. The value must
+ 119:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *                      be non-negative.
+ 120:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *
+ 121:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @api
+ 122:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  */
+ 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** static inline void chSemReset(semaphore_t *sp, cnt_t n) {
+ 124:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+ 125:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   chSemResetWithMessage(sp, n, MSG_RESET);
+ 126:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** }
+ 127:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+ 128:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /**
+ 129:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @brief   Performs a reset operation on the semaphore.
+ 130:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @post    After invoking this function all the threads waiting on the
+ 131:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *          semaphore, if any, are released and the semaphore counter is set
+ 132:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *          to the specified, non negative, value.
+ 133:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @post    This function does not reschedule so a call to a rescheduling
+ 134:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *          function must be performed before unlocking the kernel. Note that
+ 135:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *          interrupt handlers always reschedule on exit so an explicit
+ 136:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *          reschedule must not be performed in ISRs.
+ 137:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @note    This function implicitly sends @p MSG_RESET as message.
+ 138:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *
+ 139:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @param[in] sp        pointer to a @p semaphore_t structure
+ 140:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @param[in] n         the new value of the semaphore counter. The value must
+ 141:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *                      be non-negative.
+ 142:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *
+ 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @iclass
+ 144:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  */
+ 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** static inline void chSemResetI(semaphore_t *sp, cnt_t n) {
+ 146:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+ 147:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   chSemResetWithMessageI(sp, n, MSG_RESET);
+ 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** }
+ 149:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+ 150:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /**
+ 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @brief   Decreases the semaphore counter.
+ 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @details This macro can be used when the counter is known to be positive.
+ 153:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *
+ 154:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @param[in] sp        pointer to a @p semaphore_t structure
+ 155:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *
+ 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @iclass
+ 157:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  */
+ 158:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** static inline void chSemFastWaitI(semaphore_t *sp) {
+ 159:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+ 160:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   chDbgCheckClassI();
+ 161:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+ 162:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   sp->cnt--;
+ 483               		.loc 3 162 0
+ 484 00c8 8C89      		ldd r24,Y+20
+ 485 00ca 8150      		subi r24,lo8(-(-1))
+ 486 00cc 8C8B      		std Y+20,r24
+ 487               	.LVL27:
+ 488               	.L14:
+ 489               	.LBE65:
+ 490               	.LBE64:
+ 491               	.LBB66:
+ 492               	.LBB67:
+ 493               	.LBB68:
+ 494               	.LBB69:
+ 431:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
+ 432:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 433:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
+ 434:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Kernel-unlock action.
+ 435:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details Usually this function just enables interrupts but may perform more
+ 436:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          actions.
+ 437:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
+ 438:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** static inline void port_unlock(void) {
+ 439:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
+ 440:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   asm volatile ("sei" : : : "memory");
+ 495               		.loc 2 440 0
+ 496               	/* #APP */
+ 497               	 ;  440 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
+ 498 00ce 7894      		sei
+ 499               	 ;  0 "" 2
+ 500               	/* #NOAPP */
+ 501               	.LBE69:
+ 502               	.LBE68:
+ 503               	.LBE67:
+ 504               	.LBE66:
+ 329:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 330:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       /* Getting the object semaphore, we know there is no wait so
+ 331:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****          using the "fast" variant.*/
+ 332:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       chSemFastWaitI(&objp->obj_sem);
+ 333:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     }
+ 334:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     else {
+ 335:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       /* Owned case, some other thread is playing with this object, we
+ 336:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****          need to wait.*/
+ 337:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 338:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       chDbgAssert((objp->obj_flags & OC_FLAG_INLRU) == 0U, "in LRU");
+ 339:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 340:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       /* Waiting on the buffer semaphore.*/
+ 341:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       (void) chSemWaitS(&objp->obj_sem);
+ 342:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     }
+ 343:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   }
+ 344:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   else {
+ 345:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     /* Cache miss, getting an object buffer from the LRU list.*/
+ 346:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp = lru_get_last_s(ocp);
+ 347:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 348:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     /* Naming this object and publishing it in the hash table.*/
+ 349:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_group = group;
+ 350:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_key   = key;
+ 351:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_flags = OC_FLAG_INHASH | OC_FLAG_NOTSYNC;
+ 352:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     HASH_INSERT(ocp, objp, group, key);
+ 353:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   }
+ 354:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 355:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* Out of critical section and returning the object.*/
+ 356:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   chSysUnlock();
+ 357:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 358:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   return objp;
+ 359:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+ 505               		.loc 1 359 0
+ 506 00d0 CE01      		movw r24,r28
+ 507               	/* epilogue start */
+ 508 00d2 DF91      		pop r29
+ 509 00d4 CF91      		pop r28
+ 510               	.LVL28:
+ 511 00d6 1F91      		pop r17
+ 512 00d8 0F91      		pop r16
+ 513 00da FF90      		pop r15
+ 514 00dc EF90      		pop r14
+ 515 00de DF90      		pop r13
+ 516 00e0 CF90      		pop r12
+ 517 00e2 BF90      		pop r11
+ 518 00e4 AF90      		pop r10
+ 519               	.LVL29:
+ 520 00e6 9F90      		pop r9
+ 521 00e8 8F90      		pop r8
+ 522 00ea 7F90      		pop r7
+ 523 00ec 6F90      		pop r6
+ 524 00ee 5F90      		pop r5
+ 525 00f0 4F90      		pop r4
+ 526 00f2 0895      		ret
+ 527               	.LVL30:
+ 528               	.L8:
+ 529 00f4 8501      		movw r16,r10
+ 530               	.LVL31:
+ 531 00f6 0B5E      		subi r16,-21
+ 532 00f8 1F4F      		sbci r17,-1
+ 533 00fa 00C0      		rjmp .L12
+ 534               	.LVL32:
+ 535               	.L15:
+ 536               	.LBB70:
+ 537               	.LBB71:
+ 538               	.LBB72:
+ 539               	.LBB73:
+ 540               	.LBB74:
+ 541               	.LBB75:
+ 542               		.loc 2 440 0
+ 543               	/* #APP */
+ 544               	 ;  440 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
+ 545 00fc 7894      		sei
+ 546               	 ;  0 "" 2
+ 547               	/* #NOAPP */
+ 548               	.LBE75:
+ 549               	.LBE74:
+ 550               	.LBE73:
+ 551               	.LBE72:
+ 209:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     (void) ocp->writef(ocp, objp, true);
+ 552               		.loc 1 209 0
+ 553 00fe 82E2      		ldi r24,lo8(34)
+ 554 0100 90E0      		ldi r25,0
+ 555 0102 A0E0      		ldi r26,0
+ 556 0104 B0E0      		ldi r27,0
+ 557 0106 8D8B      		std Y+21,r24
+ 558 0108 9E8B      		std Y+22,r25
+ 559 010a AF8B      		std Y+23,r26
+ 560 010c B88F      		std Y+24,r27
+ 210:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 561               		.loc 1 210 0
+ 562 010e D501      		movw r26,r10
+ 563 0110 5C96      		adiw r26,28
+ 564 0112 ED91      		ld r30,X+
+ 565 0114 FC91      		ld r31,X
+ 566 0116 41E0      		ldi r20,lo8(1)
+ 567 0118 BE01      		movw r22,r28
+ 568 011a C501      		movw r24,r10
+ 569 011c 0995      		icall
+ 570               	.LVL33:
+ 571               	.LBB76:
+ 572               	.LBB77:
+ 573               	.LBB78:
+ 430:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
+ 574               		.loc 2 430 0
+ 575               	/* #APP */
+ 576               	 ;  430 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
+ 577 011e F894      		cli
+ 578               	 ;  0 "" 2
+ 579               	.LVL34:
+ 580               	/* #NOAPP */
+ 581               	.L12:
+ 582               	.LBE78:
+ 583               	.LBE77:
+ 584               	.LBE76:
+ 170:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 585               		.loc 1 170 0
+ 586 0120 C801      		movw r24,r16
+ 587 0122 0E94 0000 		call chSemWaitS
+ 588               	.LVL35:
+ 174:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 589               		.loc 1 174 0
+ 590 0126 F501      		movw r30,r10
+ 591 0128 C685      		ldd r28,Z+14
+ 592 012a D785      		ldd r29,Z+15
+ 593               	.LVL36:
+ 181:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_flags &= ~OC_FLAG_INLRU;
+ 594               		.loc 1 181 0
+ 595 012c EE81      		ldd r30,Y+6
+ 596 012e FF81      		ldd r31,Y+7
+ 597 0130 8C81      		ldd r24,Y+4
+ 598 0132 9D81      		ldd r25,Y+5
+ 599 0134 9583      		std Z+5,r25
+ 600 0136 8483      		std Z+4,r24
+ 601 0138 AC81      		ldd r26,Y+4
+ 602 013a BD81      		ldd r27,Y+5
+ 603 013c 1796      		adiw r26,6+1
+ 604 013e FC93      		st X,r31
+ 605 0140 EE93      		st -X,r30
+ 606 0142 1697      		sbiw r26,6
+ 182:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 607               		.loc 1 182 0
+ 608 0144 8D89      		ldd r24,Y+21
+ 609 0146 9E89      		ldd r25,Y+22
+ 610 0148 AF89      		ldd r26,Y+23
+ 611 014a B88D      		ldd r27,Y+24
+ 612 014c AC01      		movw r20,r24
+ 613 014e BD01      		movw r22,r26
+ 614 0150 4E7F      		andi r20,254
+ 615 0152 6627      		clr r22
+ 616 0154 7727      		clr r23
+ 617 0156 4D8B      		std Y+21,r20
+ 618 0158 5E8B      		std Y+22,r21
+ 619 015a 6F8B      		std Y+23,r22
+ 620 015c 788F      		std Y+24,r23
+ 621               	.LVL37:
+ 622               	.LBB79:
+ 623               	.LBB80:
+ 624               		.loc 3 162 0
+ 625 015e 2C89      		ldd r18,Y+20
+ 626 0160 2150      		subi r18,lo8(-(-1))
+ 627 0162 2C8B      		std Y+20,r18
+ 628               	.LBE80:
+ 629               	.LBE79:
+ 190:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 630               		.loc 1 190 0
+ 631 0164 84FD      		sbrc r24,4
+ 632 0166 00C0      		rjmp .L15
+ 193:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****         HASH_REMOVE(objp);
+ 633               		.loc 1 193 0
+ 634 0168 81FF      		sbrs r24,1
+ 635 016a 00C0      		rjmp .L16
+ 194:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       }
+ 636               		.loc 1 194 0
+ 637 016c EA81      		ldd r30,Y+2
+ 638 016e FB81      		ldd r31,Y+3
+ 639 0170 8881      		ld r24,Y
+ 640 0172 9981      		ldd r25,Y+1
+ 641 0174 9183      		std Z+1,r25
+ 642 0176 8083      		st Z,r24
+ 643 0178 A881      		ld r26,Y
+ 644 017a B981      		ldd r27,Y+1
+ 645 017c 1396      		adiw r26,2+1
+ 646 017e FC93      		st X,r31
+ 647 0180 EE93      		st -X,r30
+ 648 0182 1297      		sbiw r26,2
+ 649               	.L16:
+ 650               	.LVL38:
+ 651               	.LBE71:
+ 652               	.LBE70:
+ 349:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_key   = key;
+ 653               		.loc 1 349 0
+ 654 0184 4886      		std Y+8,r4
+ 655 0186 5986      		std Y+9,r5
+ 656 0188 6A86      		std Y+10,r6
+ 657 018a 7B86      		std Y+11,r7
+ 350:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_flags = OC_FLAG_INHASH | OC_FLAG_NOTSYNC;
+ 658               		.loc 1 350 0
+ 659 018c CC86      		std Y+12,r12
+ 660 018e DD86      		std Y+13,r13
+ 661 0190 EE86      		std Y+14,r14
+ 662 0192 FF86      		std Y+15,r15
+ 351:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     HASH_INSERT(ocp, objp, group, key);
+ 663               		.loc 1 351 0
+ 664 0194 8AE0      		ldi r24,lo8(10)
+ 665 0196 90E0      		ldi r25,0
+ 666 0198 A0E0      		ldi r26,0
+ 667 019a B0E0      		ldi r27,0
+ 668 019c 8D8B      		std Y+21,r24
+ 669 019e 9E8B      		std Y+22,r25
+ 670 01a0 AF8B      		std Y+23,r26
+ 671 01a2 B88F      		std Y+24,r27
+ 672               	.LBB81:
+ 352:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   }
+ 673               		.loc 1 352 0
+ 674 01a4 D501      		movw r26,r10
+ 675 01a6 8C91      		ld r24,X
+ 676 01a8 8150      		subi r24,1
+ 677 01aa 990B      		sbc r25,r25
+ 678 01ac 8822      		and r8,r24
+ 679 01ae 9922      		and r9,r25
+ 680 01b0 880C      		lsl r8
+ 681 01b2 991C      		rol r9
+ 682 01b4 880C      		lsl r8
+ 683 01b6 991C      		rol r9
+ 684 01b8 1196      		adiw r26,1
+ 685 01ba ED91      		ld r30,X+
+ 686 01bc FC91      		ld r31,X
+ 687 01be E80D      		add r30,r8
+ 688 01c0 F91D      		adc r31,r9
+ 689               	.LVL39:
+ 690 01c2 A081      		ld r26,Z
+ 691 01c4 B181      		ldd r27,Z+1
+ 692 01c6 B983      		std Y+1,r27
+ 693 01c8 A883      		st Y,r26
+ 694 01ca FB83      		std Y+3,r31
+ 695 01cc EA83      		std Y+2,r30
+ 696 01ce 1396      		adiw r26,2+1
+ 697 01d0 DC93      		st X,r29
+ 698 01d2 CE93      		st -X,r28
+ 699 01d4 1297      		sbiw r26,2
+ 700 01d6 D183      		std Z+1,r29
+ 701 01d8 C083      		st Z,r28
+ 702 01da 00C0      		rjmp .L14
+ 703               	.LVL40:
+ 704               	.L13:
+ 705               	.LBE81:
+ 341:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     }
+ 706               		.loc 1 341 0
+ 707 01dc CE01      		movw r24,r28
+ 708 01de 4096      		adiw r24,16
+ 709 01e0 0E94 0000 		call chSemWaitS
+ 710               	.LVL41:
+ 711 01e4 00C0      		rjmp .L14
+ 712               		.cfi_endproc
+ 713               	.LFE198:
+ 715               		.section	.text.chCacheReleaseObjectI,"ax",@progbits
+ 716               	.global	chCacheReleaseObjectI
+ 718               	chCacheReleaseObjectI:
+ 719               	.LFB199:
+ 360:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 361:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /**
+ 362:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @brief   Releases an object into the cache.
+ 363:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @note    This function gives a meaning to the following flags:
+ 364:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          - @p OC_FLAG_INLRU must be cleared.
+ 365:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          - @p OC_FLAG_INHASH must be set.
+ 366:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          - @p OC_FLAG_SHARED must be cleared.
+ 367:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          - @p OC_FLAG_NOTSYNC invalidates the object and queues it on
+ 368:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *            the LRU tail.
+ 369:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          - @p OC_FLAG_LAZYWRITE is ignored and kept, a write will occur
+ 370:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *            when the object is removed from the LRU list (lazy write).
+ 371:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          .
+ 372:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 373:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] ocp       pointer to the @p objects_cache_t structure
+ 374:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] objp      pointer to the @p oc_object_t structure
+ 375:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 376:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @iclass
+ 377:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  */
+ 378:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** void chCacheReleaseObjectI(objects_cache_t *ocp,
+ 379:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                            oc_object_t *objp) {
+ 720               		.loc 1 379 0
+ 721               		.cfi_startproc
+ 722               	.LVL42:
+ 723 0000 CF93      		push r28
+ 724               	.LCFI34:
+ 725               		.cfi_def_cfa_offset 3
+ 726               		.cfi_offset 28, -2
+ 727 0002 DF93      		push r29
+ 728               	.LCFI35:
+ 729               		.cfi_def_cfa_offset 4
+ 730               		.cfi_offset 29, -3
+ 731               	/* prologue: function */
+ 732               	/* frame size = 0 */
+ 733               	/* stack size = 2 */
+ 734               	.L__stack_usage = 2
+ 735 0004 FB01      		movw r30,r22
+ 736               	.LVL43:
+ 737 0006 4589      		ldd r20,Z+21
+ 738 0008 5689      		ldd r21,Z+22
+ 739 000a 6789      		ldd r22,Z+23
+ 740 000c 708D      		ldd r23,Z+24
+ 380:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 381:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* Checking initial conditions of the object to be released.*/
+ 382:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   chDbgAssert((objp->obj_flags & (OC_FLAG_INLRU |
+ 383:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                                   OC_FLAG_INHASH |
+ 384:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                                   OC_FLAG_SHARED)) == OC_FLAG_INHASH,
+ 385:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****               "invalid object state");
+ 386:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   chDbgAssert(chSemGetCounterI(&objp->obj_sem) <= (cnt_t)0,
+ 387:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****               "semaphore counter greater than 0");
+ 388:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 389:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* If some thread is waiting for this specific buffer then it is
+ 390:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****      handed directly without going through the LRU.*/
+ 391:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   if (chSemGetCounterI(&objp->obj_sem) < (cnt_t)0) {
+ 741               		.loc 1 391 0
+ 742 000e 2489      		ldd r18,Z+20
+ 743 0010 27FD      		sbrc r18,7
+ 744 0012 00C0      		rjmp .L30
+ 745 0014 9C01      		movw r18,r24
+ 746 0016 285F      		subi r18,-8
+ 747 0018 3F4F      		sbci r19,-1
+ 392:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     /* Clearing all flags except those that are still meaningful, note,
+ 393:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****        OC_FLAG_NOTSYNC and OC_FLAG_LAZYWRITE are passed, the other thread
+ 394:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****        will handle them.*/
+ 395:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_flags &= OC_FLAG_INHASH | OC_FLAG_NOTSYNC | OC_FLAG_LAZYWRITE;
+ 396:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     chSemSignalI(&objp->obj_sem);
+ 397:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     return;
+ 398:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   }
+ 399:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 400:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* If the object specifies OC_FLAG_NOTSYNC then it must be invalidated
+ 401:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****      and removed from the hash table.*/
+ 402:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   if ((objp->obj_flags & OC_FLAG_NOTSYNC) != 0U) {
+ 748               		.loc 1 402 0
+ 749 001a 43FD      		sbrc r20,3
+ 750 001c 00C0      		rjmp .L31
+ 403:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     HASH_REMOVE(objp);
+ 404:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     LRU_INSERT_TAIL(ocp, objp);
+ 405:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_group = 0U;
+ 406:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_key   = 0U;
+ 407:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_flags = OC_FLAG_INLRU;
+ 408:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   }
+ 409:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   else {
+ 410:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     /* LRU insertion point depends on the OC_FLAG_FORGET flag.*/
+ 411:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     if ((objp->obj_flags & OC_FLAG_FORGET) == 0U) {
+ 412:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       /* Placing it on head.*/
+ 413:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       LRU_INSERT_HEAD(ocp, objp);
+ 751               		.loc 1 413 0
+ 752 001e EC01      		movw r28,r24
+ 411:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       /* Placing it on head.*/
+ 753               		.loc 1 411 0
+ 754 0020 45FD      		sbrc r20,5
+ 755 0022 00C0      		rjmp .L28
+ 756               		.loc 1 413 0
+ 757 0024 AC85      		ldd r26,Y+12
+ 758 0026 BD85      		ldd r27,Y+13
+ 759 0028 B583      		std Z+5,r27
+ 760 002a A483      		std Z+4,r26
+ 761 002c 3783      		std Z+7,r19
+ 762 002e 2683      		std Z+6,r18
+ 763 0030 1796      		adiw r26,6+1
+ 764 0032 FC93      		st X,r31
+ 765 0034 EE93      		st -X,r30
+ 766 0036 1697      		sbiw r26,6
+ 767 0038 FD87      		std Y+13,r31
+ 768 003a EC87      		std Y+12,r30
+ 769               	.L29:
+ 414:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     }
+ 415:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     else {
+ 416:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       /* Low priority data, placing it on tail.*/
+ 417:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****       LRU_INSERT_TAIL(ocp, objp);
+ 418:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     }
+ 419:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_flags &= OC_FLAG_INHASH | OC_FLAG_LAZYWRITE;
+ 770               		.loc 1 419 0
+ 771 003c 4271      		andi r20,18
+ 772 003e 5527      		clr r21
+ 773 0040 6627      		clr r22
+ 774 0042 7727      		clr r23
+ 420:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_flags |= OC_FLAG_INLRU;
+ 775               		.loc 1 420 0
+ 776 0044 4160      		ori r20,1
+ 777 0046 458B      		std Z+21,r20
+ 778 0048 568B      		std Z+22,r21
+ 779 004a 678B      		std Z+23,r22
+ 780 004c 708F      		std Z+24,r23
+ 781               	.L27:
+ 782 004e EF01      		movw r28,r30
+ 421:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   }
+ 422:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 423:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* Increasing the LRU counter semaphore.*/
+ 424:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   chSemSignalI(&ocp->lru_sem);
+ 783               		.loc 1 424 0
+ 784 0050 4596      		adiw r24,21
+ 785               	.LVL44:
+ 786 0052 0E94 0000 		call chSemSignalI
+ 787               	.LVL45:
+ 788               	.LBB82:
+ 789               	.LBB83:
+ 163:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** }
+ 164:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+ 165:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** /**
+ 166:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @brief   Increases the semaphore counter.
+ 167:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @details This macro can be used when the counter is known to be not
+ 168:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *          negative.
+ 169:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *
+ 170:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @param[in] sp        pointer to a @p semaphore_t structure
+ 171:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  *
+ 172:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  * @iclass
+ 173:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****  */
+ 174:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** static inline void chSemFastSignalI(semaphore_t *sp) {
+ 175:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+ 176:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   chDbgCheckClassI();
+ 177:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h **** 
+ 178:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h ****   sp->cnt++;
+ 790               		.loc 3 178 0
+ 791 0056 8C89      		ldd r24,Y+20
+ 792 0058 8F5F      		subi r24,lo8(-(1))
+ 793 005a 8C8B      		std Y+20,r24
+ 794               	/* epilogue start */
+ 795               	.LBE83:
+ 796               	.LBE82:
+ 425:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 426:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* Releasing the object, we know there are no threads waiting so
+ 427:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****      using the "fast" signal variant.*/
+ 428:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   chSemFastSignalI(&objp->obj_sem);
+ 429:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+ 797               		.loc 1 429 0
+ 798 005c DF91      		pop r29
+ 799 005e CF91      		pop r28
+ 800               	.LVL46:
+ 801 0060 0895      		ret
+ 802               	.LVL47:
+ 803               	.L31:
+ 403:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     LRU_INSERT_TAIL(ocp, objp);
+ 804               		.loc 1 403 0
+ 805 0062 A281      		ldd r26,Z+2
+ 806 0064 B381      		ldd r27,Z+3
+ 807 0066 4081      		ld r20,Z
+ 808 0068 5181      		ldd r21,Z+1
+ 809 006a 1196      		adiw r26,1
+ 810 006c 5C93      		st X,r21
+ 811 006e 4E93      		st -X,r20
+ 812 0070 C081      		ld r28,Z
+ 813 0072 D181      		ldd r29,Z+1
+ 814 0074 BB83      		std Y+3,r27
+ 815 0076 AA83      		std Y+2,r26
+ 404:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_group = 0U;
+ 816               		.loc 1 404 0
+ 817 0078 EC01      		movw r28,r24
+ 818 007a AE85      		ldd r26,Y+14
+ 819 007c BF85      		ldd r27,Y+15
+ 820 007e B783      		std Z+7,r27
+ 821 0080 A683      		std Z+6,r26
+ 822 0082 3583      		std Z+5,r19
+ 823 0084 2483      		std Z+4,r18
+ 824 0086 1596      		adiw r26,4+1
+ 825 0088 FC93      		st X,r31
+ 826 008a EE93      		st -X,r30
+ 827 008c 1497      		sbiw r26,4
+ 828 008e FF87      		std Y+15,r31
+ 829 0090 EE87      		std Y+14,r30
+ 405:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_key   = 0U;
+ 830               		.loc 1 405 0
+ 831 0092 1086      		std Z+8,__zero_reg__
+ 832 0094 1186      		std Z+9,__zero_reg__
+ 833 0096 1286      		std Z+10,__zero_reg__
+ 834 0098 1386      		std Z+11,__zero_reg__
+ 406:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     objp->obj_flags = OC_FLAG_INLRU;
+ 835               		.loc 1 406 0
+ 836 009a 1486      		std Z+12,__zero_reg__
+ 837 009c 1586      		std Z+13,__zero_reg__
+ 838 009e 1686      		std Z+14,__zero_reg__
+ 839 00a0 1786      		std Z+15,__zero_reg__
+ 407:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   }
+ 840               		.loc 1 407 0
+ 841 00a2 41E0      		ldi r20,lo8(1)
+ 842 00a4 50E0      		ldi r21,0
+ 843 00a6 60E0      		ldi r22,0
+ 844 00a8 70E0      		ldi r23,0
+ 845 00aa 458B      		std Z+21,r20
+ 846 00ac 568B      		std Z+22,r21
+ 847 00ae 678B      		std Z+23,r22
+ 848 00b0 708F      		std Z+24,r23
+ 849 00b2 00C0      		rjmp .L27
+ 850               	.L28:
+ 417:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     }
+ 851               		.loc 1 417 0
+ 852 00b4 AE85      		ldd r26,Y+14
+ 853 00b6 BF85      		ldd r27,Y+15
+ 854 00b8 B783      		std Z+7,r27
+ 855 00ba A683      		std Z+6,r26
+ 856 00bc 3583      		std Z+5,r19
+ 857 00be 2483      		std Z+4,r18
+ 858 00c0 1596      		adiw r26,4+1
+ 859 00c2 FC93      		st X,r31
+ 860 00c4 EE93      		st -X,r30
+ 861 00c6 1497      		sbiw r26,4
+ 862 00c8 FF87      		std Y+15,r31
+ 863 00ca EE87      		std Y+14,r30
+ 864 00cc 00C0      		rjmp .L29
+ 865               	.L30:
+ 395:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     chSemSignalI(&objp->obj_sem);
+ 866               		.loc 1 395 0
+ 867 00ce 4A71      		andi r20,26
+ 868 00d0 5527      		clr r21
+ 869 00d2 6627      		clr r22
+ 870 00d4 7727      		clr r23
+ 871 00d6 458B      		std Z+21,r20
+ 872 00d8 568B      		std Z+22,r21
+ 873 00da 678B      		std Z+23,r22
+ 874 00dc 708F      		std Z+24,r23
+ 396:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     return;
+ 875               		.loc 1 396 0
+ 876 00de CF01      		movw r24,r30
+ 877               	.LVL48:
+ 878 00e0 4096      		adiw r24,16
+ 879               	/* epilogue start */
+ 880               		.loc 1 429 0
+ 881 00e2 DF91      		pop r29
+ 882 00e4 CF91      		pop r28
+ 396:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****     return;
+ 883               		.loc 1 396 0
+ 884 00e6 0C94 0000 		jmp chSemSignalI
+ 885               	.LVL49:
+ 886               		.cfi_endproc
+ 887               	.LFE199:
+ 889               		.section	.text.chCacheReadObject,"ax",@progbits
+ 890               	.global	chCacheReadObject
+ 892               	chCacheReadObject:
+ 893               	.LFB200:
+ 430:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 431:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /**
+ 432:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @brief   Reads object data from the storage.
+ 433:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @note    In case of asynchronous operation an error condition is not
+ 434:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          reported by this function.
+ 435:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 436:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] ocp       pointer to the @p objects_cache_t structure
+ 437:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] objp      pointer to the @p oc_object_t structure
+ 438:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] async     requests an asynchronous operation if supported, the
+ 439:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *                      function is then responsible for releasing the
+ 440:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *                      object
+ 441:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @return              The operation status. In case of asynchronous
+ 442:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *                      operation @p false is always returned.
+ 443:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @retval false        if the operation succeeded.
+ 444:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @retval true         if the synchronous read operation failed.
+ 445:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 446:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @api
+ 447:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  */
+ 448:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** bool chCacheReadObject(objects_cache_t *ocp,
+ 449:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                        oc_object_t *objp,
+ 450:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                        bool async) {
+ 894               		.loc 1 450 0
+ 895               		.cfi_startproc
+ 896               	.LVL50:
+ 897 0000 0F93      		push r16
+ 898               	.LCFI36:
+ 899               		.cfi_def_cfa_offset 3
+ 900               		.cfi_offset 16, -2
+ 901 0002 1F93      		push r17
+ 902               	.LCFI37:
+ 903               		.cfi_def_cfa_offset 4
+ 904               		.cfi_offset 17, -3
+ 905               	/* prologue: function */
+ 906               	/* frame size = 0 */
+ 907               	/* stack size = 2 */
+ 908               	.L__stack_usage = 2
+ 451:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 452:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* Marking it as OC_FLAG_NOTSYNC because the read operation is going
+ 453:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****      to corrupt it in case of failure. It is responsibility of the read
+ 454:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****      implementation to clear it if the operation succeeds.*/
+ 455:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   objp->obj_flags |= OC_FLAG_NOTSYNC;
+ 909               		.loc 1 455 0
+ 910 0004 DB01      		movw r26,r22
+ 911 0006 5596      		adiw r26,21
+ 912 0008 0D91      		ld r16,X+
+ 913 000a 1D91      		ld r17,X+
+ 914 000c 2D91      		ld r18,X+
+ 915 000e 3C91      		ld r19,X
+ 916 0010 5897      		sbiw r26,21+3
+ 917 0012 0860      		ori r16,8
+ 918 0014 FB01      		movw r30,r22
+ 919 0016 058B      		std Z+21,r16
+ 920 0018 168B      		std Z+22,r17
+ 921 001a 278B      		std Z+23,r18
+ 922 001c 308F      		std Z+24,r19
+ 456:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 457:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   return ocp->readf(ocp, objp, async);
+ 923               		.loc 1 457 0
+ 924 001e DC01      		movw r26,r24
+ 925 0020 5A96      		adiw r26,26
+ 926 0022 ED91      		ld r30,X+
+ 927 0024 FC91      		ld r31,X
+ 928               	/* epilogue start */
+ 458:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+ 929               		.loc 1 458 0
+ 930 0026 1F91      		pop r17
+ 931 0028 0F91      		pop r16
+ 457:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+ 932               		.loc 1 457 0
+ 933 002a 0994      		ijmp
+ 934               	.LVL51:
+ 935               		.cfi_endproc
+ 936               	.LFE200:
+ 938               		.section	.text.chCacheWriteObject,"ax",@progbits
+ 939               	.global	chCacheWriteObject
+ 941               	chCacheWriteObject:
+ 942               	.LFB201:
+ 459:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 460:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** /**
+ 461:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @brief   Writes the object data back to storage.
+ 462:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @note    In case of asynchronous operation an error condition is not
+ 463:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *          reported by this function.
+ 464:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 465:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] ocp       pointer to the @p objects_cache_t structure
+ 466:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] objp      pointer to the @p oc_object_t structure
+ 467:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @param[in] async     requests an asynchronous operation if supported, the
+ 468:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *                      function is then responsible for releasing the
+ 469:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *                      object
+ 470:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @return              The operation status. In case of asynchronous
+ 471:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *                      operation @p false is always returned.
+ 472:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @retval false        if the operation succeeded.
+ 473:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @retval true         if the synchronous write operation failed.
+ 474:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  *
+ 475:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  * @api
+ 476:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****  */
+ 477:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** bool chCacheWriteObject(objects_cache_t *ocp,
+ 478:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                         oc_object_t *objp,
+ 479:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****                         bool async) {
+ 943               		.loc 1 479 0
+ 944               		.cfi_startproc
+ 945               	.LVL52:
+ 946 0000 0F93      		push r16
+ 947               	.LCFI38:
+ 948               		.cfi_def_cfa_offset 3
+ 949               		.cfi_offset 16, -2
+ 950 0002 1F93      		push r17
+ 951               	.LCFI39:
+ 952               		.cfi_def_cfa_offset 4
+ 953               		.cfi_offset 17, -3
+ 954               	/* prologue: function */
+ 955               	/* frame size = 0 */
+ 956               	/* stack size = 2 */
+ 957               	.L__stack_usage = 2
+ 480:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 481:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   /* Resetting the OC_FLAG_LAZYWRITE flag in order to prevent multiple
+ 482:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****      writes.*/
+ 483:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   objp->obj_flags &= ~OC_FLAG_LAZYWRITE;
+ 958               		.loc 1 483 0
+ 959 0004 DB01      		movw r26,r22
+ 960 0006 5596      		adiw r26,21
+ 961 0008 0D91      		ld r16,X+
+ 962 000a 1D91      		ld r17,X+
+ 963 000c 2D91      		ld r18,X+
+ 964 000e 3C91      		ld r19,X
+ 965 0010 5897      		sbiw r26,21+3
+ 966 0012 0F7E      		andi r16,239
+ 967 0014 2227      		clr r18
+ 968 0016 3327      		clr r19
+ 969 0018 FB01      		movw r30,r22
+ 970 001a 058B      		std Z+21,r16
+ 971 001c 168B      		std Z+22,r17
+ 972 001e 278B      		std Z+23,r18
+ 973 0020 308F      		std Z+24,r19
+ 484:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** 
+ 485:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c ****   return ocp->writef(ocp, objp, async);
+ 974               		.loc 1 485 0
+ 975 0022 DC01      		movw r26,r24
+ 976 0024 5C96      		adiw r26,28
+ 977 0026 ED91      		ld r30,X+
+ 978 0028 FC91      		ld r31,X
+ 979               	/* epilogue start */
+ 486:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+ 980               		.loc 1 486 0
+ 981 002a 1F91      		pop r17
+ 982 002c 0F91      		pop r16
+ 485:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chobjcaches.c **** }
+ 983               		.loc 1 485 0
+ 984 002e 0994      		ijmp
+ 985               	.LVL53:
+ 986               		.cfi_endproc
+ 987               	.LFE201:
+ 989               		.text
+ 990               	.Letext0:
+ 991               		.file 4 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
+ 992               		.file 5 "/usr/lib/avr/include/stdint.h"
+ 993               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
+ 994               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
+ 995               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
+ 996               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
+ 997               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
+ 998               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
+ 999               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
+ 1000               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
+ 1001               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
+ 1002               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
+ 1003               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
+ 1004               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chobjcaches.
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 chobjcaches.c
+     /tmp/ccsTURgY.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccsTURgY.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccsTURgY.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccsTURgY.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccsTURgY.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccsTURgY.s:13     .text.chCacheObjectInit:0000000000000000 chCacheObjectInit
+     /tmp/ccsTURgY.s:287    .text.chCacheGetObject:0000000000000000 chCacheGetObject
+     /tmp/ccsTURgY.s:718    .text.chCacheReleaseObjectI:0000000000000000 chCacheReleaseObjectI
+     /tmp/ccsTURgY.s:892    .text.chCacheReadObject:0000000000000000 chCacheReadObject
+     /tmp/ccsTURgY.s:941    .text.chCacheWriteObject:0000000000000000 chCacheWriteObject
+
+UNDEFINED SYMBOLS
+chSemObjectInit
+chSemWaitS
+chSemSignalI

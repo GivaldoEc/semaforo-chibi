@@ -1,0 +1,122 @@
+   1               		.file	"board.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.boardInit,"ax",@progbits
+  11               	.global	boardInit
+  13               	boardInit:
+  14               	.LFB243:
+  15               		.file 1 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/boa
+   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** /*
+   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
+   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** 
+   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****     you may not use this file except in compliance with the License.
+   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****     You may obtain a copy of the License at
+   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** 
+   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** 
+  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****     Unless required by applicable law or agreed to in writing, software
+  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****     See the License for the specific language governing permissions and
+  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****     limitations under the License.
+  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** */
+  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** 
+  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** #include "hal.h"
+  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** 
+  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** /**
+  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****  * @brief   PAL setup.
+  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****  * @details Digital I/O ports static configuration as defined in @p board.h.
+  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****  *          This variable is used by the HAL when initializing the PAL driver.
+  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****  */
+  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** #if HAL_USE_PAL || defined(__DOXYGEN__)
+  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** const PALConfig pal_default_config =
+  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** {
+  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** #if defined(PORTB)
+  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****   {VAL_PORTB, VAL_DDRB},
+  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** #endif
+  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** #if defined(PORTC)
+  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****   {VAL_PORTC, VAL_DDRC},
+  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** #endif
+  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** #if defined(PORTD)
+  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****   {VAL_PORTD, VAL_DDRD},
+  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** #endif
+  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** };
+  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** #endif /* HAL_USE_PAL */
+  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** 
+  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** /**
+  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****  * Board-specific initialization code.
+  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****  */
+  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** void boardInit(void) {
+  16               		.loc 1 42 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** 
+  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****   /*
+  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****    * External interrupts setup, all disabled initially.
+  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****    */
+  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****   EICRA  = 0x00;
+  22               		.loc 1 47 0
+  23 0000 1092 6900 		sts 105,__zero_reg__
+  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c ****   EIMSK  = 0x00;
+  24               		.loc 1 48 0
+  25 0004 1DBA      		out 0x1d,__zero_reg__
+  26               	/* epilogue start */
+  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** 
+  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/boards/ARDUINO_NANO/board.c **** }
+  27               		.loc 1 50 0
+  28 0006 0895      		ret
+  29               		.cfi_endproc
+  30               	.LFE243:
+  32               	.global	pal_default_config
+  33               		.section	.rodata.pal_default_config,"a",@progbits
+  36               	pal_default_config:
+  37 0000 FF        		.byte	-1
+  38 0001 20        		.byte	32
+  39 0002 FF        		.byte	-1
+  40 0003 00        		.byte	0
+  41 0004 FF        		.byte	-1
+  42 0005 02        		.byte	2
+  43               		.text
+  44               	.Letext0:
+  45               		.file 2 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
+  46               		.file 3 "/usr/lib/avr/include/stdint.h"
+  47               		.file 4 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
+  48               		.file 5 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
+  49               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
+  50               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
+  51               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
+  52               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
+  53               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
+  54               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
+  55               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
+  56               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
+  57               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
+  58               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
+  59               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chevents.h"
+  60               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
+  61               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_queues.h"
+  62               		.file 19 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPI
+  63               		.file 20 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_serial.h"
+  64               		.file 21 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 board.c
+     /tmp/ccX4kHbf.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccX4kHbf.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccX4kHbf.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccX4kHbf.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccX4kHbf.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccX4kHbf.s:13     .text.boardInit:0000000000000000 boardInit
+     /tmp/ccX4kHbf.s:36     .rodata.pal_default_config:0000000000000000 pal_default_config
+
+UNDEFINED SYMBOLS
+__do_copy_data

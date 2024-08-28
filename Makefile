@@ -88,7 +88,7 @@ endif
 PROJECT = ch
 
 # Imported source files and paths.
-CHIBIOS  := ../../..
+CHIBIOS  := /home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x
 CONFDIR  := ./cfg
 BUILDDIR := ./build
 DEPDIR   := ./.dep

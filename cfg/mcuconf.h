@@ -33,7 +33,7 @@
 /*
  * EXT drivers system settings.
  */
-#define AVR_EXT_USE_INT0                   FALSE
+#define AVR_EXT_USE_INT0                   TRUE
 #define AVR_EXT_USE_INT1                   FALSE
 #define AVR_EXT_USE_INT2                   FALSE
 #define AVR_EXT_USE_INT3                   FALSE
@@ -51,9 +51,9 @@
 #define AVR_EXT_USE_PCINT5                 FALSE
 #define AVR_EXT_USE_PCINT6                 FALSE
 #define AVR_EXT_USE_PCINT7                 FALSE
-#define AVR_EXT_USE_PCINT8                 FALSE
-#define AVR_EXT_USE_PCINT9                 FALSE
-#define AVR_EXT_USE_PCINT10                FALSE
+#define AVR_EXT_USE_PCINT8                 TRUE
+#define AVR_EXT_USE_PCINT9                 TRUE
+#define AVR_EXT_USE_PCINT10                TRUE
 
 /*
  * CAN driver system settings.

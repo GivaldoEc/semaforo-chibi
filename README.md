@@ -4,7 +4,7 @@ Trabalho de conclusão da disciplina "Desenvolvimento de sistemas embarcados em 
 
 ## Tarefas:
 
-- [ ] Virtual timers
+- [x] Virtual timers
 - [ ] Mapear hardware
 - [ ] Funções de hardware
 - [ ] Máquina de estados
@@ -22,10 +22,10 @@ Trabalho de conclusão da disciplina "Desenvolvimento de sistemas embarcados em 
 ## Pinos:
 
 ### Botões
-- PC0: Botão Pedestre (Verde)
-- PC3: Botão Via Secundária (Amarelo)
-- PC1: Botão Ambulância Secundária (Branco)
-- PC2: Botão Ambulância Primária (Preto)
+- PC0 (PCINT8): Botão Pedestre (Verde)
+- PC3 (PCINT11): Botão Via Secundária (Amarelo)
+- PC1 (PCINT9): Botão Ambulância Secundária (Branco)
+- PC2 (PCINT10): Botão Ambulância Primária (Preto)
 
 ### Semáforos
 #### Pedestre

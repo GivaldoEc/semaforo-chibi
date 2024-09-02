@@ -19,10 +19,11 @@
 
 #define LED_PERIODO 10000
 
-void vt_cb(void *arg) {
+void vt_cb(void *arg)
+{
   chSysLockFromISR();
   palTogglePad(IOPORT2, PORTB_LED1);
-  chVTSetI((virtual_timer_t*) arg, TIME_MS2I(LED_PERIODO/2), (vtfunc_t) vt_cb, arg);
+  chVTSetI((virtual_timer_t *)arg, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, arg);
   chSysUnlockFromISR();
 }
 
@@ -30,21 +31,23 @@ void vt_cb(void *arg) {
  * LED blinker thread, times are in milliseconds.
  */
 static THD_WORKING_AREA(waThread1, 32);
-static THD_FUNCTION(Thread1, arg) {
+static THD_FUNCTION(Thread1, arg)
+{
   virtual_timer_t vt;
 
   chVTObjectInit(&vt);
-  chVTSet(&vt, TIME_MS2I(LED_PERIODO/2), (vtfunc_t) vt_cb, (void*) &vt);
+  chVTSet(&vt, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, (void *)&vt);
 
-  while (1) {
-
+  while (1)
+  {
   }
 }
 
 /*
  * Application entry point.
  */
-int main(void) {
+int main(void)
+{
   /*
    * System initializations.
    * - HAL initialization, this also initializes the configured device drivers
@@ -55,13 +58,37 @@ int main(void) {
   halInit();
   chSysInit();
 
+  /* Configuração dos pinos */
+  // Semáforo primário: Vermelho, Verde
+  palSetPadMode(IOPORT4, 7, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearPad(IOPORT4, 7);
+  palSetPadMode(IOPORT4, 6, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearPad(IOPORT4, 6);
+
+  // Semáforo secundário: Vermelho, Verde
+  palSetPadMode(IOPORT2, 1, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearPad(IOPORT2, 1);
+  palSetPadMode(IOPORT2, 0, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearPad(IOPORT2, 0);
+
+  // Pedestre: Vermelho, Verde
+  palSetPadMode(IOPORT2, 3, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearPad(IOPORT2, 3);
+  palSetPadMode(IOPORT2, 2, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearPad(IOPORT2, 2);
+
+  // LED Interno:
   palSetPadMode(IOPORT2, PORTB_LED1, PAL_MODE_OUTPUT_PUSHPULL);
   palClearPad(IOPORT2, PORTB_LED1);
 
-  /*
-   * Starts the LED blinker thread. 
-   */
-  chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO+1, Thread1, NULL);
+  /* Configuração dos botões */
 
-  while (1) {}
+  /*
+   * Starts the LED blinker thread.
+   */
+  chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO + 1, Thread1, NULL);
+
+  while (1)
+  {
+  }
 }

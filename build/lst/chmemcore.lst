@@ -11,122 +11,122 @@
   11               	.global	__core_init
   13               	__core_init:
   14               	.LFB195:
-  15               		.file 1 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c"
-   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /*
-   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
-   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****               2015,2016,2017,2018,2019,2020,2021 Giovanni Di Sirio.
-   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     This file is part of ChibiOS.
-   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     ChibiOS is free software; you can redistribute it and/or modify
-   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     it under the terms of the GNU General Public License as published by
-   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     the Free Software Foundation version 3 of the License.
-  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     ChibiOS is distributed in the hope that it will be useful,
-  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     GNU General Public License for more details.
-  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     You should have received a copy of the GNU General Public License
-  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** */
-  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /**
-  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @file    oslib/src/chmemcore.c
-  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @brief   Core memory manager code.
-  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *
-  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @addtogroup oslib_memcore
-  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @details Core Memory Manager related APIs and services.
-  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          <h2>Operation mode</h2>
-  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          The core memory manager is a simplified allocator that only
-  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          allows to allocate memory blocks without the possibility to
-  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          free them.<br>
-  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          This allocator is meant as a memory blocks provider for the
-  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          other allocators such as:
-  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          - C-Runtime allocator (through a compiler specific adapter module).
-  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          - Heap allocator (see @ref oslib_memheaps).
-  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          - Memory pools allocator (see @ref oslib_mempools).
-  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          .
-  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          By having a centralized memory provider the various allocators
-  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          can coexist and share the main memory.<br>
-  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          This allocator, alone, is also useful for very simple
-  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          applications that just require a simple way to get memory
-  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          blocks.
-  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @pre     In order to use the core memory manager APIs the @p CH_CFG_USE_MEMCORE
-  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          option must be enabled in @p chconf.h.
-  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @note    Compatible with RT and NIL.
-  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @{
-  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  */
-  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** #include "ch.h"
-  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** #if (CH_CFG_USE_MEMCORE == TRUE) || defined(__DOXYGEN__)
-  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /*===========================================================================*/
-  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /* Module exported variables.                                                */
-  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /*===========================================================================*/
-  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /**
-  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @brief   Memory core descriptor.
-  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  */
-  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** memcore_t ch_memcore;
-  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /*===========================================================================*/
-  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /* Module local types.                                                       */
-  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /*===========================================================================*/
-  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /*===========================================================================*/
-  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /* Module local variables.                                                   */
-  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /*===========================================================================*/
-  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /*===========================================================================*/
-  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /* Module local functions.                                                   */
-  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /*===========================================================================*/
-  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /*===========================================================================*/
-  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /* Module exported functions.                                                */
-  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /*===========================================================================*/
-  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /**
-  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @brief   Low level memory manager initialization.
-  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *
-  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @notapi
-  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  */
-  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** void __core_init(void) {
+  15               		.file 1 "../../os/oslib/src/chmemcore.c"
+   1:../../os/oslib/src/chmemcore.c **** /*
+   2:../../os/oslib/src/chmemcore.c ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
+   3:../../os/oslib/src/chmemcore.c ****               2015,2016,2017,2018,2019,2020,2021 Giovanni Di Sirio.
+   4:../../os/oslib/src/chmemcore.c **** 
+   5:../../os/oslib/src/chmemcore.c ****     This file is part of ChibiOS.
+   6:../../os/oslib/src/chmemcore.c **** 
+   7:../../os/oslib/src/chmemcore.c ****     ChibiOS is free software; you can redistribute it and/or modify
+   8:../../os/oslib/src/chmemcore.c ****     it under the terms of the GNU General Public License as published by
+   9:../../os/oslib/src/chmemcore.c ****     the Free Software Foundation version 3 of the License.
+  10:../../os/oslib/src/chmemcore.c **** 
+  11:../../os/oslib/src/chmemcore.c ****     ChibiOS is distributed in the hope that it will be useful,
+  12:../../os/oslib/src/chmemcore.c ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:../../os/oslib/src/chmemcore.c ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:../../os/oslib/src/chmemcore.c ****     GNU General Public License for more details.
+  15:../../os/oslib/src/chmemcore.c **** 
+  16:../../os/oslib/src/chmemcore.c ****     You should have received a copy of the GNU General Public License
+  17:../../os/oslib/src/chmemcore.c ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  18:../../os/oslib/src/chmemcore.c **** */
+  19:../../os/oslib/src/chmemcore.c **** 
+  20:../../os/oslib/src/chmemcore.c **** /**
+  21:../../os/oslib/src/chmemcore.c ****  * @file    oslib/src/chmemcore.c
+  22:../../os/oslib/src/chmemcore.c ****  * @brief   Core memory manager code.
+  23:../../os/oslib/src/chmemcore.c ****  *
+  24:../../os/oslib/src/chmemcore.c ****  * @addtogroup oslib_memcore
+  25:../../os/oslib/src/chmemcore.c ****  * @details Core Memory Manager related APIs and services.
+  26:../../os/oslib/src/chmemcore.c ****  *          <h2>Operation mode</h2>
+  27:../../os/oslib/src/chmemcore.c ****  *          The core memory manager is a simplified allocator that only
+  28:../../os/oslib/src/chmemcore.c ****  *          allows to allocate memory blocks without the possibility to
+  29:../../os/oslib/src/chmemcore.c ****  *          free them.<br>
+  30:../../os/oslib/src/chmemcore.c ****  *          This allocator is meant as a memory blocks provider for the
+  31:../../os/oslib/src/chmemcore.c ****  *          other allocators such as:
+  32:../../os/oslib/src/chmemcore.c ****  *          - C-Runtime allocator (through a compiler specific adapter module).
+  33:../../os/oslib/src/chmemcore.c ****  *          - Heap allocator (see @ref oslib_memheaps).
+  34:../../os/oslib/src/chmemcore.c ****  *          - Memory pools allocator (see @ref oslib_mempools).
+  35:../../os/oslib/src/chmemcore.c ****  *          .
+  36:../../os/oslib/src/chmemcore.c ****  *          By having a centralized memory provider the various allocators
+  37:../../os/oslib/src/chmemcore.c ****  *          can coexist and share the main memory.<br>
+  38:../../os/oslib/src/chmemcore.c ****  *          This allocator, alone, is also useful for very simple
+  39:../../os/oslib/src/chmemcore.c ****  *          applications that just require a simple way to get memory
+  40:../../os/oslib/src/chmemcore.c ****  *          blocks.
+  41:../../os/oslib/src/chmemcore.c ****  * @pre     In order to use the core memory manager APIs the @p CH_CFG_USE_MEMCORE
+  42:../../os/oslib/src/chmemcore.c ****  *          option must be enabled in @p chconf.h.
+  43:../../os/oslib/src/chmemcore.c ****  * @note    Compatible with RT and NIL.
+  44:../../os/oslib/src/chmemcore.c ****  * @{
+  45:../../os/oslib/src/chmemcore.c ****  */
+  46:../../os/oslib/src/chmemcore.c **** 
+  47:../../os/oslib/src/chmemcore.c **** #include "ch.h"
+  48:../../os/oslib/src/chmemcore.c **** 
+  49:../../os/oslib/src/chmemcore.c **** #if (CH_CFG_USE_MEMCORE == TRUE) || defined(__DOXYGEN__)
+  50:../../os/oslib/src/chmemcore.c **** 
+  51:../../os/oslib/src/chmemcore.c **** /*===========================================================================*/
+  52:../../os/oslib/src/chmemcore.c **** /* Module exported variables.                                                */
+  53:../../os/oslib/src/chmemcore.c **** /*===========================================================================*/
+  54:../../os/oslib/src/chmemcore.c **** 
+  55:../../os/oslib/src/chmemcore.c **** /**
+  56:../../os/oslib/src/chmemcore.c ****  * @brief   Memory core descriptor.
+  57:../../os/oslib/src/chmemcore.c ****  */
+  58:../../os/oslib/src/chmemcore.c **** memcore_t ch_memcore;
+  59:../../os/oslib/src/chmemcore.c **** 
+  60:../../os/oslib/src/chmemcore.c **** /*===========================================================================*/
+  61:../../os/oslib/src/chmemcore.c **** /* Module local types.                                                       */
+  62:../../os/oslib/src/chmemcore.c **** /*===========================================================================*/
+  63:../../os/oslib/src/chmemcore.c **** 
+  64:../../os/oslib/src/chmemcore.c **** /*===========================================================================*/
+  65:../../os/oslib/src/chmemcore.c **** /* Module local variables.                                                   */
+  66:../../os/oslib/src/chmemcore.c **** /*===========================================================================*/
+  67:../../os/oslib/src/chmemcore.c **** 
+  68:../../os/oslib/src/chmemcore.c **** /*===========================================================================*/
+  69:../../os/oslib/src/chmemcore.c **** /* Module local functions.                                                   */
+  70:../../os/oslib/src/chmemcore.c **** /*===========================================================================*/
+  71:../../os/oslib/src/chmemcore.c **** 
+  72:../../os/oslib/src/chmemcore.c **** /*===========================================================================*/
+  73:../../os/oslib/src/chmemcore.c **** /* Module exported functions.                                                */
+  74:../../os/oslib/src/chmemcore.c **** /*===========================================================================*/
+  75:../../os/oslib/src/chmemcore.c **** 
+  76:../../os/oslib/src/chmemcore.c **** /**
+  77:../../os/oslib/src/chmemcore.c ****  * @brief   Low level memory manager initialization.
+  78:../../os/oslib/src/chmemcore.c ****  *
+  79:../../os/oslib/src/chmemcore.c ****  * @notapi
+  80:../../os/oslib/src/chmemcore.c ****  */
+  81:../../os/oslib/src/chmemcore.c **** void __core_init(void) {
   16               		.loc 1 81 0
   17               		.cfi_startproc
   18               	/* prologue: function */
   19               	/* frame size = 0 */
   20               	/* stack size = 0 */
   21               	.L__stack_usage = 0
-  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** #if CH_CFG_MEMCORE_SIZE == 0
-  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   extern uint8_t __heap_base__[];
-  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   extern uint8_t __heap_end__[];
-  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   /*lint -save -e9033 [10.8] Required cast operations.*/
-  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   ch_memcore.basemem = __heap_base__;
-  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   ch_memcore.topmem  = __heap_end__;
-  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   /*lint restore*/
-  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** #else
-  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   static uint8_t static_heap[CH_CFG_MEMCORE_SIZE];
-  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   ch_memcore.basemem = &static_heap[0];
+  82:../../os/oslib/src/chmemcore.c **** #if CH_CFG_MEMCORE_SIZE == 0
+  83:../../os/oslib/src/chmemcore.c ****   extern uint8_t __heap_base__[];
+  84:../../os/oslib/src/chmemcore.c ****   extern uint8_t __heap_end__[];
+  85:../../os/oslib/src/chmemcore.c **** 
+  86:../../os/oslib/src/chmemcore.c ****   /*lint -save -e9033 [10.8] Required cast operations.*/
+  87:../../os/oslib/src/chmemcore.c ****   ch_memcore.basemem = __heap_base__;
+  88:../../os/oslib/src/chmemcore.c ****   ch_memcore.topmem  = __heap_end__;
+  89:../../os/oslib/src/chmemcore.c ****   /*lint restore*/
+  90:../../os/oslib/src/chmemcore.c **** #else
+  91:../../os/oslib/src/chmemcore.c ****   static uint8_t static_heap[CH_CFG_MEMCORE_SIZE];
+  92:../../os/oslib/src/chmemcore.c **** 
+  93:../../os/oslib/src/chmemcore.c ****   ch_memcore.basemem = &static_heap[0];
   22               		.loc 1 93 0
   23 0000 E0E0      		ldi r30,lo8(ch_memcore)
   24 0002 F0E0      		ldi r31,hi8(ch_memcore)
-  25 0004 80E0      		ldi r24,lo8(static_heap.3138)
-  26 0006 90E0      		ldi r25,hi8(static_heap.3138)
+  25 0004 80E0      		ldi r24,lo8(static_heap.3139)
+  26 0006 90E0      		ldi r25,hi8(static_heap.3139)
   27 0008 9183      		std Z+1,r25
   28 000a 8083      		st Z,r24
-  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   ch_memcore.topmem  = &static_heap[CH_CFG_MEMCORE_SIZE];
+  94:../../os/oslib/src/chmemcore.c ****   ch_memcore.topmem  = &static_heap[CH_CFG_MEMCORE_SIZE];
   29               		.loc 1 94 0
-  30 000c 80E0      		ldi r24,lo8(static_heap.3138+128)
-  31 000e 90E0      		ldi r25,hi8(static_heap.3138+128)
+  30 000c 80E0      		ldi r24,lo8(static_heap.3139+128)
+  31 000e 90E0      		ldi r25,hi8(static_heap.3139+128)
   32 0010 9383      		std Z+3,r25
   33 0012 8283      		std Z+2,r24
   34               	/* epilogue start */
-  95:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** #endif
-  96:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** }
+  95:../../os/oslib/src/chmemcore.c **** #endif
+  96:../../os/oslib/src/chmemcore.c **** }
   35               		.loc 1 96 0
   36 0014 0895      		ret
   37               		.cfi_endproc
@@ -135,22 +135,22 @@
   41               	.global	chCoreAllocFromBaseI
   43               	chCoreAllocFromBaseI:
   44               	.LFB196:
-  97:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
-  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /**
-  99:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @brief   Allocates a memory block starting from the lowest address upward.
- 100:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @details This function allocates a block of @p offset + @p size bytes. The
- 101:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          returned pointer has @p offset bytes before its address and
- 102:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          @p size bytes after.
- 103:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *
- 104:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @param[in] size      the size of the block to be allocated.
- 105:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @param[in] align     desired memory alignment
- 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @param[in] offset    aligned pointer offset
- 107:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @return              A pointer to the allocated memory block.
- 108:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @retval NULL         allocation failed, core memory exhausted.
- 109:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *
- 110:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @iclass
- 111:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  */
- 112:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** void *chCoreAllocFromBaseI(size_t size, unsigned align, size_t offset) {
+  97:../../os/oslib/src/chmemcore.c **** 
+  98:../../os/oslib/src/chmemcore.c **** /**
+  99:../../os/oslib/src/chmemcore.c ****  * @brief   Allocates a memory block starting from the lowest address upward.
+ 100:../../os/oslib/src/chmemcore.c ****  * @details This function allocates a block of @p offset + @p size bytes. The
+ 101:../../os/oslib/src/chmemcore.c ****  *          returned pointer has @p offset bytes before its address and
+ 102:../../os/oslib/src/chmemcore.c ****  *          @p size bytes after.
+ 103:../../os/oslib/src/chmemcore.c ****  *
+ 104:../../os/oslib/src/chmemcore.c ****  * @param[in] size      the size of the block to be allocated.
+ 105:../../os/oslib/src/chmemcore.c ****  * @param[in] align     desired memory alignment
+ 106:../../os/oslib/src/chmemcore.c ****  * @param[in] offset    aligned pointer offset
+ 107:../../os/oslib/src/chmemcore.c ****  * @return              A pointer to the allocated memory block.
+ 108:../../os/oslib/src/chmemcore.c ****  * @retval NULL         allocation failed, core memory exhausted.
+ 109:../../os/oslib/src/chmemcore.c ****  *
+ 110:../../os/oslib/src/chmemcore.c ****  * @iclass
+ 111:../../os/oslib/src/chmemcore.c ****  */
+ 112:../../os/oslib/src/chmemcore.c **** void *chCoreAllocFromBaseI(size_t size, unsigned align, size_t offset) {
   45               		.loc 1 112 0
   46               		.cfi_startproc
   47               	.LVL0:
@@ -158,12 +158,12 @@
   49               	/* frame size = 0 */
   50               	/* stack size = 0 */
   51               	.L__stack_usage = 0
- 113:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   uint8_t *p, *next;
- 114:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 115:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   chDbgCheckClassI();
- 116:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   chDbgCheck(MEM_IS_VALID_ALIGNMENT(align));
- 117:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 118:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   p = (uint8_t *)MEM_ALIGN_NEXT(ch_memcore.basemem + offset, align);
+ 113:../../os/oslib/src/chmemcore.c ****   uint8_t *p, *next;
+ 114:../../os/oslib/src/chmemcore.c **** 
+ 115:../../os/oslib/src/chmemcore.c ****   chDbgCheckClassI();
+ 116:../../os/oslib/src/chmemcore.c ****   chDbgCheck(MEM_IS_VALID_ALIGNMENT(align));
+ 117:../../os/oslib/src/chmemcore.c **** 
+ 118:../../os/oslib/src/chmemcore.c ****   p = (uint8_t *)MEM_ALIGN_NEXT(ch_memcore.basemem + offset, align);
   52               		.loc 1 118 0
   53 0000 2091 0000 		lds r18,ch_memcore
   54 0004 3091 0000 		lds r19,ch_memcore+1
@@ -182,14 +182,14 @@
   67               	.LVL3:
   68 001c 7523      		and r23,r21
   69               	.LVL4:
- 119:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   next = p + size;
+ 119:../../os/oslib/src/chmemcore.c ****   next = p + size;
   70               		.loc 1 119 0
   71 001e 860F      		add r24,r22
   72 0020 971F      		adc r25,r23
   73               	.LVL5:
- 120:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 121:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   /* Considering also the case where there is numeric overflow.*/
- 122:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   if ((next > ch_memcore.topmem) || (next < ch_memcore.basemem)) {
+ 120:../../os/oslib/src/chmemcore.c **** 
+ 121:../../os/oslib/src/chmemcore.c ****   /* Considering also the case where there is numeric overflow.*/
+ 122:../../os/oslib/src/chmemcore.c ****   if ((next > ch_memcore.topmem) || (next < ch_memcore.basemem)) {
   74               		.loc 1 122 0
   75 0022 4091 0000 		lds r20,ch_memcore+2
   76 0026 5091 0000 		lds r21,ch_memcore+2+1
@@ -200,16 +200,16 @@
   81 0030 8217      		cp r24,r18
   82 0032 9307      		cpc r25,r19
   83 0034 00F0      		brlo .L6
- 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     return NULL;
- 124:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   }
- 125:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 126:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   ch_memcore.basemem = next;
+ 123:../../os/oslib/src/chmemcore.c ****     return NULL;
+ 124:../../os/oslib/src/chmemcore.c ****   }
+ 125:../../os/oslib/src/chmemcore.c **** 
+ 126:../../os/oslib/src/chmemcore.c ****   ch_memcore.basemem = next;
   84               		.loc 1 126 0 is_stmt 1
   85 0036 9093 0000 		sts ch_memcore+1,r25
   86 003a 8093 0000 		sts ch_memcore,r24
- 127:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 128:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   return p;
- 129:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** }
+ 127:../../os/oslib/src/chmemcore.c **** 
+ 128:../../os/oslib/src/chmemcore.c ****   return p;
+ 129:../../os/oslib/src/chmemcore.c **** }
   87               		.loc 1 129 0
   88 003e CB01      		movw r24,r22
   89               	.LVL6:
@@ -217,7 +217,7 @@
   91 0040 0895      		ret
   92               	.LVL7:
   93               	.L6:
- 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     return NULL;
+ 123:../../os/oslib/src/chmemcore.c ****     return NULL;
   94               		.loc 1 123 0
   95 0042 70E0      		ldi r23,0
   96 0044 60E0      		ldi r22,0
@@ -233,22 +233,22 @@
  107               	.global	chCoreAllocFromTopI
  109               	chCoreAllocFromTopI:
  110               	.LFB197:
- 130:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 131:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /**
- 132:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @brief   Allocates a memory block starting from the top address downward.
- 133:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @details This function allocates a block of @p offset + @p size bytes. The
- 134:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          returned pointer has @p offset bytes before its address and
- 135:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          @p size bytes after.
- 136:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *
- 137:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @param[in] size      the size of the block to be allocated.
- 138:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @param[in] align     desired memory alignment
- 139:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @param[in] offset    aligned pointer offset
- 140:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @return              A pointer to the allocated memory block.
- 141:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @retval NULL         allocation failed, core memory exhausted.
- 142:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *
- 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @iclass
- 144:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  */
- 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** void *chCoreAllocFromTopI(size_t size, unsigned align, size_t offset) {
+ 130:../../os/oslib/src/chmemcore.c **** 
+ 131:../../os/oslib/src/chmemcore.c **** /**
+ 132:../../os/oslib/src/chmemcore.c ****  * @brief   Allocates a memory block starting from the top address downward.
+ 133:../../os/oslib/src/chmemcore.c ****  * @details This function allocates a block of @p offset + @p size bytes. The
+ 134:../../os/oslib/src/chmemcore.c ****  *          returned pointer has @p offset bytes before its address and
+ 135:../../os/oslib/src/chmemcore.c ****  *          @p size bytes after.
+ 136:../../os/oslib/src/chmemcore.c ****  *
+ 137:../../os/oslib/src/chmemcore.c ****  * @param[in] size      the size of the block to be allocated.
+ 138:../../os/oslib/src/chmemcore.c ****  * @param[in] align     desired memory alignment
+ 139:../../os/oslib/src/chmemcore.c ****  * @param[in] offset    aligned pointer offset
+ 140:../../os/oslib/src/chmemcore.c ****  * @return              A pointer to the allocated memory block.
+ 141:../../os/oslib/src/chmemcore.c ****  * @retval NULL         allocation failed, core memory exhausted.
+ 142:../../os/oslib/src/chmemcore.c ****  *
+ 143:../../os/oslib/src/chmemcore.c ****  * @iclass
+ 144:../../os/oslib/src/chmemcore.c ****  */
+ 145:../../os/oslib/src/chmemcore.c **** void *chCoreAllocFromTopI(size_t size, unsigned align, size_t offset) {
  111               		.loc 1 145 0
  112               		.cfi_startproc
  113               	.LVL10:
@@ -256,12 +256,12 @@
  115               	/* frame size = 0 */
  116               	/* stack size = 0 */
  117               	.L__stack_usage = 0
- 146:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   uint8_t *p, *prev;
- 147:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   chDbgCheckClassI();
- 149:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   chDbgCheck(MEM_IS_VALID_ALIGNMENT(align));
- 150:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   p = (uint8_t *)MEM_ALIGN_PREV(ch_memcore.topmem - size, align);
+ 146:../../os/oslib/src/chmemcore.c ****   uint8_t *p, *prev;
+ 147:../../os/oslib/src/chmemcore.c **** 
+ 148:../../os/oslib/src/chmemcore.c ****   chDbgCheckClassI();
+ 149:../../os/oslib/src/chmemcore.c ****   chDbgCheck(MEM_IS_VALID_ALIGNMENT(align));
+ 150:../../os/oslib/src/chmemcore.c **** 
+ 151:../../os/oslib/src/chmemcore.c ****   p = (uint8_t *)MEM_ALIGN_PREV(ch_memcore.topmem - size, align);
  118               		.loc 1 151 0
  119 0000 E091 0000 		lds r30,ch_memcore+2
  120 0004 F091 0000 		lds r31,ch_memcore+2+1
@@ -277,15 +277,15 @@
  130 0016 8623      		and r24,r22
  131 0018 9723      		and r25,r23
  132               	.LVL13:
- 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   prev = p - offset;
+ 152:../../os/oslib/src/chmemcore.c ****   prev = p - offset;
  133               		.loc 1 152 0
  134 001a 9C01      		movw r18,r24
  135 001c 241B      		sub r18,r20
  136 001e 350B      		sbc r19,r21
  137               	.LVL14:
- 153:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 154:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   /* Considering also the case where there is numeric overflow.*/
- 155:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   if ((prev < ch_memcore.basemem) || (prev > ch_memcore.topmem)) {
+ 153:../../os/oslib/src/chmemcore.c **** 
+ 154:../../os/oslib/src/chmemcore.c ****   /* Considering also the case where there is numeric overflow.*/
+ 155:../../os/oslib/src/chmemcore.c ****   if ((prev < ch_memcore.basemem) || (prev > ch_memcore.topmem)) {
  138               		.loc 1 155 0
  139 0020 4091 0000 		lds r20,ch_memcore
  140 0024 5091 0000 		lds r21,ch_memcore+1
@@ -297,25 +297,25 @@
  146 002e E217      		cp r30,r18
  147 0030 F307      		cpc r31,r19
  148 0032 00F0      		brlo .L10
- 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     return NULL;
- 157:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   }
- 158:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 159:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   ch_memcore.topmem = prev;
+ 156:../../os/oslib/src/chmemcore.c ****     return NULL;
+ 157:../../os/oslib/src/chmemcore.c ****   }
+ 158:../../os/oslib/src/chmemcore.c **** 
+ 159:../../os/oslib/src/chmemcore.c ****   ch_memcore.topmem = prev;
  149               		.loc 1 159 0 is_stmt 1
  150 0034 3093 0000 		sts ch_memcore+2+1,r19
  151 0038 2093 0000 		sts ch_memcore+2,r18
- 160:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 161:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   return p;
+ 160:../../os/oslib/src/chmemcore.c **** 
+ 161:../../os/oslib/src/chmemcore.c ****   return p;
  152               		.loc 1 161 0
  153 003c 0895      		ret
  154               	.L10:
- 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     return NULL;
+ 156:../../os/oslib/src/chmemcore.c ****     return NULL;
  155               		.loc 1 156 0
  156 003e 90E0      		ldi r25,0
  157 0040 80E0      		ldi r24,0
  158               	.LVL16:
  159               	/* epilogue start */
- 162:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** }
+ 162:../../os/oslib/src/chmemcore.c **** }
  160               		.loc 1 162 0
  161 0042 0895      		ret
  162               		.cfi_endproc
@@ -324,22 +324,22 @@
  166               	.global	chCoreAllocFromBase
  168               	chCoreAllocFromBase:
  169               	.LFB198:
- 163:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 164:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /**
- 165:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @brief   Allocates a memory block starting from the lowest address upward.
- 166:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @details This function allocates a block of @p offset + @p size bytes. The
- 167:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          returned pointer has @p offset bytes before its address and
- 168:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          @p size bytes after.
- 169:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *
- 170:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @param[in] size      the size of the block to be allocated.
- 171:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @param[in] align     desired memory alignment
- 172:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @param[in] offset    aligned pointer offset
- 173:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @return              A pointer to the allocated memory block.
- 174:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @retval NULL         allocation failed, core memory exhausted.
- 175:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *
- 176:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @api
- 177:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  */
- 178:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** void *chCoreAllocFromBase(size_t size, unsigned align, size_t offset) {
+ 163:../../os/oslib/src/chmemcore.c **** 
+ 164:../../os/oslib/src/chmemcore.c **** /**
+ 165:../../os/oslib/src/chmemcore.c ****  * @brief   Allocates a memory block starting from the lowest address upward.
+ 166:../../os/oslib/src/chmemcore.c ****  * @details This function allocates a block of @p offset + @p size bytes. The
+ 167:../../os/oslib/src/chmemcore.c ****  *          returned pointer has @p offset bytes before its address and
+ 168:../../os/oslib/src/chmemcore.c ****  *          @p size bytes after.
+ 169:../../os/oslib/src/chmemcore.c ****  *
+ 170:../../os/oslib/src/chmemcore.c ****  * @param[in] size      the size of the block to be allocated.
+ 171:../../os/oslib/src/chmemcore.c ****  * @param[in] align     desired memory alignment
+ 172:../../os/oslib/src/chmemcore.c ****  * @param[in] offset    aligned pointer offset
+ 173:../../os/oslib/src/chmemcore.c ****  * @return              A pointer to the allocated memory block.
+ 174:../../os/oslib/src/chmemcore.c ****  * @retval NULL         allocation failed, core memory exhausted.
+ 175:../../os/oslib/src/chmemcore.c ****  *
+ 176:../../os/oslib/src/chmemcore.c ****  * @api
+ 177:../../os/oslib/src/chmemcore.c ****  */
+ 178:../../os/oslib/src/chmemcore.c **** void *chCoreAllocFromBase(size_t size, unsigned align, size_t offset) {
  170               		.loc 1 178 0
  171               		.cfi_startproc
  172               	.LVL17:
@@ -350,440 +350,440 @@
  177               	.LBB26:
  178               	.LBB27:
  179               	.LBB28:
- 180               		.file 2 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
-   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*
-   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
-   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****               2015,2016,2017,2018,2019,2020,2021 Giovanni Di Sirio.
-   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     This file is part of ChibiOS.
-   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     ChibiOS is free software; you can redistribute it and/or modify
-   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     it under the terms of the GNU General Public License as published by
-   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     the Free Software Foundation version 3 of the License.
-  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     ChibiOS is distributed in the hope that it will be useful,
-  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     GNU General Public License for more details.
-  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     You should have received a copy of the GNU General Public License
-  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** */
-  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
-  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @file    chcore.h
-  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   AVR port macros and structures.
-  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
-  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @addtogroup AVR_CORE
-  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @{
-  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
-  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #ifndef CHCORE_H
-  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define CHCORE_H
-  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #include <avr/io.h>
-  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #include <avr/interrupt.h>
-  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** extern bool __avr_in_isr;
-  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
-  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* Module constants.                                                         */
-  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
-  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
-  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @name    Port Capabilities and Constants
-  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @{
-  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
-  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
-  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   This port supports a realtime counter.
-  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
-  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_SUPPORTS_RT                FALSE
-  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
-  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Natural alignment constant.
-  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    It is the minimum alignment for pointer-size variables.
-  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
-  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_NATURAL_ALIGN              1U
-  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
-  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Stack alignment constant.
-  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    It is the alignment required for the stack pointer.
-  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
-  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_STACK_ALIGN                1U
-  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
-  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Working Areas alignment constant.
-  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    It is the alignment to be enforced for thread working areas.
-  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
-  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_WORKING_AREA_ALIGN         1U
-  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /** @} */
-  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
-  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @name    Architecture and Compiler
-  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @{
-  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
-  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
-  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Macro defining an AVR architecture.
-  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
-  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_AVR
-  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
-  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Macro defining the specific AVR architecture.
-  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
-  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_AVR_MEGAAVR
-  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
-  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Name of the implemented architecture.
-  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
-  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_NAME          "AVR"
-  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
-  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Name of the architecture variant.
-  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
-  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_CORE_VARIANT_NAME          "MegaAVR"
-  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
-  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Compiler name and version.
-  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
-  95:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if defined(__GNUC__) || defined(__DOXYGEN__)
-  96:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_COMPILER_NAME              "GCC " __VERSION__
-  97:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
-  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #else
-  99:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #error "unsupported compiler"
- 100:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
- 101:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 102:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 103:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Port-specific information string.
- 104:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 105:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_INFO                       "None"
- 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /** @} */
- 107:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 108:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
- 109:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* Module pre-compile time settings.                                         */
- 110:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
- 111:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 112:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 113:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Stack size for the system idle thread.
- 114:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This size depends on the idle thread implementation, usually
- 115:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          the idle thread should take no more space than those reserved
- 116:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          by @p PORT_INT_REQUIRED_STACK.
- 117:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 118:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if !defined(PORT_IDLE_THREAD_STACK_SIZE) || defined(__DOXYGEN__)
- 119:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_IDLE_THREAD_STACK_SIZE     8
- 120:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
- 121:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 122:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Per-thread stack overhead for interrupts servicing.
- 124:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This constant is used in the calculation of the correct working
- 125:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          area size.
- 126:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 127:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if !defined(PORT_INT_REQUIRED_STACK) || defined(__DOXYGEN__)
- 128:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_INT_REQUIRED_STACK         32
- 129:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
- 130:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 131:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 132:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Enables a "wait for interrupt" instruction in the idle loop.
- 133:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 134:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if !defined(PORT_AVR_WFI_SLEEP_IDLE) || defined(__DOXYGEN__)
- 135:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_AVR_WFI_SLEEP_IDLE      FALSE
- 136:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
- 137:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 138:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
- 139:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* Derived constants and error checks.                                       */
- 140:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
- 141:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 142:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
- 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* Module data structures and types.                                         */
- 144:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
- 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 146:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
- 147:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****    asm module.*/
- 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
- 149:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 150:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Type of stack and memory alignment enforcement.
- 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    In this architecture the stack alignment is enforced to 8 bits.
- 153:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 154:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** typedef uint8_t stkalign_t;
- 155:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 157:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Interrupt saved context.
- 158:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This structure represents the stack frame saved during a
- 159:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          preemption-capable interrupt handler.
- 160:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    R2 and R13 are not saved because those are assumed to be immutable
- 161:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          during the system life cycle.
- 162:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 163:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** struct port_extctx {
- 164:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       _next;
- 165:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r31;
- 166:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r30;
- 167:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r27;
- 168:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r26;
- 169:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r25;
- 170:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r24;
- 171:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r23;
- 172:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r22;
- 173:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r21;
- 174:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r20;
- 175:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r19;
- 176:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r18;
- 177:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       sr;
- 178:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r1;
- 179:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r0;
- 180:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__)
- 181:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       pcx;
- 182:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
- 183:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint16_t      pc;
- 184:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** };
- 185:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 186:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 187:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   System saved context.
- 188:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This structure represents the inner stack frame during a context
- 189:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          switching.
- 190:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    R2 and R13 are not saved because those are assumed to be immutable
- 191:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          during the system life cycle.
- 192:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    LR is stored in the caller context so it is not present in this
- 193:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          structure.
- 194:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 195:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** struct port_intctx {
- 196:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       _next;
- 197:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r29;
- 198:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r28;
- 199:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r17;
- 200:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r16;
- 201:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r15;
- 202:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r14;
- 203:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r13;
- 204:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r12;
- 205:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r11;
- 206:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r10;
- 207:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r9;
- 208:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r8;
- 209:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r7;
- 210:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r6;
- 211:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r5;
- 212:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r4;
- 213:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r3;
- 214:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       r2;
- 215:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__)
- 216:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       pcx;
- 217:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
- 218:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       pcl;
- 219:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   uint8_t       pch;
- 220:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** };
- 221:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 222:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 223:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Platform dependent part of the @p thread_t structure.
- 224:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This structure usually contains just the saved stack pointer
- 225:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          defined as a pointer to a @p port_intctx structure.
- 226:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 227:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** struct port_context {
- 228:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   struct port_intctx *sp;
- 229:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** };
- 230:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 231:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif /* !defined(_FROM_ASM_) */
- 232:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 233:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
- 234:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* Module macros.                                                            */
- 235:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
- 236:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 237:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 238:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Platform dependent part of the @p chThdCreateI() API.
- 239:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This code usually setup the context switching frame represented
- 240:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          by an @p port_intctx structure.
- 241:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 242:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__) || defined(__DOXYGEN__)
- 243:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_SETUP_CONTEXT(tp, wbase, wtop, pf, arg) {                      \
- 244:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp = (struct port_intctx *)((uint8_t *)(wtop) -                   \
- 245:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****                                       sizeof(struct port_intctx));          \
- 246:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r2  = (uint8_t)(0xff & (uint16_t)pf);                         \
- 247:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r3  = (uint8_t)((uint16_t)(pf) >> 8);                         \
- 248:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r4  = (uint8_t)(0xff & (uint16_t)arg);                        \
- 249:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r5  = (uint8_t)((uint16_t)(arg) >> 8);                        \
- 250:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcx = (uint8_t)0;                                             \
- 251:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcl = (uint16_t)_port_thread_start >> 8;                      \
- 252:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pch = (uint8_t)(0xff & (uint16_t)_port_thread_start);         \
- 253:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
- 254:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #else /* !__AVR_3_BYTE_PC__ */
- 255:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_SETUP_CONTEXT(tp, wbase, wtop, pf, arg) {                      \
- 256:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp = (struct port_intctx *)((uint8_t *)(wtop) -                   \
- 257:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****                                       sizeof(struct port_intctx));          \
- 258:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r2  = (uint8_t)(0xff & (uint16_t)pf);                         \
- 259:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r3  = (uint8_t)((uint16_t)(pf) >> 8);                         \
- 260:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r4  = (uint8_t)(0xff & (uint16_t)arg);                        \
- 261:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r5  = (uint8_t)((uint16_t)(arg) >> 8);                        \
- 262:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcl = (uint16_t)_port_thread_start >> 8;                      \
- 263:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pch = (uint8_t)(0xff & (uint16_t)_port_thread_start);         \
- 264:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
- 265:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif /* !__AVR_3_BYTE_PC__ */
- 266:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 267:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 268:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Computes the thread working area global size.
- 269:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    There is no need to perform alignments in this macro.
- 270:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 271:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_WA_SIZE(n) ((sizeof(struct port_intctx) - 1) +                \
- 272:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****                          (sizeof(struct port_extctx) - 1) +                \
- 273:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****                          ((size_t)(n)) + ((size_t)(PORT_INT_REQUIRED_STACK)))
- 274:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 275:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 276:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Static working area allocation.
- 277:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This macro is used to allocate a static thread working area
- 278:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          aligned as both position and size.
- 279:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
- 280:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @param[in] s         the name to be assigned to the stack array
- 281:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @param[in] n         the stack size to be assigned to the thread
- 282:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 283:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_WORKING_AREA(s, n)                                             \
- 284:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   stkalign_t s[THD_WORKING_AREA_SIZE(n) / sizeof (stkalign_t)]
- 285:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 286:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 287:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Priority level verification macro.
- 288:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 289:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_IRQ_IS_VALID_PRIORITY(n) false
- 290:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 291:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 292:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Priority level verification macro.
- 293:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 294:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_IRQ_IS_VALID_KERNEL_PRIORITY(n) false
- 295:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 296:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 297:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   IRQ prologue code.
- 298:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This macro must be inserted at the start of all IRQ handlers
- 299:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          enabled to invoke system APIs.
- 300:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    This code tricks the compiler to save all the specified registers
- 301:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          by "touching" them.
- 302:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 303:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_IRQ_PROLOGUE() {                                               \
- 304:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   asm ("" : : : "r18", "r19", "r20", "r21", "r22", "r23", "r24",            \
- 305:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****                 "r25", "r26", "r27", "r30", "r31");                         \
- 306:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   __avr_in_isr = true;                                                      \
- 307:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
- 308:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 309:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 310:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   IRQ epilogue code.
- 311:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This macro must be inserted at the end of all IRQ handlers
- 312:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          enabled to invoke system APIs.
- 313:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 314:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_IRQ_EPILOGUE() {                                               \
- 315:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   __avr_in_isr = false;                                                     \
- 316:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   __dbg_check_lock();                                                       \
- 317:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   if (chSchIsPreemptionRequired())                                          \
- 318:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     chSchDoPreemption();                                                    \
- 319:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   __dbg_check_unlock();                                                     \
- 320:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
- 321:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 322:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 323:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   IRQ handler function declaration.
- 324:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    @p id can be a function name or a vector number depending on the
- 325:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          port implementation.
- 326:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 327:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_IRQ_HANDLER(id) ISR(id)
- 328:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 329:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 330:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Fast IRQ handler function declaration.
- 331:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    @p id can be a function name or a vector number depending on the
- 332:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          port implementation.
- 333:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 334:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define PORT_FAST_IRQ_HANDLER(id) ISR(id)
- 335:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 336:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 337:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Performs a context switch between two threads.
- 338:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details This is the most critical code in any port, this function
- 339:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          is responsible for the context switch between 2 threads.
- 340:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    The implementation of this code affects <b>directly</b> the context
- 341:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          switch performance so optimize here as much as you can.
- 342:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
- 343:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @param[in] ntp       the thread to be switched in
- 344:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @param[in] otp       the thread to be switched out
- 345:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 346:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define port_switch(ntp, otp) {                                             \
- 347:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   _port_switch(ntp, otp);                                                   \
- 348:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   asm volatile ("" : : : "memory");                                         \
- 349:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
- 350:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 351:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 352:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 353:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Port-related initialization code.
- 354:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @note    This function is empty in this port.
- 355:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 356:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #define port_init(oip) {                                                    \
- 357:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   __avr_in_isr = true;                                                      \
- 358:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
- 359:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 360:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
- 361:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* External declarations.                                                    */
- 362:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
- 363:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 364:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
- 365:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****    asm module.*/
- 366:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
- 367:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 368:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #ifdef __cplusplus
- 369:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** extern "C" {
- 370:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
- 371:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   void _port_switch(thread_t *ntp, thread_t *otp);
- 372:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   void _port_thread_start(void);
- 373:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #ifdef __cplusplus
- 374:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
- 375:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif
- 376:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 377:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #endif /* !defined(_FROM_ASM_) */
- 378:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 379:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
- 380:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* Module inline functions.                                                  */
- 381:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*===========================================================================*/
- 382:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 383:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
- 384:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****    asm module.*/
- 385:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
- 386:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 387:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 388:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Returns a word encoding the current interrupts status.
- 389:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
- 390:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @return              The interrupts status.
- 391:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 392:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** static inline syssts_t port_get_irq_status(void) {
- 393:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 394:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   return SREG;
- 395:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
- 396:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 397:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 398:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Checks the interrupt status.
- 399:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
- 400:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @param[in] sts       the interrupt status word
- 401:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
- 402:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @return              The interrupt status.
- 403:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @retval false        the word specified a disabled interrupts status.
- 404:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @retval true         the word specified an enabled interrupts status.
- 405:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 406:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** static inline bool port_irq_enabled(syssts_t sts) {
- 407:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 408:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   return (bool)((sts & 0x80) != 0);
- 409:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
- 410:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 411:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 412:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Determines the current execution context.
- 413:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *
- 414:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @return              The execution context.
- 415:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @retval false        not running in ISR mode.
- 416:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @retval true         running in ISR mode.
- 417:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 418:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** static inline bool port_is_isr_context(void) {
- 419:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 420:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   return __avr_in_isr;
- 421:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
- 422:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 423:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 424:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Kernel-lock action.
- 425:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details Usually this function just disables interrupts but may perform more
- 426:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          actions.
- 427:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 428:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** static inline void port_lock(void) {
- 429:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 430:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   asm volatile ("cli" : : : "memory");
+ 180               		.file 2 "../../os/common/ports/AVR/chcore.h"
+   1:../../os/common/ports/AVR/chcore.h **** /*
+   2:../../os/common/ports/AVR/chcore.h ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
+   3:../../os/common/ports/AVR/chcore.h ****               2015,2016,2017,2018,2019,2020,2021 Giovanni Di Sirio.
+   4:../../os/common/ports/AVR/chcore.h **** 
+   5:../../os/common/ports/AVR/chcore.h ****     This file is part of ChibiOS.
+   6:../../os/common/ports/AVR/chcore.h **** 
+   7:../../os/common/ports/AVR/chcore.h ****     ChibiOS is free software; you can redistribute it and/or modify
+   8:../../os/common/ports/AVR/chcore.h ****     it under the terms of the GNU General Public License as published by
+   9:../../os/common/ports/AVR/chcore.h ****     the Free Software Foundation version 3 of the License.
+  10:../../os/common/ports/AVR/chcore.h **** 
+  11:../../os/common/ports/AVR/chcore.h ****     ChibiOS is distributed in the hope that it will be useful,
+  12:../../os/common/ports/AVR/chcore.h ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:../../os/common/ports/AVR/chcore.h ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:../../os/common/ports/AVR/chcore.h ****     GNU General Public License for more details.
+  15:../../os/common/ports/AVR/chcore.h **** 
+  16:../../os/common/ports/AVR/chcore.h ****     You should have received a copy of the GNU General Public License
+  17:../../os/common/ports/AVR/chcore.h ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  18:../../os/common/ports/AVR/chcore.h **** */
+  19:../../os/common/ports/AVR/chcore.h **** 
+  20:../../os/common/ports/AVR/chcore.h **** /**
+  21:../../os/common/ports/AVR/chcore.h ****  * @file    chcore.h
+  22:../../os/common/ports/AVR/chcore.h ****  * @brief   AVR port macros and structures.
+  23:../../os/common/ports/AVR/chcore.h ****  *
+  24:../../os/common/ports/AVR/chcore.h ****  * @addtogroup AVR_CORE
+  25:../../os/common/ports/AVR/chcore.h ****  * @{
+  26:../../os/common/ports/AVR/chcore.h ****  */
+  27:../../os/common/ports/AVR/chcore.h **** 
+  28:../../os/common/ports/AVR/chcore.h **** #ifndef CHCORE_H
+  29:../../os/common/ports/AVR/chcore.h **** #define CHCORE_H
+  30:../../os/common/ports/AVR/chcore.h **** 
+  31:../../os/common/ports/AVR/chcore.h **** #include <avr/io.h>
+  32:../../os/common/ports/AVR/chcore.h **** #include <avr/interrupt.h>
+  33:../../os/common/ports/AVR/chcore.h **** 
+  34:../../os/common/ports/AVR/chcore.h **** extern bool __avr_in_isr;
+  35:../../os/common/ports/AVR/chcore.h **** 
+  36:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+  37:../../os/common/ports/AVR/chcore.h **** /* Module constants.                                                         */
+  38:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+  39:../../os/common/ports/AVR/chcore.h **** 
+  40:../../os/common/ports/AVR/chcore.h **** /**
+  41:../../os/common/ports/AVR/chcore.h ****  * @name    Port Capabilities and Constants
+  42:../../os/common/ports/AVR/chcore.h ****  * @{
+  43:../../os/common/ports/AVR/chcore.h ****  */
+  44:../../os/common/ports/AVR/chcore.h **** /**
+  45:../../os/common/ports/AVR/chcore.h ****  * @brief   This port supports a realtime counter.
+  46:../../os/common/ports/AVR/chcore.h ****  */
+  47:../../os/common/ports/AVR/chcore.h **** #define PORT_SUPPORTS_RT                FALSE
+  48:../../os/common/ports/AVR/chcore.h **** 
+  49:../../os/common/ports/AVR/chcore.h **** /**
+  50:../../os/common/ports/AVR/chcore.h ****  * @brief   Natural alignment constant.
+  51:../../os/common/ports/AVR/chcore.h ****  * @note    It is the minimum alignment for pointer-size variables.
+  52:../../os/common/ports/AVR/chcore.h ****  */
+  53:../../os/common/ports/AVR/chcore.h **** #define PORT_NATURAL_ALIGN              1U
+  54:../../os/common/ports/AVR/chcore.h **** 
+  55:../../os/common/ports/AVR/chcore.h **** /**
+  56:../../os/common/ports/AVR/chcore.h ****  * @brief   Stack alignment constant.
+  57:../../os/common/ports/AVR/chcore.h ****  * @note    It is the alignment required for the stack pointer.
+  58:../../os/common/ports/AVR/chcore.h ****  */
+  59:../../os/common/ports/AVR/chcore.h **** #define PORT_STACK_ALIGN                1U
+  60:../../os/common/ports/AVR/chcore.h **** 
+  61:../../os/common/ports/AVR/chcore.h **** /**
+  62:../../os/common/ports/AVR/chcore.h ****  * @brief   Working Areas alignment constant.
+  63:../../os/common/ports/AVR/chcore.h ****  * @note    It is the alignment to be enforced for thread working areas.
+  64:../../os/common/ports/AVR/chcore.h ****  */
+  65:../../os/common/ports/AVR/chcore.h **** #define PORT_WORKING_AREA_ALIGN         1U
+  66:../../os/common/ports/AVR/chcore.h **** /** @} */
+  67:../../os/common/ports/AVR/chcore.h **** 
+  68:../../os/common/ports/AVR/chcore.h **** /**
+  69:../../os/common/ports/AVR/chcore.h ****  * @name    Architecture and Compiler
+  70:../../os/common/ports/AVR/chcore.h ****  * @{
+  71:../../os/common/ports/AVR/chcore.h ****  */
+  72:../../os/common/ports/AVR/chcore.h **** /**
+  73:../../os/common/ports/AVR/chcore.h ****  * @brief   Macro defining an AVR architecture.
+  74:../../os/common/ports/AVR/chcore.h ****  */
+  75:../../os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_AVR
+  76:../../os/common/ports/AVR/chcore.h **** 
+  77:../../os/common/ports/AVR/chcore.h **** /**
+  78:../../os/common/ports/AVR/chcore.h ****  * @brief   Macro defining the specific AVR architecture.
+  79:../../os/common/ports/AVR/chcore.h ****  */
+  80:../../os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_AVR_MEGAAVR
+  81:../../os/common/ports/AVR/chcore.h **** 
+  82:../../os/common/ports/AVR/chcore.h **** /**
+  83:../../os/common/ports/AVR/chcore.h ****  * @brief   Name of the implemented architecture.
+  84:../../os/common/ports/AVR/chcore.h ****  */
+  85:../../os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_NAME          "AVR"
+  86:../../os/common/ports/AVR/chcore.h **** 
+  87:../../os/common/ports/AVR/chcore.h **** /**
+  88:../../os/common/ports/AVR/chcore.h ****  * @brief   Name of the architecture variant.
+  89:../../os/common/ports/AVR/chcore.h ****  */
+  90:../../os/common/ports/AVR/chcore.h **** #define PORT_CORE_VARIANT_NAME          "MegaAVR"
+  91:../../os/common/ports/AVR/chcore.h **** 
+  92:../../os/common/ports/AVR/chcore.h **** /**
+  93:../../os/common/ports/AVR/chcore.h ****  * @brief   Compiler name and version.
+  94:../../os/common/ports/AVR/chcore.h ****  */
+  95:../../os/common/ports/AVR/chcore.h **** #if defined(__GNUC__) || defined(__DOXYGEN__)
+  96:../../os/common/ports/AVR/chcore.h **** #define PORT_COMPILER_NAME              "GCC " __VERSION__
+  97:../../os/common/ports/AVR/chcore.h **** 
+  98:../../os/common/ports/AVR/chcore.h **** #else
+  99:../../os/common/ports/AVR/chcore.h **** #error "unsupported compiler"
+ 100:../../os/common/ports/AVR/chcore.h **** #endif
+ 101:../../os/common/ports/AVR/chcore.h **** 
+ 102:../../os/common/ports/AVR/chcore.h **** /**
+ 103:../../os/common/ports/AVR/chcore.h ****  * @brief   Port-specific information string.
+ 104:../../os/common/ports/AVR/chcore.h ****  */
+ 105:../../os/common/ports/AVR/chcore.h **** #define PORT_INFO                       "None"
+ 106:../../os/common/ports/AVR/chcore.h **** /** @} */
+ 107:../../os/common/ports/AVR/chcore.h **** 
+ 108:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 109:../../os/common/ports/AVR/chcore.h **** /* Module pre-compile time settings.                                         */
+ 110:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 111:../../os/common/ports/AVR/chcore.h **** 
+ 112:../../os/common/ports/AVR/chcore.h **** /**
+ 113:../../os/common/ports/AVR/chcore.h ****  * @brief   Stack size for the system idle thread.
+ 114:../../os/common/ports/AVR/chcore.h ****  * @details This size depends on the idle thread implementation, usually
+ 115:../../os/common/ports/AVR/chcore.h ****  *          the idle thread should take no more space than those reserved
+ 116:../../os/common/ports/AVR/chcore.h ****  *          by @p PORT_INT_REQUIRED_STACK.
+ 117:../../os/common/ports/AVR/chcore.h ****  */
+ 118:../../os/common/ports/AVR/chcore.h **** #if !defined(PORT_IDLE_THREAD_STACK_SIZE) || defined(__DOXYGEN__)
+ 119:../../os/common/ports/AVR/chcore.h **** #define PORT_IDLE_THREAD_STACK_SIZE     8
+ 120:../../os/common/ports/AVR/chcore.h **** #endif
+ 121:../../os/common/ports/AVR/chcore.h **** 
+ 122:../../os/common/ports/AVR/chcore.h **** /**
+ 123:../../os/common/ports/AVR/chcore.h ****  * @brief   Per-thread stack overhead for interrupts servicing.
+ 124:../../os/common/ports/AVR/chcore.h ****  * @details This constant is used in the calculation of the correct working
+ 125:../../os/common/ports/AVR/chcore.h ****  *          area size.
+ 126:../../os/common/ports/AVR/chcore.h ****  */
+ 127:../../os/common/ports/AVR/chcore.h **** #if !defined(PORT_INT_REQUIRED_STACK) || defined(__DOXYGEN__)
+ 128:../../os/common/ports/AVR/chcore.h **** #define PORT_INT_REQUIRED_STACK         32
+ 129:../../os/common/ports/AVR/chcore.h **** #endif
+ 130:../../os/common/ports/AVR/chcore.h **** 
+ 131:../../os/common/ports/AVR/chcore.h **** /**
+ 132:../../os/common/ports/AVR/chcore.h ****  * @brief   Enables a "wait for interrupt" instruction in the idle loop.
+ 133:../../os/common/ports/AVR/chcore.h ****  */
+ 134:../../os/common/ports/AVR/chcore.h **** #if !defined(PORT_AVR_WFI_SLEEP_IDLE) || defined(__DOXYGEN__)
+ 135:../../os/common/ports/AVR/chcore.h **** #define PORT_AVR_WFI_SLEEP_IDLE      FALSE
+ 136:../../os/common/ports/AVR/chcore.h **** #endif
+ 137:../../os/common/ports/AVR/chcore.h **** 
+ 138:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 139:../../os/common/ports/AVR/chcore.h **** /* Derived constants and error checks.                                       */
+ 140:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 141:../../os/common/ports/AVR/chcore.h **** 
+ 142:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 143:../../os/common/ports/AVR/chcore.h **** /* Module data structures and types.                                         */
+ 144:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 145:../../os/common/ports/AVR/chcore.h **** 
+ 146:../../os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
+ 147:../../os/common/ports/AVR/chcore.h ****    asm module.*/
+ 148:../../os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
+ 149:../../os/common/ports/AVR/chcore.h **** 
+ 150:../../os/common/ports/AVR/chcore.h **** /**
+ 151:../../os/common/ports/AVR/chcore.h ****  * @brief   Type of stack and memory alignment enforcement.
+ 152:../../os/common/ports/AVR/chcore.h ****  * @note    In this architecture the stack alignment is enforced to 8 bits.
+ 153:../../os/common/ports/AVR/chcore.h ****  */
+ 154:../../os/common/ports/AVR/chcore.h **** typedef uint8_t stkalign_t;
+ 155:../../os/common/ports/AVR/chcore.h **** 
+ 156:../../os/common/ports/AVR/chcore.h **** /**
+ 157:../../os/common/ports/AVR/chcore.h ****  * @brief   Interrupt saved context.
+ 158:../../os/common/ports/AVR/chcore.h ****  * @details This structure represents the stack frame saved during a
+ 159:../../os/common/ports/AVR/chcore.h ****  *          preemption-capable interrupt handler.
+ 160:../../os/common/ports/AVR/chcore.h ****  * @note    R2 and R13 are not saved because those are assumed to be immutable
+ 161:../../os/common/ports/AVR/chcore.h ****  *          during the system life cycle.
+ 162:../../os/common/ports/AVR/chcore.h ****  */
+ 163:../../os/common/ports/AVR/chcore.h **** struct port_extctx {
+ 164:../../os/common/ports/AVR/chcore.h ****   uint8_t       _next;
+ 165:../../os/common/ports/AVR/chcore.h ****   uint8_t       r31;
+ 166:../../os/common/ports/AVR/chcore.h ****   uint8_t       r30;
+ 167:../../os/common/ports/AVR/chcore.h ****   uint8_t       r27;
+ 168:../../os/common/ports/AVR/chcore.h ****   uint8_t       r26;
+ 169:../../os/common/ports/AVR/chcore.h ****   uint8_t       r25;
+ 170:../../os/common/ports/AVR/chcore.h ****   uint8_t       r24;
+ 171:../../os/common/ports/AVR/chcore.h ****   uint8_t       r23;
+ 172:../../os/common/ports/AVR/chcore.h ****   uint8_t       r22;
+ 173:../../os/common/ports/AVR/chcore.h ****   uint8_t       r21;
+ 174:../../os/common/ports/AVR/chcore.h ****   uint8_t       r20;
+ 175:../../os/common/ports/AVR/chcore.h ****   uint8_t       r19;
+ 176:../../os/common/ports/AVR/chcore.h ****   uint8_t       r18;
+ 177:../../os/common/ports/AVR/chcore.h ****   uint8_t       sr;
+ 178:../../os/common/ports/AVR/chcore.h ****   uint8_t       r1;
+ 179:../../os/common/ports/AVR/chcore.h ****   uint8_t       r0;
+ 180:../../os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__)
+ 181:../../os/common/ports/AVR/chcore.h ****   uint8_t       pcx;
+ 182:../../os/common/ports/AVR/chcore.h **** #endif
+ 183:../../os/common/ports/AVR/chcore.h ****   uint16_t      pc;
+ 184:../../os/common/ports/AVR/chcore.h **** };
+ 185:../../os/common/ports/AVR/chcore.h **** 
+ 186:../../os/common/ports/AVR/chcore.h **** /**
+ 187:../../os/common/ports/AVR/chcore.h ****  * @brief   System saved context.
+ 188:../../os/common/ports/AVR/chcore.h ****  * @details This structure represents the inner stack frame during a context
+ 189:../../os/common/ports/AVR/chcore.h ****  *          switching.
+ 190:../../os/common/ports/AVR/chcore.h ****  * @note    R2 and R13 are not saved because those are assumed to be immutable
+ 191:../../os/common/ports/AVR/chcore.h ****  *          during the system life cycle.
+ 192:../../os/common/ports/AVR/chcore.h ****  * @note    LR is stored in the caller context so it is not present in this
+ 193:../../os/common/ports/AVR/chcore.h ****  *          structure.
+ 194:../../os/common/ports/AVR/chcore.h ****  */
+ 195:../../os/common/ports/AVR/chcore.h **** struct port_intctx {
+ 196:../../os/common/ports/AVR/chcore.h ****   uint8_t       _next;
+ 197:../../os/common/ports/AVR/chcore.h ****   uint8_t       r29;
+ 198:../../os/common/ports/AVR/chcore.h ****   uint8_t       r28;
+ 199:../../os/common/ports/AVR/chcore.h ****   uint8_t       r17;
+ 200:../../os/common/ports/AVR/chcore.h ****   uint8_t       r16;
+ 201:../../os/common/ports/AVR/chcore.h ****   uint8_t       r15;
+ 202:../../os/common/ports/AVR/chcore.h ****   uint8_t       r14;
+ 203:../../os/common/ports/AVR/chcore.h ****   uint8_t       r13;
+ 204:../../os/common/ports/AVR/chcore.h ****   uint8_t       r12;
+ 205:../../os/common/ports/AVR/chcore.h ****   uint8_t       r11;
+ 206:../../os/common/ports/AVR/chcore.h ****   uint8_t       r10;
+ 207:../../os/common/ports/AVR/chcore.h ****   uint8_t       r9;
+ 208:../../os/common/ports/AVR/chcore.h ****   uint8_t       r8;
+ 209:../../os/common/ports/AVR/chcore.h ****   uint8_t       r7;
+ 210:../../os/common/ports/AVR/chcore.h ****   uint8_t       r6;
+ 211:../../os/common/ports/AVR/chcore.h ****   uint8_t       r5;
+ 212:../../os/common/ports/AVR/chcore.h ****   uint8_t       r4;
+ 213:../../os/common/ports/AVR/chcore.h ****   uint8_t       r3;
+ 214:../../os/common/ports/AVR/chcore.h ****   uint8_t       r2;
+ 215:../../os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__)
+ 216:../../os/common/ports/AVR/chcore.h ****   uint8_t       pcx;
+ 217:../../os/common/ports/AVR/chcore.h **** #endif
+ 218:../../os/common/ports/AVR/chcore.h ****   uint8_t       pcl;
+ 219:../../os/common/ports/AVR/chcore.h ****   uint8_t       pch;
+ 220:../../os/common/ports/AVR/chcore.h **** };
+ 221:../../os/common/ports/AVR/chcore.h **** 
+ 222:../../os/common/ports/AVR/chcore.h **** /**
+ 223:../../os/common/ports/AVR/chcore.h ****  * @brief   Platform dependent part of the @p thread_t structure.
+ 224:../../os/common/ports/AVR/chcore.h ****  * @details This structure usually contains just the saved stack pointer
+ 225:../../os/common/ports/AVR/chcore.h ****  *          defined as a pointer to a @p port_intctx structure.
+ 226:../../os/common/ports/AVR/chcore.h ****  */
+ 227:../../os/common/ports/AVR/chcore.h **** struct port_context {
+ 228:../../os/common/ports/AVR/chcore.h ****   struct port_intctx *sp;
+ 229:../../os/common/ports/AVR/chcore.h **** };
+ 230:../../os/common/ports/AVR/chcore.h **** 
+ 231:../../os/common/ports/AVR/chcore.h **** #endif /* !defined(_FROM_ASM_) */
+ 232:../../os/common/ports/AVR/chcore.h **** 
+ 233:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 234:../../os/common/ports/AVR/chcore.h **** /* Module macros.                                                            */
+ 235:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 236:../../os/common/ports/AVR/chcore.h **** 
+ 237:../../os/common/ports/AVR/chcore.h **** /**
+ 238:../../os/common/ports/AVR/chcore.h ****  * @brief   Platform dependent part of the @p chThdCreateI() API.
+ 239:../../os/common/ports/AVR/chcore.h ****  * @details This code usually setup the context switching frame represented
+ 240:../../os/common/ports/AVR/chcore.h ****  *          by an @p port_intctx structure.
+ 241:../../os/common/ports/AVR/chcore.h ****  */
+ 242:../../os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__) || defined(__DOXYGEN__)
+ 243:../../os/common/ports/AVR/chcore.h **** #define PORT_SETUP_CONTEXT(tp, wbase, wtop, pf, arg) {                      \
+ 244:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp = (struct port_intctx *)((uint8_t *)(wtop) -                   \
+ 245:../../os/common/ports/AVR/chcore.h ****                                       sizeof(struct port_intctx));          \
+ 246:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r2  = (uint8_t)(0xff & (uint16_t)pf);                         \
+ 247:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r3  = (uint8_t)((uint16_t)(pf) >> 8);                         \
+ 248:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r4  = (uint8_t)(0xff & (uint16_t)arg);                        \
+ 249:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r5  = (uint8_t)((uint16_t)(arg) >> 8);                        \
+ 250:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcx = (uint8_t)0;                                             \
+ 251:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcl = (uint16_t)_port_thread_start >> 8;                      \
+ 252:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pch = (uint8_t)(0xff & (uint16_t)_port_thread_start);         \
+ 253:../../os/common/ports/AVR/chcore.h **** }
+ 254:../../os/common/ports/AVR/chcore.h **** #else /* !__AVR_3_BYTE_PC__ */
+ 255:../../os/common/ports/AVR/chcore.h **** #define PORT_SETUP_CONTEXT(tp, wbase, wtop, pf, arg) {                      \
+ 256:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp = (struct port_intctx *)((uint8_t *)(wtop) -                   \
+ 257:../../os/common/ports/AVR/chcore.h ****                                       sizeof(struct port_intctx));          \
+ 258:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r2  = (uint8_t)(0xff & (uint16_t)pf);                         \
+ 259:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r3  = (uint8_t)((uint16_t)(pf) >> 8);                         \
+ 260:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r4  = (uint8_t)(0xff & (uint16_t)arg);                        \
+ 261:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r5  = (uint8_t)((uint16_t)(arg) >> 8);                        \
+ 262:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcl = (uint16_t)_port_thread_start >> 8;                      \
+ 263:../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pch = (uint8_t)(0xff & (uint16_t)_port_thread_start);         \
+ 264:../../os/common/ports/AVR/chcore.h **** }
+ 265:../../os/common/ports/AVR/chcore.h **** #endif /* !__AVR_3_BYTE_PC__ */
+ 266:../../os/common/ports/AVR/chcore.h **** 
+ 267:../../os/common/ports/AVR/chcore.h **** /**
+ 268:../../os/common/ports/AVR/chcore.h ****  * @brief   Computes the thread working area global size.
+ 269:../../os/common/ports/AVR/chcore.h ****  * @note    There is no need to perform alignments in this macro.
+ 270:../../os/common/ports/AVR/chcore.h ****  */
+ 271:../../os/common/ports/AVR/chcore.h **** #define PORT_WA_SIZE(n) ((sizeof(struct port_intctx) - 1) +                \
+ 272:../../os/common/ports/AVR/chcore.h ****                          (sizeof(struct port_extctx) - 1) +                \
+ 273:../../os/common/ports/AVR/chcore.h ****                          ((size_t)(n)) + ((size_t)(PORT_INT_REQUIRED_STACK)))
+ 274:../../os/common/ports/AVR/chcore.h **** 
+ 275:../../os/common/ports/AVR/chcore.h **** /**
+ 276:../../os/common/ports/AVR/chcore.h ****  * @brief   Static working area allocation.
+ 277:../../os/common/ports/AVR/chcore.h ****  * @details This macro is used to allocate a static thread working area
+ 278:../../os/common/ports/AVR/chcore.h ****  *          aligned as both position and size.
+ 279:../../os/common/ports/AVR/chcore.h ****  *
+ 280:../../os/common/ports/AVR/chcore.h ****  * @param[in] s         the name to be assigned to the stack array
+ 281:../../os/common/ports/AVR/chcore.h ****  * @param[in] n         the stack size to be assigned to the thread
+ 282:../../os/common/ports/AVR/chcore.h ****  */
+ 283:../../os/common/ports/AVR/chcore.h **** #define PORT_WORKING_AREA(s, n)                                             \
+ 284:../../os/common/ports/AVR/chcore.h ****   stkalign_t s[THD_WORKING_AREA_SIZE(n) / sizeof (stkalign_t)]
+ 285:../../os/common/ports/AVR/chcore.h **** 
+ 286:../../os/common/ports/AVR/chcore.h **** /**
+ 287:../../os/common/ports/AVR/chcore.h ****  * @brief   Priority level verification macro.
+ 288:../../os/common/ports/AVR/chcore.h ****  */
+ 289:../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_IS_VALID_PRIORITY(n) false
+ 290:../../os/common/ports/AVR/chcore.h **** 
+ 291:../../os/common/ports/AVR/chcore.h **** /**
+ 292:../../os/common/ports/AVR/chcore.h ****  * @brief   Priority level verification macro.
+ 293:../../os/common/ports/AVR/chcore.h ****  */
+ 294:../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_IS_VALID_KERNEL_PRIORITY(n) false
+ 295:../../os/common/ports/AVR/chcore.h **** 
+ 296:../../os/common/ports/AVR/chcore.h **** /**
+ 297:../../os/common/ports/AVR/chcore.h ****  * @brief   IRQ prologue code.
+ 298:../../os/common/ports/AVR/chcore.h ****  * @details This macro must be inserted at the start of all IRQ handlers
+ 299:../../os/common/ports/AVR/chcore.h ****  *          enabled to invoke system APIs.
+ 300:../../os/common/ports/AVR/chcore.h ****  * @note    This code tricks the compiler to save all the specified registers
+ 301:../../os/common/ports/AVR/chcore.h ****  *          by "touching" them.
+ 302:../../os/common/ports/AVR/chcore.h ****  */
+ 303:../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_PROLOGUE() {                                               \
+ 304:../../os/common/ports/AVR/chcore.h ****   asm ("" : : : "r18", "r19", "r20", "r21", "r22", "r23", "r24",            \
+ 305:../../os/common/ports/AVR/chcore.h ****                 "r25", "r26", "r27", "r30", "r31");                         \
+ 306:../../os/common/ports/AVR/chcore.h ****   __avr_in_isr = true;                                                      \
+ 307:../../os/common/ports/AVR/chcore.h **** }
+ 308:../../os/common/ports/AVR/chcore.h **** 
+ 309:../../os/common/ports/AVR/chcore.h **** /**
+ 310:../../os/common/ports/AVR/chcore.h ****  * @brief   IRQ epilogue code.
+ 311:../../os/common/ports/AVR/chcore.h ****  * @details This macro must be inserted at the end of all IRQ handlers
+ 312:../../os/common/ports/AVR/chcore.h ****  *          enabled to invoke system APIs.
+ 313:../../os/common/ports/AVR/chcore.h ****  */
+ 314:../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_EPILOGUE() {                                               \
+ 315:../../os/common/ports/AVR/chcore.h ****   __avr_in_isr = false;                                                     \
+ 316:../../os/common/ports/AVR/chcore.h ****   __dbg_check_lock();                                                       \
+ 317:../../os/common/ports/AVR/chcore.h ****   if (chSchIsPreemptionRequired())                                          \
+ 318:../../os/common/ports/AVR/chcore.h ****     chSchDoPreemption();                                                    \
+ 319:../../os/common/ports/AVR/chcore.h ****   __dbg_check_unlock();                                                     \
+ 320:../../os/common/ports/AVR/chcore.h **** }
+ 321:../../os/common/ports/AVR/chcore.h **** 
+ 322:../../os/common/ports/AVR/chcore.h **** /**
+ 323:../../os/common/ports/AVR/chcore.h ****  * @brief   IRQ handler function declaration.
+ 324:../../os/common/ports/AVR/chcore.h ****  * @note    @p id can be a function name or a vector number depending on the
+ 325:../../os/common/ports/AVR/chcore.h ****  *          port implementation.
+ 326:../../os/common/ports/AVR/chcore.h ****  */
+ 327:../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_HANDLER(id) ISR(id)
+ 328:../../os/common/ports/AVR/chcore.h **** 
+ 329:../../os/common/ports/AVR/chcore.h **** /**
+ 330:../../os/common/ports/AVR/chcore.h ****  * @brief   Fast IRQ handler function declaration.
+ 331:../../os/common/ports/AVR/chcore.h ****  * @note    @p id can be a function name or a vector number depending on the
+ 332:../../os/common/ports/AVR/chcore.h ****  *          port implementation.
+ 333:../../os/common/ports/AVR/chcore.h ****  */
+ 334:../../os/common/ports/AVR/chcore.h **** #define PORT_FAST_IRQ_HANDLER(id) ISR(id)
+ 335:../../os/common/ports/AVR/chcore.h **** 
+ 336:../../os/common/ports/AVR/chcore.h **** /**
+ 337:../../os/common/ports/AVR/chcore.h ****  * @brief   Performs a context switch between two threads.
+ 338:../../os/common/ports/AVR/chcore.h ****  * @details This is the most critical code in any port, this function
+ 339:../../os/common/ports/AVR/chcore.h ****  *          is responsible for the context switch between 2 threads.
+ 340:../../os/common/ports/AVR/chcore.h ****  * @note    The implementation of this code affects <b>directly</b> the context
+ 341:../../os/common/ports/AVR/chcore.h ****  *          switch performance so optimize here as much as you can.
+ 342:../../os/common/ports/AVR/chcore.h ****  *
+ 343:../../os/common/ports/AVR/chcore.h ****  * @param[in] ntp       the thread to be switched in
+ 344:../../os/common/ports/AVR/chcore.h ****  * @param[in] otp       the thread to be switched out
+ 345:../../os/common/ports/AVR/chcore.h ****  */
+ 346:../../os/common/ports/AVR/chcore.h **** #define port_switch(ntp, otp) {                                             \
+ 347:../../os/common/ports/AVR/chcore.h ****   _port_switch(ntp, otp);                                                   \
+ 348:../../os/common/ports/AVR/chcore.h ****   asm volatile ("" : : : "memory");                                         \
+ 349:../../os/common/ports/AVR/chcore.h **** }
+ 350:../../os/common/ports/AVR/chcore.h **** 
+ 351:../../os/common/ports/AVR/chcore.h **** 
+ 352:../../os/common/ports/AVR/chcore.h **** /**
+ 353:../../os/common/ports/AVR/chcore.h ****  * @brief   Port-related initialization code.
+ 354:../../os/common/ports/AVR/chcore.h ****  * @note    This function is empty in this port.
+ 355:../../os/common/ports/AVR/chcore.h ****  */
+ 356:../../os/common/ports/AVR/chcore.h **** #define port_init(oip) {                                                    \
+ 357:../../os/common/ports/AVR/chcore.h ****   __avr_in_isr = true;                                                      \
+ 358:../../os/common/ports/AVR/chcore.h **** }
+ 359:../../os/common/ports/AVR/chcore.h **** 
+ 360:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 361:../../os/common/ports/AVR/chcore.h **** /* External declarations.                                                    */
+ 362:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 363:../../os/common/ports/AVR/chcore.h **** 
+ 364:../../os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
+ 365:../../os/common/ports/AVR/chcore.h ****    asm module.*/
+ 366:../../os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
+ 367:../../os/common/ports/AVR/chcore.h **** 
+ 368:../../os/common/ports/AVR/chcore.h **** #ifdef __cplusplus
+ 369:../../os/common/ports/AVR/chcore.h **** extern "C" {
+ 370:../../os/common/ports/AVR/chcore.h **** #endif
+ 371:../../os/common/ports/AVR/chcore.h ****   void _port_switch(thread_t *ntp, thread_t *otp);
+ 372:../../os/common/ports/AVR/chcore.h ****   void _port_thread_start(void);
+ 373:../../os/common/ports/AVR/chcore.h **** #ifdef __cplusplus
+ 374:../../os/common/ports/AVR/chcore.h **** }
+ 375:../../os/common/ports/AVR/chcore.h **** #endif
+ 376:../../os/common/ports/AVR/chcore.h **** 
+ 377:../../os/common/ports/AVR/chcore.h **** #endif /* !defined(_FROM_ASM_) */
+ 378:../../os/common/ports/AVR/chcore.h **** 
+ 379:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 380:../../os/common/ports/AVR/chcore.h **** /* Module inline functions.                                                  */
+ 381:../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 382:../../os/common/ports/AVR/chcore.h **** 
+ 383:../../os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
+ 384:../../os/common/ports/AVR/chcore.h ****    asm module.*/
+ 385:../../os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
+ 386:../../os/common/ports/AVR/chcore.h **** 
+ 387:../../os/common/ports/AVR/chcore.h **** /**
+ 388:../../os/common/ports/AVR/chcore.h ****  * @brief   Returns a word encoding the current interrupts status.
+ 389:../../os/common/ports/AVR/chcore.h ****  *
+ 390:../../os/common/ports/AVR/chcore.h ****  * @return              The interrupts status.
+ 391:../../os/common/ports/AVR/chcore.h ****  */
+ 392:../../os/common/ports/AVR/chcore.h **** static inline syssts_t port_get_irq_status(void) {
+ 393:../../os/common/ports/AVR/chcore.h **** 
+ 394:../../os/common/ports/AVR/chcore.h ****   return SREG;
+ 395:../../os/common/ports/AVR/chcore.h **** }
+ 396:../../os/common/ports/AVR/chcore.h **** 
+ 397:../../os/common/ports/AVR/chcore.h **** /**
+ 398:../../os/common/ports/AVR/chcore.h ****  * @brief   Checks the interrupt status.
+ 399:../../os/common/ports/AVR/chcore.h ****  *
+ 400:../../os/common/ports/AVR/chcore.h ****  * @param[in] sts       the interrupt status word
+ 401:../../os/common/ports/AVR/chcore.h ****  *
+ 402:../../os/common/ports/AVR/chcore.h ****  * @return              The interrupt status.
+ 403:../../os/common/ports/AVR/chcore.h ****  * @retval false        the word specified a disabled interrupts status.
+ 404:../../os/common/ports/AVR/chcore.h ****  * @retval true         the word specified an enabled interrupts status.
+ 405:../../os/common/ports/AVR/chcore.h ****  */
+ 406:../../os/common/ports/AVR/chcore.h **** static inline bool port_irq_enabled(syssts_t sts) {
+ 407:../../os/common/ports/AVR/chcore.h **** 
+ 408:../../os/common/ports/AVR/chcore.h ****   return (bool)((sts & 0x80) != 0);
+ 409:../../os/common/ports/AVR/chcore.h **** }
+ 410:../../os/common/ports/AVR/chcore.h **** 
+ 411:../../os/common/ports/AVR/chcore.h **** /**
+ 412:../../os/common/ports/AVR/chcore.h ****  * @brief   Determines the current execution context.
+ 413:../../os/common/ports/AVR/chcore.h ****  *
+ 414:../../os/common/ports/AVR/chcore.h ****  * @return              The execution context.
+ 415:../../os/common/ports/AVR/chcore.h ****  * @retval false        not running in ISR mode.
+ 416:../../os/common/ports/AVR/chcore.h ****  * @retval true         running in ISR mode.
+ 417:../../os/common/ports/AVR/chcore.h ****  */
+ 418:../../os/common/ports/AVR/chcore.h **** static inline bool port_is_isr_context(void) {
+ 419:../../os/common/ports/AVR/chcore.h **** 
+ 420:../../os/common/ports/AVR/chcore.h ****   return __avr_in_isr;
+ 421:../../os/common/ports/AVR/chcore.h **** }
+ 422:../../os/common/ports/AVR/chcore.h **** 
+ 423:../../os/common/ports/AVR/chcore.h **** /**
+ 424:../../os/common/ports/AVR/chcore.h ****  * @brief   Kernel-lock action.
+ 425:../../os/common/ports/AVR/chcore.h ****  * @details Usually this function just disables interrupts but may perform more
+ 426:../../os/common/ports/AVR/chcore.h ****  *          actions.
+ 427:../../os/common/ports/AVR/chcore.h ****  */
+ 428:../../os/common/ports/AVR/chcore.h **** static inline void port_lock(void) {
+ 429:../../os/common/ports/AVR/chcore.h **** 
+ 430:../../os/common/ports/AVR/chcore.h ****   asm volatile ("cli" : : : "memory");
  181               		.loc 2 430 0
  182               	/* #APP */
- 183               	 ;  430 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
+ 183               	 ;  430 "../../os/common/ports/AVR/chcore.h" 1
  184 0000 F894      		cli
  185               	 ;  0 "" 2
  186               	.LVL18:
@@ -793,7 +793,7 @@
  190               	.LBE26:
  191               	.LBB29:
  192               	.LBB30:
- 118:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   next = p + size;
+ 118:../../os/oslib/src/chmemcore.c ****   next = p + size;
  193               		.loc 1 118 0
  194 0002 2091 0000 		lds r18,ch_memcore
  195 0006 3091 0000 		lds r19,ch_memcore+1
@@ -812,12 +812,12 @@
  208               	.LVL21:
  209 001e 7523      		and r23,r21
  210               	.LVL22:
- 119:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
+ 119:../../os/oslib/src/chmemcore.c **** 
  211               		.loc 1 119 0
  212 0020 860F      		add r24,r22
  213 0022 971F      		adc r25,r23
  214               	.LVL23:
- 122:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     return NULL;
+ 122:../../os/oslib/src/chmemcore.c ****     return NULL;
  215               		.loc 1 122 0
  216 0024 4091 0000 		lds r20,ch_memcore+2
  217 0028 5091 0000 		lds r21,ch_memcore+2+1
@@ -827,7 +827,7 @@
  221 0032 8217      		cp r24,r18
  222 0034 9307      		cpc r25,r19
  223 0036 00F0      		brlo .L14
- 126:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
+ 126:../../os/oslib/src/chmemcore.c **** 
  224               		.loc 1 126 0
  225 0038 9093 0000 		sts ch_memcore+1,r25
  226 003c 8093 0000 		sts ch_memcore,r24
@@ -838,19 +838,19 @@
  231               	.LBB33:
  232               	.LBB34:
  233               	.LBB35:
- 431:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
- 432:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 433:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
- 434:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @brief   Kernel-unlock action.
- 435:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  * @details Usually this function just enables interrupts but may perform more
- 436:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  *          actions.
- 437:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****  */
- 438:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** static inline void port_unlock(void) {
- 439:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
- 440:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   asm volatile ("sei" : : : "memory");
+ 431:../../os/common/ports/AVR/chcore.h **** }
+ 432:../../os/common/ports/AVR/chcore.h **** 
+ 433:../../os/common/ports/AVR/chcore.h **** /**
+ 434:../../os/common/ports/AVR/chcore.h ****  * @brief   Kernel-unlock action.
+ 435:../../os/common/ports/AVR/chcore.h ****  * @details Usually this function just enables interrupts but may perform more
+ 436:../../os/common/ports/AVR/chcore.h ****  *          actions.
+ 437:../../os/common/ports/AVR/chcore.h ****  */
+ 438:../../os/common/ports/AVR/chcore.h **** static inline void port_unlock(void) {
+ 439:../../os/common/ports/AVR/chcore.h **** 
+ 440:../../os/common/ports/AVR/chcore.h ****   asm volatile ("sei" : : : "memory");
  234               		.loc 2 440 0
  235               	/* #APP */
- 236               	 ;  440 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
+ 236               	 ;  440 "../../os/common/ports/AVR/chcore.h" 1
  237 0040 7894      		sei
  238               	 ;  0 "" 2
  239               	/* #NOAPP */
@@ -858,14 +858,14 @@
  241               	.LBE34:
  242               	.LBE33:
  243               	.LBE32:
- 179:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   void *p;
- 180:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 181:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   chSysLock();
- 182:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   p = chCoreAllocFromBaseI(size, align, offset);
- 183:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   chSysUnlock();
- 184:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 185:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   return p;
- 186:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** }
+ 179:../../os/oslib/src/chmemcore.c ****   void *p;
+ 180:../../os/oslib/src/chmemcore.c **** 
+ 181:../../os/oslib/src/chmemcore.c ****   chSysLock();
+ 182:../../os/oslib/src/chmemcore.c ****   p = chCoreAllocFromBaseI(size, align, offset);
+ 183:../../os/oslib/src/chmemcore.c ****   chSysUnlock();
+ 184:../../os/oslib/src/chmemcore.c **** 
+ 185:../../os/oslib/src/chmemcore.c ****   return p;
+ 186:../../os/oslib/src/chmemcore.c **** }
  244               		.loc 1 186 0
  245 0042 CB01      		movw r24,r22
  246               	/* epilogue start */
@@ -874,7 +874,7 @@
  249               	.L14:
  250               	.LBB39:
  251               	.LBB31:
- 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   }
+ 123:../../os/oslib/src/chmemcore.c ****   }
  252               		.loc 1 123 0
  253 0046 70E0      		ldi r23,0
  254 0048 60E0      		ldi r22,0
@@ -887,7 +887,7 @@
  261               	.LBB36:
  262               		.loc 2 440 0
  263               	/* #APP */
- 264               	 ;  440 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
+ 264               	 ;  440 "../../os/common/ports/AVR/chcore.h" 1
  265 004a 7894      		sei
  266               	 ;  0 "" 2
  267               	/* #NOAPP */
@@ -905,22 +905,22 @@
  280               	.global	chCoreAllocFromTop
  282               	chCoreAllocFromTop:
  283               	.LFB199:
- 187:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 188:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /**
- 189:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @brief   Allocates a memory block starting from the top address downward.
- 190:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @details This function allocates a block of @p offset + @p size bytes. The
- 191:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          returned pointer has @p offset bytes before its address and
- 192:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *          @p size bytes after.
- 193:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *
- 194:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @param[in] size      the size of the block to be allocated.
- 195:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @param[in] align     desired memory alignment
- 196:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @param[in] offset    aligned pointer offset
- 197:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @return              A pointer to the allocated memory block.
- 198:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @retval NULL         allocation failed, core memory exhausted.
- 199:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *
- 200:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @api
- 201:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  */
- 202:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** void *chCoreAllocFromTop(size_t size, unsigned align, size_t offset) {
+ 187:../../os/oslib/src/chmemcore.c **** 
+ 188:../../os/oslib/src/chmemcore.c **** /**
+ 189:../../os/oslib/src/chmemcore.c ****  * @brief   Allocates a memory block starting from the top address downward.
+ 190:../../os/oslib/src/chmemcore.c ****  * @details This function allocates a block of @p offset + @p size bytes. The
+ 191:../../os/oslib/src/chmemcore.c ****  *          returned pointer has @p offset bytes before its address and
+ 192:../../os/oslib/src/chmemcore.c ****  *          @p size bytes after.
+ 193:../../os/oslib/src/chmemcore.c ****  *
+ 194:../../os/oslib/src/chmemcore.c ****  * @param[in] size      the size of the block to be allocated.
+ 195:../../os/oslib/src/chmemcore.c ****  * @param[in] align     desired memory alignment
+ 196:../../os/oslib/src/chmemcore.c ****  * @param[in] offset    aligned pointer offset
+ 197:../../os/oslib/src/chmemcore.c ****  * @return              A pointer to the allocated memory block.
+ 198:../../os/oslib/src/chmemcore.c ****  * @retval NULL         allocation failed, core memory exhausted.
+ 199:../../os/oslib/src/chmemcore.c ****  *
+ 200:../../os/oslib/src/chmemcore.c ****  * @api
+ 201:../../os/oslib/src/chmemcore.c ****  */
+ 202:../../os/oslib/src/chmemcore.c **** void *chCoreAllocFromTop(size_t size, unsigned align, size_t offset) {
  284               		.loc 1 202 0
  285               		.cfi_startproc
  286               	.LVL27:
@@ -931,10 +931,10 @@
  291               	.LBB41:
  292               	.LBB42:
  293               	.LBB43:
- 430:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
+ 430:../../os/common/ports/AVR/chcore.h **** }
  294               		.loc 2 430 0
  295               	/* #APP */
- 296               	 ;  430 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
+ 296               	 ;  430 "../../os/common/ports/AVR/chcore.h" 1
  297 0000 F894      		cli
  298               	 ;  0 "" 2
  299               	.LVL28:
@@ -944,7 +944,7 @@
  303               	.LBE41:
  304               	.LBB44:
  305               	.LBB45:
- 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   prev = p - offset;
+ 151:../../os/oslib/src/chmemcore.c ****   prev = p - offset;
  306               		.loc 1 151 0
  307 0002 E091 0000 		lds r30,ch_memcore+2
  308 0006 F091 0000 		lds r31,ch_memcore+2+1
@@ -960,13 +960,13 @@
  318 0018 8623      		and r24,r22
  319 001a 9723      		and r25,r23
  320               	.LVL31:
- 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
+ 152:../../os/oslib/src/chmemcore.c **** 
  321               		.loc 1 152 0
  322 001c 9C01      		movw r18,r24
  323 001e 241B      		sub r18,r20
  324 0020 350B      		sbc r19,r21
  325               	.LVL32:
- 155:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****     return NULL;
+ 155:../../os/oslib/src/chmemcore.c ****     return NULL;
  326               		.loc 1 155 0
  327 0022 4091 0000 		lds r20,ch_memcore
  328 0026 5091 0000 		lds r21,ch_memcore+1
@@ -977,7 +977,7 @@
  333 0030 E217      		cp r30,r18
  334 0032 F307      		cpc r31,r19
  335 0034 00F0      		brlo .L18
- 159:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
+ 159:../../os/oslib/src/chmemcore.c **** 
  336               		.loc 1 159 0
  337 0036 3093 0000 		sts ch_memcore+2+1,r19
  338 003a 2093 0000 		sts ch_memcore+2,r18
@@ -990,7 +990,7 @@
  345               	.LBB50:
  346               		.loc 2 440 0
  347               	/* #APP */
- 348               	 ;  440 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
+ 348               	 ;  440 "../../os/common/ports/AVR/chcore.h" 1
  349 003e 7894      		sei
  350               	 ;  0 "" 2
  351               	/* epilogue start */
@@ -999,21 +999,21 @@
  354               	.LBE49:
  355               	.LBE48:
  356               	.LBE47:
- 203:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   void *p;
- 204:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 205:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   chSysLock();
- 206:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   p = chCoreAllocFromTopI(size, align, offset);
- 207:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   chSysUnlock();
- 208:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 209:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   return p;
- 210:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** }
+ 203:../../os/oslib/src/chmemcore.c ****   void *p;
+ 204:../../os/oslib/src/chmemcore.c **** 
+ 205:../../os/oslib/src/chmemcore.c ****   chSysLock();
+ 206:../../os/oslib/src/chmemcore.c ****   p = chCoreAllocFromTopI(size, align, offset);
+ 207:../../os/oslib/src/chmemcore.c ****   chSysUnlock();
+ 208:../../os/oslib/src/chmemcore.c **** 
+ 209:../../os/oslib/src/chmemcore.c ****   return p;
+ 210:../../os/oslib/src/chmemcore.c **** }
  357               		.loc 1 210 0
  358 0040 0895      		ret
  359               	.LVL35:
  360               	.L18:
  361               	.LBB54:
  362               	.LBB46:
- 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   }
+ 156:../../os/oslib/src/chmemcore.c ****   }
  363               		.loc 1 156 0
  364 0042 90E0      		ldi r25,0
  365 0044 80E0      		ldi r24,0
@@ -1026,7 +1026,7 @@
  372               	.LBB51:
  373               		.loc 2 440 0
  374               	/* #APP */
- 375               	 ;  440 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
+ 375               	 ;  440 "../../os/common/ports/AVR/chcore.h" 1
  376 0046 7894      		sei
  377               	 ;  0 "" 2
  378               	/* epilogue start */
@@ -1043,24 +1043,24 @@
  390               	.global	chCoreGetStatusX
  392               	chCoreGetStatusX:
  393               	.LFB200:
- 211:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 212:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** /**
- 213:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @brief   Core memory status.
- 214:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *
- 215:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @return              The size, in bytes, of the free core memory.
- 216:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  *
- 217:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  * @xclass
- 218:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****  */
- 219:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** size_t chCoreGetStatusX(void) {
+ 211:../../os/oslib/src/chmemcore.c **** 
+ 212:../../os/oslib/src/chmemcore.c **** /**
+ 213:../../os/oslib/src/chmemcore.c ****  * @brief   Core memory status.
+ 214:../../os/oslib/src/chmemcore.c ****  *
+ 215:../../os/oslib/src/chmemcore.c ****  * @return              The size, in bytes, of the free core memory.
+ 216:../../os/oslib/src/chmemcore.c ****  *
+ 217:../../os/oslib/src/chmemcore.c ****  * @xclass
+ 218:../../os/oslib/src/chmemcore.c ****  */
+ 219:../../os/oslib/src/chmemcore.c **** size_t chCoreGetStatusX(void) {
  394               		.loc 1 219 0
  395               		.cfi_startproc
  396               	/* prologue: function */
  397               	/* frame size = 0 */
  398               	/* stack size = 0 */
  399               	.L__stack_usage = 0
- 220:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** 
- 221:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   /*lint -save -e9033 [10.8] The cast is safe.*/
- 222:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   return (size_t)(ch_memcore.topmem - ch_memcore.basemem);
+ 220:../../os/oslib/src/chmemcore.c **** 
+ 221:../../os/oslib/src/chmemcore.c ****   /*lint -save -e9033 [10.8] The cast is safe.*/
+ 222:../../os/oslib/src/chmemcore.c ****   return (size_t)(ch_memcore.topmem - ch_memcore.basemem);
  400               		.loc 1 222 0
  401 0000 E0E0      		ldi r30,lo8(ch_memcore)
  402 0002 F0E0      		ldi r31,hi8(ch_memcore)
@@ -1068,8 +1068,8 @@
  404 0006 9381      		ldd r25,Z+3
  405 0008 2081      		ld r18,Z
  406 000a 3181      		ldd r19,Z+1
- 223:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c ****   /*lint -restore*/
- 224:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemcore.c **** }
+ 223:../../os/oslib/src/chmemcore.c ****   /*lint -restore*/
+ 224:../../os/oslib/src/chmemcore.c **** }
  407               		.loc 1 224 0
  408 000c 821B      		sub r24,r18
  409 000e 930B      		sbc r25,r19
@@ -1077,8 +1077,8 @@
  411 0010 0895      		ret
  412               		.cfi_endproc
  413               	.LFE200:
- 415               		.section	.bss.static_heap.3138,"aw",@nobits
- 418               	static_heap.3138:
+ 415               		.section	.bss.static_heap.3139,"aw",@nobits
+ 418               	static_heap.3139:
  419 0000 0000 0000 		.zero	128
  419      0000 0000 
  419      0000 0000 
@@ -1089,33 +1089,33 @@
  422               	.Letext0:
  423               		.file 3 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
  424               		.file 4 "/usr/lib/avr/include/stdint.h"
- 425               		.file 5 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
- 426               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
- 427               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
- 428               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
- 429               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
- 430               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
- 431               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
- 432               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
- 433               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
- 434               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
- 435               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
- 436               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
+ 425               		.file 5 "../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+ 426               		.file 6 "../../os/rt/include/chearly.h"
+ 427               		.file 7 "../../os/rt/include/chobjects.h"
+ 428               		.file 8 "../../os/rt/include/chrfcu.h"
+ 429               		.file 9 "../../os/rt/include/chdebug.h"
+ 430               		.file 10 "../../os/rt/include/chtime.h"
+ 431               		.file 11 "../../os/rt/include/chlists.h"
+ 432               		.file 12 "../../os/rt/include/chsem.h"
+ 433               		.file 13 "../../os/rt/include/chmtx.h"
+ 434               		.file 14 "../../os/rt/include/chsys.h"
+ 435               		.file 15 "../../os/rt/include/chregistry.h"
+ 436               		.file 16 "../../os/oslib/include/chmemcore.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chmemcore.c
-     /tmp/ccpcTLsa.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccpcTLsa.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccpcTLsa.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccpcTLsa.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccpcTLsa.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccpcTLsa.s:13     .text.__core_init:0000000000000000 __core_init
+     /tmp/ccTBW3VC.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccTBW3VC.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccTBW3VC.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccTBW3VC.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccTBW3VC.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccTBW3VC.s:13     .text.__core_init:0000000000000000 __core_init
                             *COM*:0000000000000004 ch_memcore
-     /tmp/ccpcTLsa.s:418    .bss.static_heap.3138:0000000000000000 static_heap.3138
-     /tmp/ccpcTLsa.s:43     .text.chCoreAllocFromBaseI:0000000000000000 chCoreAllocFromBaseI
-     /tmp/ccpcTLsa.s:109    .text.chCoreAllocFromTopI:0000000000000000 chCoreAllocFromTopI
-     /tmp/ccpcTLsa.s:168    .text.chCoreAllocFromBase:0000000000000000 chCoreAllocFromBase
-     /tmp/ccpcTLsa.s:282    .text.chCoreAllocFromTop:0000000000000000 chCoreAllocFromTop
-     /tmp/ccpcTLsa.s:392    .text.chCoreGetStatusX:0000000000000000 chCoreGetStatusX
+     /tmp/ccTBW3VC.s:418    .bss.static_heap.3139:0000000000000000 static_heap.3139
+     /tmp/ccTBW3VC.s:43     .text.chCoreAllocFromBaseI:0000000000000000 chCoreAllocFromBaseI
+     /tmp/ccTBW3VC.s:109    .text.chCoreAllocFromTopI:0000000000000000 chCoreAllocFromTopI
+     /tmp/ccTBW3VC.s:168    .text.chCoreAllocFromBase:0000000000000000 chCoreAllocFromBase
+     /tmp/ccTBW3VC.s:282    .text.chCoreAllocFromTop:0000000000000000 chCoreAllocFromTop
+     /tmp/ccTBW3VC.s:392    .text.chCoreGetStatusX:0000000000000000 chCoreGetStatusX
 
 UNDEFINED SYMBOLS
 __do_clear_bss

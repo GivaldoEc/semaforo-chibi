@@ -11,59 +11,59 @@
   11               	.global	hal_lld_init
   13               	hal_lld_init:
   14               	.LFB243:
-  15               		.file 1 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx
-   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*
-   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
-   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
-   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     Licensed under the Apache License, Version 2.0 (the "License");
-   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     you may not use this file except in compliance with the License.
-   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     You may obtain a copy of the License at
-   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
-   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****         http://www.apache.org/licenses/LICENSE-2.0
-   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
-  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     Unless required by applicable law or agreed to in writing, software
-  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     distributed under the License is distributed on an "AS IS" BASIS,
-  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     See the License for the specific language governing permissions and
-  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     limitations under the License.
-  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** */
-  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
-  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /**
-  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  * @file    ATMEGAxx/hal_lld.c
-  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  * @brief   AVR HAL subsystem low level driver code.
-  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  *
-  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  * @addtogroup HAL
-  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  * @{
-  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  */
-  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
-  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** #include "hal.h"
-  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
-  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
-  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /* Driver exported variables.                                               */
-  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
-  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
-  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
-  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /* Driver local variables and types.                                        */
-  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
-  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
-  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
-  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /* Driver local functions.                                                  */
-  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
-  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
-  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
-  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /* Driver interrupt handlers.                                               */
-  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
-  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
-  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
-  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /* Driver exported functions.                                               */
-  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
-  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
-  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /**
-  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  * @brief   Low level HAL driver initialization.
-  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  *
-  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  * @notapi
-  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  */
-  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** void hal_lld_init(void) {
+  15               		.file 1 "../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c"
+   1:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*
+   2:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
+   3:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
+   4:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     you may not use this file except in compliance with the License.
+   6:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     You may obtain a copy of the License at
+   7:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
+   8:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
+  10:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     Unless required by applicable law or agreed to in writing, software
+  11:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     See the License for the specific language governing permissions and
+  14:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****     limitations under the License.
+  15:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** */
+  16:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
+  17:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /**
+  18:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  * @file    ATMEGAxx/hal_lld.c
+  19:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  * @brief   AVR HAL subsystem low level driver code.
+  20:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  *
+  21:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  * @addtogroup HAL
+  22:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  * @{
+  23:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  */
+  24:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
+  25:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** #include "hal.h"
+  26:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
+  27:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
+  28:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /* Driver exported variables.                                               */
+  29:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
+  30:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
+  31:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
+  32:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /* Driver local variables and types.                                        */
+  33:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
+  34:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
+  35:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
+  36:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /* Driver local functions.                                                  */
+  37:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
+  38:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
+  39:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
+  40:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /* Driver interrupt handlers.                                               */
+  41:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
+  42:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
+  43:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
+  44:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /* Driver exported functions.                                               */
+  45:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /*==========================================================================*/
+  46:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** 
+  47:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** /**
+  48:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  * @brief   Low level HAL driver initialization.
+  49:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  *
+  50:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  * @notapi
+  51:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c ****  */
+  52:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** void hal_lld_init(void) {
   16               		.loc 1 52 0
   17               		.cfi_startproc
   18               	/* prologue: function */
@@ -71,7 +71,7 @@
   20               	/* stack size = 0 */
   21               	.L__stack_usage = 0
   22               	/* epilogue start */
-  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** }
+  53:../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.c **** }
   23               		.loc 1 53 0
   24 0000 0895      		ret
   25               		.cfi_endproc
@@ -80,31 +80,31 @@
   29               	.Letext0:
   30               		.file 2 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
   31               		.file 3 "/usr/lib/avr/include/stdint.h"
-  32               		.file 4 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
-  33               		.file 5 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
-  34               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
-  35               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
-  36               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
-  37               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
-  38               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
-  39               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
-  40               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
-  41               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
-  42               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
-  43               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
-  44               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chevents.h"
-  45               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
-  46               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_queues.h"
-  47               		.file 19 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPI
-  48               		.file 20 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_serial.h"
-  49               		.file 21 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
+  32               		.file 4 "../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+  33               		.file 5 "../../os/rt/include/chearly.h"
+  34               		.file 6 "../../os/rt/include/chobjects.h"
+  35               		.file 7 "../../os/rt/include/chrfcu.h"
+  36               		.file 8 "../../os/rt/include/chdebug.h"
+  37               		.file 9 "../../os/rt/include/chtime.h"
+  38               		.file 10 "../../os/rt/include/chlists.h"
+  39               		.file 11 "../../os/common/ports/AVR/chcore.h"
+  40               		.file 12 "../../os/rt/include/chsem.h"
+  41               		.file 13 "../../os/rt/include/chmtx.h"
+  42               		.file 14 "../../os/rt/include/chsys.h"
+  43               		.file 15 "../../os/rt/include/chregistry.h"
+  44               		.file 16 "../../os/rt/include/chevents.h"
+  45               		.file 17 "../../os/oslib/include/chmemcore.h"
+  46               		.file 18 "../../os/hal/include/hal_queues.h"
+  47               		.file 19 "../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.h"
+  48               		.file 20 "../../os/hal/include/hal_serial.h"
+  49               		.file 21 "../../os/hal/ports/AVR/MEGA/LLD/USARTv1/hal_serial_lld.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_lld.c
-     /tmp/ccqJiBjC.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccqJiBjC.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccqJiBjC.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccqJiBjC.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccqJiBjC.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccqJiBjC.s:13     .text.hal_lld_init:0000000000000000 hal_lld_init
+     /tmp/ccG5Ek7l.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccG5Ek7l.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccG5Ek7l.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccG5Ek7l.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccG5Ek7l.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccG5Ek7l.s:13     .text.hal_lld_init:0000000000000000 hal_lld_init
 
 NO UNDEFINED SYMBOLS

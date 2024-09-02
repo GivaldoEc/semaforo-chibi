@@ -10,30 +10,30 @@
   10               	.Letext0:
   11               		.file 1 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
   12               		.file 2 "/usr/lib/avr/include/stdint.h"
-  13               		.file 3 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
-  14               		.file 4 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
-  15               		.file 5 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
-  16               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
-  17               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
-  18               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
-  19               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
-  20               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
-  21               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
-  22               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
-  23               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
-  24               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
-  25               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chevents.h"
-  26               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
-  27               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_queues.h"
-  28               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPI
-  29               		.file 19 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_serial.h"
-  30               		.file 20 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
+  13               		.file 3 "../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+  14               		.file 4 "../../os/rt/include/chearly.h"
+  15               		.file 5 "../../os/rt/include/chobjects.h"
+  16               		.file 6 "../../os/rt/include/chrfcu.h"
+  17               		.file 7 "../../os/rt/include/chdebug.h"
+  18               		.file 8 "../../os/rt/include/chtime.h"
+  19               		.file 9 "../../os/rt/include/chlists.h"
+  20               		.file 10 "../../os/common/ports/AVR/chcore.h"
+  21               		.file 11 "../../os/rt/include/chsem.h"
+  22               		.file 12 "../../os/rt/include/chmtx.h"
+  23               		.file 13 "../../os/rt/include/chsys.h"
+  24               		.file 14 "../../os/rt/include/chregistry.h"
+  25               		.file 15 "../../os/rt/include/chevents.h"
+  26               		.file 16 "../../os/oslib/include/chmemcore.h"
+  27               		.file 17 "../../os/hal/include/hal_queues.h"
+  28               		.file 18 "../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.h"
+  29               		.file 19 "../../os/hal/include/hal_serial.h"
+  30               		.file 20 "../../os/hal/ports/AVR/MEGA/LLD/USARTv1/hal_serial_lld.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_mmcsd.c
-     /tmp/ccM1cGSz.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccM1cGSz.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccM1cGSz.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccM1cGSz.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccM1cGSz.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc7GeeH8.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc7GeeH8.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc7GeeH8.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc7GeeH8.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc7GeeH8.s:6      *ABS*:0000000000000001 __zero_reg__
 
 NO UNDEFINED SYMBOLS

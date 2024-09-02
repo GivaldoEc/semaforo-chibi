@@ -17,17 +17,27 @@
 #include "ch.h"
 #include "hal.h"
 
+#define LED_PERIODO 10000
+
+void vt_cb(void *arg) {
+  chSysLockFromISR();
+  palTogglePad(IOPORT2, PORTB_LED1);
+  chVTSetI((virtual_timer_t*) arg, TIME_MS2I(LED_PERIODO/2), (vtfunc_t) vt_cb, arg);
+  chSysUnlockFromISR();
+}
+
 /*
  * LED blinker thread, times are in milliseconds.
  */
 static THD_WORKING_AREA(waThread1, 32);
 static THD_FUNCTION(Thread1, arg) {
+  virtual_timer_t vt;
 
-  (void)arg;
-  chRegSetThreadName("Blinker");
-  while (true) {
-    palTogglePad(IOPORT2, PORTB_LED1);
-    chThdSleepMilliseconds(100);
+  chVTObjectInit(&vt);
+  chVTSet(&vt, TIME_MS2I(LED_PERIODO/2), (vtfunc_t) vt_cb, (void*) &vt);
+
+  while (1) {
+
   }
 }
 
@@ -35,7 +45,6 @@ static THD_FUNCTION(Thread1, arg) {
  * Application entry point.
  */
 int main(void) {
-
   /*
    * System initializations.
    * - HAL initialization, this also initializes the configured device drivers
@@ -46,19 +55,13 @@ int main(void) {
   halInit();
   chSysInit();
 
-  /*
-   * Activates the serial driver 1 using the driver default configuration.
-   */
-  sdStart(&SD1, NULL);
+  palSetPadMode(IOPORT2, PORTB_LED1, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearPad(IOPORT2, PORTB_LED1);
 
   /*
-   * Starts the LED blinker thread.
+   * Starts the LED blinker thread. 
    */
-  chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, Thread1, NULL);
+  chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO+1, Thread1, NULL);
 
-  chnWrite(&SD1, (const uint8_t *)"Hello World!\r\n", 14);
-
-  while (true) {
-    chThdSleepMilliseconds(1000);
-  }
+  while (1) {}
 }

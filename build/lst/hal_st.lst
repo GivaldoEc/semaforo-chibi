@@ -11,90 +11,90 @@
   11               	.global	stInit
   13               	stInit:
   14               	.LFB243:
-  15               		.file 1 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c"
-   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /*
-   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
-   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****     Licensed under the Apache License, Version 2.0 (the "License");
-   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****     you may not use this file except in compliance with the License.
-   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****     You may obtain a copy of the License at
-   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****         http://www.apache.org/licenses/LICENSE-2.0
-   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****     Unless required by applicable law or agreed to in writing, software
-  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****     distributed under the License is distributed on an "AS IS" BASIS,
-  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****     See the License for the specific language governing permissions and
-  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****     limitations under the License.
-  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** */
-  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /**
-  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @file    hal_st.c
-  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @brief   ST Driver code.
-  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
-  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @addtogroup ST
-  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @{
-  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  */
-  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** #include "hal.h"
-  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** #if (OSAL_ST_MODE != OSAL_ST_MODE_NONE) || defined(__DOXYGEN__)
-  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /*===========================================================================*/
-  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /* Driver local definitions.                                                 */
-  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /*===========================================================================*/
-  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /*===========================================================================*/
-  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /* Driver exported variables.                                                */
-  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /*===========================================================================*/
-  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /*===========================================================================*/
-  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /* Driver local types.                                                       */
-  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /*===========================================================================*/
-  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /*===========================================================================*/
-  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /* Driver local variables.                                                   */
-  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /*===========================================================================*/
-  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /**
-  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @brief   Callback pointers for each alarm.
-  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @note    If some alarms have static callbacks defined in the LLD then
-  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *          some of the pointers might be unused (never called through).
-  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  */
-  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** #if (ST_LLD_NUM_ALARMS > 1) || defined(__DOXYGEN__)
-  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** st_callback_t st_callbacks[ST_LLD_NUM_ALARMS];
-  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** #endif
-  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /*===========================================================================*/
-  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /* Driver local functions.                                                   */
-  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /*===========================================================================*/
-  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /*===========================================================================*/
-  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /* Driver exported functions.                                                */
-  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /*===========================================================================*/
-  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /**
-  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @brief   ST Driver initialization.
-  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @note    This function is implicitly invoked by @p halInit(), there is
-  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *          no need to explicitly initialize the driver.
-  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
-  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @init
-  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  */
-  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** void stInit(void) {
+  15               		.file 1 "../../os/hal/src/hal_st.c"
+   1:../../os/hal/src/hal_st.c **** /*
+   2:../../os/hal/src/hal_st.c ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
+   3:../../os/hal/src/hal_st.c **** 
+   4:../../os/hal/src/hal_st.c ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:../../os/hal/src/hal_st.c ****     you may not use this file except in compliance with the License.
+   6:../../os/hal/src/hal_st.c ****     You may obtain a copy of the License at
+   7:../../os/hal/src/hal_st.c **** 
+   8:../../os/hal/src/hal_st.c ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:../../os/hal/src/hal_st.c **** 
+  10:../../os/hal/src/hal_st.c ****     Unless required by applicable law or agreed to in writing, software
+  11:../../os/hal/src/hal_st.c ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:../../os/hal/src/hal_st.c ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:../../os/hal/src/hal_st.c ****     See the License for the specific language governing permissions and
+  14:../../os/hal/src/hal_st.c ****     limitations under the License.
+  15:../../os/hal/src/hal_st.c **** */
+  16:../../os/hal/src/hal_st.c **** 
+  17:../../os/hal/src/hal_st.c **** /**
+  18:../../os/hal/src/hal_st.c ****  * @file    hal_st.c
+  19:../../os/hal/src/hal_st.c ****  * @brief   ST Driver code.
+  20:../../os/hal/src/hal_st.c ****  *
+  21:../../os/hal/src/hal_st.c ****  * @addtogroup ST
+  22:../../os/hal/src/hal_st.c ****  * @{
+  23:../../os/hal/src/hal_st.c ****  */
+  24:../../os/hal/src/hal_st.c **** 
+  25:../../os/hal/src/hal_st.c **** #include "hal.h"
+  26:../../os/hal/src/hal_st.c **** 
+  27:../../os/hal/src/hal_st.c **** #if (OSAL_ST_MODE != OSAL_ST_MODE_NONE) || defined(__DOXYGEN__)
+  28:../../os/hal/src/hal_st.c **** 
+  29:../../os/hal/src/hal_st.c **** /*===========================================================================*/
+  30:../../os/hal/src/hal_st.c **** /* Driver local definitions.                                                 */
+  31:../../os/hal/src/hal_st.c **** /*===========================================================================*/
+  32:../../os/hal/src/hal_st.c **** 
+  33:../../os/hal/src/hal_st.c **** /*===========================================================================*/
+  34:../../os/hal/src/hal_st.c **** /* Driver exported variables.                                                */
+  35:../../os/hal/src/hal_st.c **** /*===========================================================================*/
+  36:../../os/hal/src/hal_st.c **** 
+  37:../../os/hal/src/hal_st.c **** /*===========================================================================*/
+  38:../../os/hal/src/hal_st.c **** /* Driver local types.                                                       */
+  39:../../os/hal/src/hal_st.c **** /*===========================================================================*/
+  40:../../os/hal/src/hal_st.c **** 
+  41:../../os/hal/src/hal_st.c **** /*===========================================================================*/
+  42:../../os/hal/src/hal_st.c **** /* Driver local variables.                                                   */
+  43:../../os/hal/src/hal_st.c **** /*===========================================================================*/
+  44:../../os/hal/src/hal_st.c **** 
+  45:../../os/hal/src/hal_st.c **** /**
+  46:../../os/hal/src/hal_st.c ****  * @brief   Callback pointers for each alarm.
+  47:../../os/hal/src/hal_st.c ****  * @note    If some alarms have static callbacks defined in the LLD then
+  48:../../os/hal/src/hal_st.c ****  *          some of the pointers might be unused (never called through).
+  49:../../os/hal/src/hal_st.c ****  */
+  50:../../os/hal/src/hal_st.c **** #if (ST_LLD_NUM_ALARMS > 1) || defined(__DOXYGEN__)
+  51:../../os/hal/src/hal_st.c **** st_callback_t st_callbacks[ST_LLD_NUM_ALARMS];
+  52:../../os/hal/src/hal_st.c **** #endif
+  53:../../os/hal/src/hal_st.c **** 
+  54:../../os/hal/src/hal_st.c **** /*===========================================================================*/
+  55:../../os/hal/src/hal_st.c **** /* Driver local functions.                                                   */
+  56:../../os/hal/src/hal_st.c **** /*===========================================================================*/
+  57:../../os/hal/src/hal_st.c **** 
+  58:../../os/hal/src/hal_st.c **** /*===========================================================================*/
+  59:../../os/hal/src/hal_st.c **** /* Driver exported functions.                                                */
+  60:../../os/hal/src/hal_st.c **** /*===========================================================================*/
+  61:../../os/hal/src/hal_st.c **** 
+  62:../../os/hal/src/hal_st.c **** /**
+  63:../../os/hal/src/hal_st.c ****  * @brief   ST Driver initialization.
+  64:../../os/hal/src/hal_st.c ****  * @note    This function is implicitly invoked by @p halInit(), there is
+  65:../../os/hal/src/hal_st.c ****  *          no need to explicitly initialize the driver.
+  66:../../os/hal/src/hal_st.c ****  *
+  67:../../os/hal/src/hal_st.c ****  * @init
+  68:../../os/hal/src/hal_st.c ****  */
+  69:../../os/hal/src/hal_st.c **** void stInit(void) {
   16               		.loc 1 69 0
   17               		.cfi_startproc
   18               	/* prologue: function */
   19               	/* frame size = 0 */
   20               	/* stack size = 0 */
   21               	.L__stack_usage = 0
-  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** #if ST_LLD_NUM_ALARMS > 1
-  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   unsigned i;
-  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   for (i = 0U; i < (unsigned)ST_LLD_NUM_ALARMS; i++) {
-  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****     st_callbacks[i] = NULL;
-  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   }
-  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** #endif
-  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   st_lld_init();
+  70:../../os/hal/src/hal_st.c **** #if ST_LLD_NUM_ALARMS > 1
+  71:../../os/hal/src/hal_st.c ****   unsigned i;
+  72:../../os/hal/src/hal_st.c **** 
+  73:../../os/hal/src/hal_st.c ****   for (i = 0U; i < (unsigned)ST_LLD_NUM_ALARMS; i++) {
+  74:../../os/hal/src/hal_st.c ****     st_callbacks[i] = NULL;
+  75:../../os/hal/src/hal_st.c ****   }
+  76:../../os/hal/src/hal_st.c **** #endif
+  77:../../os/hal/src/hal_st.c ****   st_lld_init();
   22               		.loc 1 77 0
   23 0000 0C94 0000 		jmp st_lld_init
   24               	.LVL0:
@@ -104,32 +104,32 @@
   29               	.global	stGetCounter
   31               	stGetCounter:
   32               	.LFB244:
-  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** }
-  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** #if defined(ST_LLD_MULTICORE_SUPPORT) || defined(__DOXYGEN__)
-  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /**
-  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @brief   Enables an alarm interrupt on the invoking core.
-  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @note    Must be called before any other alarm-related function.
-  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
-  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @api
-  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  */
-  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** void stBind(void) {
-  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   st_lld_bind();
-  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** }
-  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** #endif /* defined(ST_LLD_MULTICORE_SUPPORT) */
-  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
-  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** #if (OSAL_ST_MODE == OSAL_ST_MODE_FREERUNNING) || defined(__DOXYGEN__)
-  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /**
-  95:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @brief   Returns the time counter value.
-  96:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @note    This functionality is only available in free running mode, the
-  97:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *          behaviour in periodic mode is undefined.
-  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
-  99:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @return              The counter value.
- 100:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
- 101:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @api
- 102:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  */
- 103:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** systime_t stGetCounter(void) {
+  78:../../os/hal/src/hal_st.c **** }
+  79:../../os/hal/src/hal_st.c **** 
+  80:../../os/hal/src/hal_st.c **** #if defined(ST_LLD_MULTICORE_SUPPORT) || defined(__DOXYGEN__)
+  81:../../os/hal/src/hal_st.c **** /**
+  82:../../os/hal/src/hal_st.c ****  * @brief   Enables an alarm interrupt on the invoking core.
+  83:../../os/hal/src/hal_st.c ****  * @note    Must be called before any other alarm-related function.
+  84:../../os/hal/src/hal_st.c ****  *
+  85:../../os/hal/src/hal_st.c ****  * @api
+  86:../../os/hal/src/hal_st.c ****  */
+  87:../../os/hal/src/hal_st.c **** void stBind(void) {
+  88:../../os/hal/src/hal_st.c **** 
+  89:../../os/hal/src/hal_st.c ****   st_lld_bind();
+  90:../../os/hal/src/hal_st.c **** }
+  91:../../os/hal/src/hal_st.c **** #endif /* defined(ST_LLD_MULTICORE_SUPPORT) */
+  92:../../os/hal/src/hal_st.c **** 
+  93:../../os/hal/src/hal_st.c **** #if (OSAL_ST_MODE == OSAL_ST_MODE_FREERUNNING) || defined(__DOXYGEN__)
+  94:../../os/hal/src/hal_st.c **** /**
+  95:../../os/hal/src/hal_st.c ****  * @brief   Returns the time counter value.
+  96:../../os/hal/src/hal_st.c ****  * @note    This functionality is only available in free running mode, the
+  97:../../os/hal/src/hal_st.c ****  *          behaviour in periodic mode is undefined.
+  98:../../os/hal/src/hal_st.c ****  *
+  99:../../os/hal/src/hal_st.c ****  * @return              The counter value.
+ 100:../../os/hal/src/hal_st.c ****  *
+ 101:../../os/hal/src/hal_st.c ****  * @api
+ 102:../../os/hal/src/hal_st.c ****  */
+ 103:../../os/hal/src/hal_st.c **** systime_t stGetCounter(void) {
   33               		.loc 1 103 0
   34               		.cfi_startproc
   35               	/* prologue: function */
@@ -138,105 +138,105 @@
   38               	.L__stack_usage = 0
   39               	.LBB14:
   40               	.LBB15:
-  41               		.file 2 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYST
-   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*
-   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
-   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     Licensed under the Apache License, Version 2.0 (the "License");
-   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     you may not use this file except in compliance with the License.
-   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     You may obtain a copy of the License at
-   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****         http://www.apache.org/licenses/LICENSE-2.0
-   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     Unless required by applicable law or agreed to in writing, software
-  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     distributed under the License is distributed on an "AS IS" BASIS,
-  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     See the License for the specific language governing permissions and
-  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     limitations under the License.
-  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** */
-  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
-  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @file    TIMv1/hal_st_lld.h
-  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   AVR/MEGA ST subsystem low level driver header.
-  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @details This header is designed to be include-able without having to
-  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *          include other files from the HAL.
-  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
-  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @addtogroup AVR
-  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @{
-  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
-  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #ifndef HAL_ST_LLD_H
-  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #define HAL_ST_LLD_H
-  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #include <avr/io.h>
-  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* Driver constants.                                                        */
-  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* Driver pre-compile time settings.                                        */
-  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* TODO: for models that have many timers, could add AVR_ST_USE_TIMER.      */
-  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* Derived constants and error checks.                                      */
-  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* TODO: error checks for valid timer selected.                             */
-  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* Driver data structures and types.                                        */
-  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* Driver macros.                                                           */
-  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* External declarations.                                                   */
-  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #ifdef __cplusplus
-  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** extern "C" {
-  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #endif
-  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   void st_lld_init(void);
-  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #ifdef __cplusplus
-  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** }
-  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #endif
-  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #if defined(__AVR_ATmega128__) || defined(__AVR_ATmega162__)
-  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #define TIFR_REG TIFR
-  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #define TIMSK_REG TIMSK
-  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #else
-  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #define TIFR_REG TIFR1
-  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #define TIMSK_REG TIMSK1
-  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #endif
-  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* Driver inline functions.                                                 */
-  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
-  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
-  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   Returns the time counter value.
-  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
-  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @return              The counter value.
-  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
-  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @notapi
-  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
-  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** static inline systime_t st_lld_get_counter(void) {
-  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   return (systime_t) TCNT1;
+  41               		.file 2 "../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h"
+   1:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*
+   2:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
+   3:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+   4:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     you may not use this file except in compliance with the License.
+   6:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     You may obtain a copy of the License at
+   7:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+   8:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  10:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     Unless required by applicable law or agreed to in writing, software
+  11:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     See the License for the specific language governing permissions and
+  14:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****     limitations under the License.
+  15:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** */
+  16:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  17:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
+  18:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @file    TIMv1/hal_st_lld.h
+  19:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   AVR/MEGA ST subsystem low level driver header.
+  20:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @details This header is designed to be include-able without having to
+  21:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *          include other files from the HAL.
+  22:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
+  23:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @addtogroup AVR
+  24:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @{
+  25:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
+  26:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  27:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #ifndef HAL_ST_LLD_H
+  28:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #define HAL_ST_LLD_H
+  29:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  30:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #include <avr/io.h>
+  31:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  32:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  33:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* Driver constants.                                                        */
+  34:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  35:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  36:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  37:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* Driver pre-compile time settings.                                        */
+  38:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  39:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  40:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* TODO: for models that have many timers, could add AVR_ST_USE_TIMER.      */
+  41:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  42:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  43:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* Derived constants and error checks.                                      */
+  44:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  45:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  46:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* TODO: error checks for valid timer selected.                             */
+  47:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  48:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  49:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* Driver data structures and types.                                        */
+  50:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  51:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  52:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  53:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* Driver macros.                                                           */
+  54:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  55:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  56:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  57:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* External declarations.                                                   */
+  58:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  59:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  60:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #ifdef __cplusplus
+  61:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** extern "C" {
+  62:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #endif
+  63:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   void st_lld_init(void);
+  64:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #ifdef __cplusplus
+  65:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** }
+  66:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #endif
+  67:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  68:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #if defined(__AVR_ATmega128__) || defined(__AVR_ATmega162__)
+  69:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #define TIFR_REG TIFR
+  70:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #define TIMSK_REG TIMSK
+  71:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #else
+  72:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #define TIFR_REG TIFR1
+  73:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #define TIMSK_REG TIMSK1
+  74:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** #endif
+  75:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  76:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  77:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /* Driver inline functions.                                                 */
+  78:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /*==========================================================================*/
+  79:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  80:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
+  81:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   Returns the time counter value.
+  82:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
+  83:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @return              The counter value.
+  84:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
+  85:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @notapi
+  86:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
+  87:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** static inline systime_t st_lld_get_counter(void) {
+  88:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  89:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   return (systime_t) TCNT1;
   42               		.loc 2 89 0
   43 0000 8091 8400 		lds r24,132
   44 0004 9091 8500 		lds r25,132+1
   45               	/* epilogue start */
   46               	.LBE15:
   47               	.LBE14:
- 104:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 105:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   return st_lld_get_counter();
- 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** }
+ 104:../../os/hal/src/hal_st.c **** 
+ 105:../../os/hal/src/hal_st.c ****   return st_lld_get_counter();
+ 106:../../os/hal/src/hal_st.c **** }
   48               		.loc 1 106 0
   49 0008 0895      		ret
   50               		.cfi_endproc
@@ -245,19 +245,19 @@
   54               	.global	stStartAlarm
   56               	stStartAlarm:
   57               	.LFB245:
- 107:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 108:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /**
- 109:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @brief   Starts the alarm zero.
- 110:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @note    Makes sure that no spurious alarms are triggered after
- 111:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *          this call.
- 112:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @note    This functionality is only available in free running mode, the
- 113:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *          behavior in periodic mode is undefined.
- 114:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
- 115:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @param[in] abstime   the time to be set for the first alarm
- 116:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
- 117:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @api
- 118:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  */
- 119:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** void stStartAlarm(systime_t abstime) {
+ 107:../../os/hal/src/hal_st.c **** 
+ 108:../../os/hal/src/hal_st.c **** /**
+ 109:../../os/hal/src/hal_st.c ****  * @brief   Starts the alarm zero.
+ 110:../../os/hal/src/hal_st.c ****  * @note    Makes sure that no spurious alarms are triggered after
+ 111:../../os/hal/src/hal_st.c ****  *          this call.
+ 112:../../os/hal/src/hal_st.c ****  * @note    This functionality is only available in free running mode, the
+ 113:../../os/hal/src/hal_st.c ****  *          behavior in periodic mode is undefined.
+ 114:../../os/hal/src/hal_st.c ****  *
+ 115:../../os/hal/src/hal_st.c ****  * @param[in] abstime   the time to be set for the first alarm
+ 116:../../os/hal/src/hal_st.c ****  *
+ 117:../../os/hal/src/hal_st.c ****  * @api
+ 118:../../os/hal/src/hal_st.c ****  */
+ 119:../../os/hal/src/hal_st.c **** void stStartAlarm(systime_t abstime) {
   58               		.loc 1 119 0
   59               		.cfi_startproc
   60               	.LVL1:
@@ -267,45 +267,45 @@
   64               	.L__stack_usage = 0
   65               	.LBB16:
   66               	.LBB17:
-  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** }
-  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
-  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
-  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   Starts the alarm.
-  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @note    Makes sure that no spurious alarms are triggered after
-  95:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *          this call.
-  96:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
-  97:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @param[in] time      the time to be set for the first alarm
-  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
-  99:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @notapi
- 100:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
- 101:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** static inline void st_lld_start_alarm(systime_t time) {
- 102:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
- 103:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   OCR1A = (uint16_t) time;
+  90:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** }
+  91:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+  92:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
+  93:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   Starts the alarm.
+  94:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @note    Makes sure that no spurious alarms are triggered after
+  95:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *          this call.
+  96:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
+  97:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @param[in] time      the time to be set for the first alarm
+  98:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
+  99:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @notapi
+ 100:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
+ 101:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** static inline void st_lld_start_alarm(systime_t time) {
+ 102:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+ 103:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   OCR1A = (uint16_t) time;
   67               		.loc 2 103 0
   68 0000 9093 8900 		sts 136+1,r25
   69 0004 8093 8800 		sts 136,r24
- 104:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
- 105:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   /* Reset pending. */
- 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   TIFR_REG = _BV(OCF1A);
+ 104:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+ 105:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   /* Reset pending. */
+ 106:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   TIFR_REG = _BV(OCF1A);
   70               		.loc 2 106 0
   71 0008 82E0      		ldi r24,lo8(2)
   72               	.LVL2:
   73 000a 86BB      		out 0x16,r24
   74               	.LVL3:
- 107:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
- 108:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   /* Enable interrupt. */
- 109:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   TIMSK_REG = _BV(OCIE1A);
+ 107:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+ 108:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   /* Enable interrupt. */
+ 109:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   TIMSK_REG = _BV(OCIE1A);
   75               		.loc 2 109 0
   76 000c 8093 6F00 		sts 111,r24
   77               	.LVL4:
   78               	/* epilogue start */
   79               	.LBE17:
   80               	.LBE16:
- 120:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 121:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   osalDbgAssert(stIsAlarmActive() == false, "already active");
- 122:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   st_lld_start_alarm(abstime);
- 124:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** }
+ 120:../../os/hal/src/hal_st.c **** 
+ 121:../../os/hal/src/hal_st.c ****   osalDbgAssert(stIsAlarmActive() == false, "already active");
+ 122:../../os/hal/src/hal_st.c **** 
+ 123:../../os/hal/src/hal_st.c ****   st_lld_start_alarm(abstime);
+ 124:../../os/hal/src/hal_st.c **** }
   81               		.loc 1 124 0
   82 0010 0895      		ret
   83               		.cfi_endproc
@@ -314,15 +314,15 @@
   87               	.global	stStopAlarm
   89               	stStopAlarm:
   90               	.LFB246:
- 125:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 126:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /**
- 127:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @brief   Stops the alarm zero interrupt.
- 128:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @note    This functionality is only available in free running mode, the
- 129:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *          behavior in periodic mode is undefined.
- 130:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
- 131:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @api
- 132:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  */
- 133:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** void stStopAlarm(void) {
+ 125:../../os/hal/src/hal_st.c **** 
+ 126:../../os/hal/src/hal_st.c **** /**
+ 127:../../os/hal/src/hal_st.c ****  * @brief   Stops the alarm zero interrupt.
+ 128:../../os/hal/src/hal_st.c ****  * @note    This functionality is only available in free running mode, the
+ 129:../../os/hal/src/hal_st.c ****  *          behavior in periodic mode is undefined.
+ 130:../../os/hal/src/hal_st.c ****  *
+ 131:../../os/hal/src/hal_st.c ****  * @api
+ 132:../../os/hal/src/hal_st.c ****  */
+ 133:../../os/hal/src/hal_st.c **** void stStopAlarm(void) {
   91               		.loc 1 133 0
   92               		.cfi_startproc
   93               	/* prologue: function */
@@ -331,24 +331,24 @@
   96               	.L__stack_usage = 0
   97               	.LBB18:
   98               	.LBB19:
- 110:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** }
- 111:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
- 112:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
- 113:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   Stops the alarm interrupt.
- 114:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
- 115:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @notapi
- 116:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
- 117:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** static inline void st_lld_stop_alarm(void) {
- 118:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
- 119:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   TIMSK_REG = 0;
+ 110:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** }
+ 111:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+ 112:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
+ 113:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   Stops the alarm interrupt.
+ 114:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
+ 115:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @notapi
+ 116:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
+ 117:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** static inline void st_lld_stop_alarm(void) {
+ 118:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+ 119:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   TIMSK_REG = 0;
   99               		.loc 2 119 0
  100 0000 1092 6F00 		sts 111,__zero_reg__
  101               	/* epilogue start */
  102               	.LBE19:
  103               	.LBE18:
- 134:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 135:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   st_lld_stop_alarm();
- 136:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** }
+ 134:../../os/hal/src/hal_st.c **** 
+ 135:../../os/hal/src/hal_st.c ****   st_lld_stop_alarm();
+ 136:../../os/hal/src/hal_st.c **** }
  104               		.loc 1 136 0
  105 0004 0895      		ret
  106               		.cfi_endproc
@@ -357,17 +357,17 @@
  110               	.global	stSetAlarm
  112               	stSetAlarm:
  113               	.LFB247:
- 137:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 138:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /**
- 139:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @brief   Sets the alarm zero time.
- 140:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @note    This functionality is only available in free running mode, the
- 141:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *          behavior in periodic mode is undefined.
- 142:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
- 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @param[in] abstime   the time to be set for the next alarm
- 144:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
- 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @api
- 146:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  */
- 147:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** void stSetAlarm(systime_t abstime) {
+ 137:../../os/hal/src/hal_st.c **** 
+ 138:../../os/hal/src/hal_st.c **** /**
+ 139:../../os/hal/src/hal_st.c ****  * @brief   Sets the alarm zero time.
+ 140:../../os/hal/src/hal_st.c ****  * @note    This functionality is only available in free running mode, the
+ 141:../../os/hal/src/hal_st.c ****  *          behavior in periodic mode is undefined.
+ 142:../../os/hal/src/hal_st.c ****  *
+ 143:../../os/hal/src/hal_st.c ****  * @param[in] abstime   the time to be set for the next alarm
+ 144:../../os/hal/src/hal_st.c ****  *
+ 145:../../os/hal/src/hal_st.c ****  * @api
+ 146:../../os/hal/src/hal_st.c ****  */
+ 147:../../os/hal/src/hal_st.c **** void stSetAlarm(systime_t abstime) {
  114               		.loc 1 147 0
  115               		.cfi_startproc
  116               	.LVL5:
@@ -377,18 +377,18 @@
  120               	.L__stack_usage = 0
  121               	.LBB20:
  122               	.LBB21:
- 120:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** }
- 121:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
- 122:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
- 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   Sets the alarm time.
- 124:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
- 125:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @param[in] time      the time to be set for the next alarm
- 126:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
- 127:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @notapi
- 128:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
- 129:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** static inline void st_lld_set_alarm(systime_t time) {
- 130:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
- 131:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   OCR1A = (uint16_t) time;
+ 120:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** }
+ 121:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+ 122:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
+ 123:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   Sets the alarm time.
+ 124:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
+ 125:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @param[in] time      the time to be set for the next alarm
+ 126:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
+ 127:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @notapi
+ 128:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
+ 129:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** static inline void st_lld_set_alarm(systime_t time) {
+ 130:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+ 131:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   OCR1A = (uint16_t) time;
  123               		.loc 2 131 0
  124 0000 9093 8900 		sts 136+1,r25
  125 0004 8093 8800 		sts 136,r24
@@ -396,11 +396,11 @@
  127               	/* epilogue start */
  128               	.LBE21:
  129               	.LBE20:
- 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 149:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   osalDbgAssert(stIsAlarmActive() != false, "not active");
- 150:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   st_lld_set_alarm(abstime);
- 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** }
+ 148:../../os/hal/src/hal_st.c **** 
+ 149:../../os/hal/src/hal_st.c ****   osalDbgAssert(stIsAlarmActive() != false, "not active");
+ 150:../../os/hal/src/hal_st.c **** 
+ 151:../../os/hal/src/hal_st.c ****   st_lld_set_alarm(abstime);
+ 152:../../os/hal/src/hal_st.c **** }
  130               		.loc 1 152 0
  131 0008 0895      		ret
  132               		.cfi_endproc
@@ -409,17 +409,17 @@
  136               	.global	stGetAlarm
  138               	stGetAlarm:
  139               	.LFB248:
- 153:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 154:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /**
- 155:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @brief   Returns the alarm zero current time.
- 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @note    This functionality is only available in free running mode, the
- 157:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *          behavior in periodic mode is undefined.
- 158:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
- 159:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @return              The currently set alarm time.
- 160:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
- 161:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @api
- 162:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  */
- 163:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** systime_t stGetAlarm(void) {
+ 153:../../os/hal/src/hal_st.c **** 
+ 154:../../os/hal/src/hal_st.c **** /**
+ 155:../../os/hal/src/hal_st.c ****  * @brief   Returns the alarm zero current time.
+ 156:../../os/hal/src/hal_st.c ****  * @note    This functionality is only available in free running mode, the
+ 157:../../os/hal/src/hal_st.c ****  *          behavior in periodic mode is undefined.
+ 158:../../os/hal/src/hal_st.c ****  *
+ 159:../../os/hal/src/hal_st.c ****  * @return              The currently set alarm time.
+ 160:../../os/hal/src/hal_st.c ****  *
+ 161:../../os/hal/src/hal_st.c ****  * @api
+ 162:../../os/hal/src/hal_st.c ****  */
+ 163:../../os/hal/src/hal_st.c **** systime_t stGetAlarm(void) {
  140               		.loc 1 163 0
  141               		.cfi_startproc
  142               	/* prologue: function */
@@ -428,29 +428,29 @@
  145               	.L__stack_usage = 0
  146               	.LBB22:
  147               	.LBB23:
- 132:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** }
- 133:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
- 134:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
- 135:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   Returns the current alarm time.
- 136:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
- 137:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @return              The currently set alarm time.
- 138:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
- 139:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @notapi
- 140:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
- 141:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** static inline systime_t st_lld_get_alarm(void) {
- 142:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
- 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   return (systime_t) OCR1A;
+ 132:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** }
+ 133:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+ 134:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
+ 135:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   Returns the current alarm time.
+ 136:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
+ 137:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @return              The currently set alarm time.
+ 138:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
+ 139:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @notapi
+ 140:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
+ 141:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** static inline systime_t st_lld_get_alarm(void) {
+ 142:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+ 143:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   return (systime_t) OCR1A;
  148               		.loc 2 143 0
  149 0000 8091 8800 		lds r24,136
  150 0004 9091 8900 		lds r25,136+1
  151               	/* epilogue start */
  152               	.LBE23:
  153               	.LBE22:
- 164:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 165:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   osalDbgAssert(stIsAlarmActive() != false, "not active");
- 166:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 167:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   return st_lld_get_alarm();
- 168:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** }
+ 164:../../os/hal/src/hal_st.c **** 
+ 165:../../os/hal/src/hal_st.c ****   osalDbgAssert(stIsAlarmActive() != false, "not active");
+ 166:../../os/hal/src/hal_st.c **** 
+ 167:../../os/hal/src/hal_st.c ****   return st_lld_get_alarm();
+ 168:../../os/hal/src/hal_st.c **** }
  154               		.loc 1 168 0
  155 0008 0895      		ret
  156               		.cfi_endproc
@@ -459,17 +459,17 @@
  160               	.global	stIsAlarmActive
  162               	stIsAlarmActive:
  163               	.LFB249:
- 169:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 170:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** /**
- 171:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @brief   Determines if the alarm zero is active.
- 172:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
- 173:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @return              The alarm status.
- 174:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @retval false        if the alarm is not active.
- 175:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @retval true         is the alarm is active
- 176:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  *
- 177:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  * @api
- 178:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****  */
- 179:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** bool stIsAlarmActive(void) {
+ 169:../../os/hal/src/hal_st.c **** 
+ 170:../../os/hal/src/hal_st.c **** /**
+ 171:../../os/hal/src/hal_st.c ****  * @brief   Determines if the alarm zero is active.
+ 172:../../os/hal/src/hal_st.c ****  *
+ 173:../../os/hal/src/hal_st.c ****  * @return              The alarm status.
+ 174:../../os/hal/src/hal_st.c ****  * @retval false        if the alarm is not active.
+ 175:../../os/hal/src/hal_st.c ****  * @retval true         is the alarm is active
+ 176:../../os/hal/src/hal_st.c ****  *
+ 177:../../os/hal/src/hal_st.c ****  * @api
+ 178:../../os/hal/src/hal_st.c ****  */
+ 179:../../os/hal/src/hal_st.c **** bool stIsAlarmActive(void) {
  164               		.loc 1 179 0
  165               		.cfi_startproc
  166               	/* prologue: function */
@@ -478,27 +478,27 @@
  169               	.L__stack_usage = 0
  170               	.LBB24:
  171               	.LBB25:
- 144:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** }
- 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
- 146:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
- 147:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   Determines if the alarm is active.
- 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
- 149:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @return              The alarm status.
- 150:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @retval false        if the alarm is not active.
- 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @retval true         is the alarm is active.
- 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
- 153:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @notapi
- 154:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
- 155:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** static inline bool st_lld_is_alarm_active(void) {
- 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
- 157:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   return (bool) ((TIMSK_REG & _BV(OCIE1A)) != 0);
+ 144:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** }
+ 145:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+ 146:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** /**
+ 147:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @brief   Determines if the alarm is active.
+ 148:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
+ 149:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @return              The alarm status.
+ 150:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @retval false        if the alarm is not active.
+ 151:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @retval true         is the alarm is active.
+ 152:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  *
+ 153:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  * @notapi
+ 154:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****  */
+ 155:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** static inline bool st_lld_is_alarm_active(void) {
+ 156:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h **** 
+ 157:../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h ****   return (bool) ((TIMSK_REG & _BV(OCIE1A)) != 0);
  172               		.loc 2 157 0
  173 0000 8091 6F00 		lds r24,111
  174               	.LBE25:
  175               	.LBE24:
- 180:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** 
- 181:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c ****   return st_lld_is_alarm_active();
- 182:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/src/hal_st.c **** }
+ 180:../../os/hal/src/hal_st.c **** 
+ 181:../../os/hal/src/hal_st.c ****   return st_lld_is_alarm_active();
+ 182:../../os/hal/src/hal_st.c **** }
  176               		.loc 1 182 0
  177 0004 8695      		lsr r24
  178 0006 8170      		andi r24,1
@@ -510,38 +510,38 @@
  185               	.Letext0:
  186               		.file 3 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
  187               		.file 4 "/usr/lib/avr/include/stdint.h"
- 188               		.file 5 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
- 189               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
- 190               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
- 191               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
- 192               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
- 193               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
- 194               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
- 195               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
- 196               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
- 197               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
- 198               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
- 199               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
- 200               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chevents.h"
- 201               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
- 202               		.file 19 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_queues.h"
- 203               		.file 20 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPI
- 204               		.file 21 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_serial.h"
- 205               		.file 22 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
+ 188               		.file 5 "../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+ 189               		.file 6 "../../os/rt/include/chearly.h"
+ 190               		.file 7 "../../os/rt/include/chobjects.h"
+ 191               		.file 8 "../../os/rt/include/chrfcu.h"
+ 192               		.file 9 "../../os/rt/include/chdebug.h"
+ 193               		.file 10 "../../os/rt/include/chtime.h"
+ 194               		.file 11 "../../os/rt/include/chlists.h"
+ 195               		.file 12 "../../os/common/ports/AVR/chcore.h"
+ 196               		.file 13 "../../os/rt/include/chsem.h"
+ 197               		.file 14 "../../os/rt/include/chmtx.h"
+ 198               		.file 15 "../../os/rt/include/chsys.h"
+ 199               		.file 16 "../../os/rt/include/chregistry.h"
+ 200               		.file 17 "../../os/rt/include/chevents.h"
+ 201               		.file 18 "../../os/oslib/include/chmemcore.h"
+ 202               		.file 19 "../../os/hal/include/hal_queues.h"
+ 203               		.file 20 "../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.h"
+ 204               		.file 21 "../../os/hal/include/hal_serial.h"
+ 205               		.file 22 "../../os/hal/ports/AVR/MEGA/LLD/USARTv1/hal_serial_lld.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_st.c
-     /tmp/ccHn5sHJ.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccHn5sHJ.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccHn5sHJ.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccHn5sHJ.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccHn5sHJ.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccHn5sHJ.s:13     .text.stInit:0000000000000000 stInit
-     /tmp/ccHn5sHJ.s:31     .text.stGetCounter:0000000000000000 stGetCounter
-     /tmp/ccHn5sHJ.s:56     .text.stStartAlarm:0000000000000000 stStartAlarm
-     /tmp/ccHn5sHJ.s:89     .text.stStopAlarm:0000000000000000 stStopAlarm
-     /tmp/ccHn5sHJ.s:112    .text.stSetAlarm:0000000000000000 stSetAlarm
-     /tmp/ccHn5sHJ.s:138    .text.stGetAlarm:0000000000000000 stGetAlarm
-     /tmp/ccHn5sHJ.s:162    .text.stIsAlarmActive:0000000000000000 stIsAlarmActive
+     /tmp/cc6f4aqH.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc6f4aqH.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc6f4aqH.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc6f4aqH.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc6f4aqH.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc6f4aqH.s:13     .text.stInit:0000000000000000 stInit
+     /tmp/cc6f4aqH.s:31     .text.stGetCounter:0000000000000000 stGetCounter
+     /tmp/cc6f4aqH.s:56     .text.stStartAlarm:0000000000000000 stStartAlarm
+     /tmp/cc6f4aqH.s:89     .text.stStopAlarm:0000000000000000 stStopAlarm
+     /tmp/cc6f4aqH.s:112    .text.stSetAlarm:0000000000000000 stSetAlarm
+     /tmp/cc6f4aqH.s:138    .text.stGetAlarm:0000000000000000 stGetAlarm
+     /tmp/cc6f4aqH.s:162    .text.stIsAlarmActive:0000000000000000 stIsAlarmActive
 
 UNDEFINED SYMBOLS
 st_lld_init

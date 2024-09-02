@@ -11,122 +11,122 @@
   11               	.global	__heap_init
   13               	__heap_init:
   14               	.LFB195:
-  15               		.file 1 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c"
-   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*
-   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
-   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****               2015,2016,2017,2018,2019,2020,2021 Giovanni Di Sirio.
-   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     This file is part of ChibiOS.
-   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     ChibiOS is free software; you can redistribute it and/or modify
-   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     it under the terms of the GNU General Public License as published by
-   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     the Free Software Foundation version 3 of the License.
-  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     ChibiOS is distributed in the hope that it will be useful,
-  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     GNU General Public License for more details.
-  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     You should have received a copy of the GNU General Public License
-  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** */
-  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /**
-  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @file    oslib/src/chmemheaps.c
-  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @brief   Memory heaps code.
-  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *
-  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @addtogroup oslib_memheaps
-  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @details Heap Allocator related APIs.
-  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *          <h2>Operation mode</h2>
-  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *          The heap allocator implements a first-fit strategy and its APIs
-  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *          are functionally equivalent to the usual @p malloc() and @p free()
-  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *          library functions. The main difference is that the OS heap APIs
-  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *          are guaranteed to be thread safe and there is the ability to
-  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *          return memory blocks aligned to arbitrary powers of two.<br>
-  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @pre     In order to use the heap APIs the @p CH_CFG_USE_HEAP option must
-  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *          be enabled in @p chconf.h.
-  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @note    Compatible with RT and NIL.
-  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @{
-  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  */
-  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #include "ch.h"
-  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #if (CH_CFG_USE_HEAP == TRUE) || defined(__DOXYGEN__)
-  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*===========================================================================*/
-  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /* Module local definitions.                                                 */
-  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*===========================================================================*/
-  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*
-  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * Defaults on the best synchronization mechanism available.
-  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  */
-  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #if (CH_CFG_USE_MUTEXES == TRUE) || defined(__DOXYGEN__)
-  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #define H_LOCK(h)       chMtxLock(&(h)->mtx)
-  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #define H_UNLOCK(h)     chMtxUnlock(&(h)->mtx)
-  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #else
-  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #define H_LOCK(h)       (void) chSemWait(&(h)->sem)
-  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #define H_UNLOCK(h)     chSemSignal(&(h)->sem)
-  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #endif
-  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #define H_BLOCK(hp)     ((hp) + 1U)
-  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #define H_LIMIT(hp)     (H_BLOCK(hp) + H_PAGES(hp))
-  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #define H_NEXT(hp)      ((hp)->free.next)
-  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #define H_PAGES(hp)     ((hp)->free.pages)
-  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #define H_HEAP(hp)      ((hp)->used.heap)
-  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #define H_SIZE(hp)      ((hp)->used.size)
-  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*
-  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * Number of pages between two pointers in a MISRA-compatible way.
-  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  */
-  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #define NPAGES(p1, p2)                                                      \
-  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /*lint -save -e9033 [10.8] The cast is safe.*/                            \
-  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   ((size_t)((p1) - (p2)))                                                   \
-  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /*lint -restore*/
-  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*===========================================================================*/
-  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /* Module exported variables.                                                */
-  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*===========================================================================*/
-  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*===========================================================================*/
-  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /* Module local types.                                                       */
-  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*===========================================================================*/
-  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*===========================================================================*/
-  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /* Module local variables.                                                   */
-  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*===========================================================================*/
-  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /**
-  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @brief   Default heap descriptor.
-  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  */
-  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** static memory_heap_t default_heap;
-  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*===========================================================================*/
-  95:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /* Module local functions.                                                   */
-  96:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*===========================================================================*/
-  97:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
-  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*===========================================================================*/
-  99:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /* Module exported functions.                                                */
- 100:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /*===========================================================================*/
- 101:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 102:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /**
- 103:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @brief   Initializes the default heap.
- 104:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *
- 105:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @notapi
- 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  */
- 107:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** void __heap_init(void) {
+  15               		.file 1 "../../os/oslib/src/chmemheaps.c"
+   1:../../os/oslib/src/chmemheaps.c **** /*
+   2:../../os/oslib/src/chmemheaps.c ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
+   3:../../os/oslib/src/chmemheaps.c ****               2015,2016,2017,2018,2019,2020,2021 Giovanni Di Sirio.
+   4:../../os/oslib/src/chmemheaps.c **** 
+   5:../../os/oslib/src/chmemheaps.c ****     This file is part of ChibiOS.
+   6:../../os/oslib/src/chmemheaps.c **** 
+   7:../../os/oslib/src/chmemheaps.c ****     ChibiOS is free software; you can redistribute it and/or modify
+   8:../../os/oslib/src/chmemheaps.c ****     it under the terms of the GNU General Public License as published by
+   9:../../os/oslib/src/chmemheaps.c ****     the Free Software Foundation version 3 of the License.
+  10:../../os/oslib/src/chmemheaps.c **** 
+  11:../../os/oslib/src/chmemheaps.c ****     ChibiOS is distributed in the hope that it will be useful,
+  12:../../os/oslib/src/chmemheaps.c ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:../../os/oslib/src/chmemheaps.c ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:../../os/oslib/src/chmemheaps.c ****     GNU General Public License for more details.
+  15:../../os/oslib/src/chmemheaps.c **** 
+  16:../../os/oslib/src/chmemheaps.c ****     You should have received a copy of the GNU General Public License
+  17:../../os/oslib/src/chmemheaps.c ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  18:../../os/oslib/src/chmemheaps.c **** */
+  19:../../os/oslib/src/chmemheaps.c **** 
+  20:../../os/oslib/src/chmemheaps.c **** /**
+  21:../../os/oslib/src/chmemheaps.c ****  * @file    oslib/src/chmemheaps.c
+  22:../../os/oslib/src/chmemheaps.c ****  * @brief   Memory heaps code.
+  23:../../os/oslib/src/chmemheaps.c ****  *
+  24:../../os/oslib/src/chmemheaps.c ****  * @addtogroup oslib_memheaps
+  25:../../os/oslib/src/chmemheaps.c ****  * @details Heap Allocator related APIs.
+  26:../../os/oslib/src/chmemheaps.c ****  *          <h2>Operation mode</h2>
+  27:../../os/oslib/src/chmemheaps.c ****  *          The heap allocator implements a first-fit strategy and its APIs
+  28:../../os/oslib/src/chmemheaps.c ****  *          are functionally equivalent to the usual @p malloc() and @p free()
+  29:../../os/oslib/src/chmemheaps.c ****  *          library functions. The main difference is that the OS heap APIs
+  30:../../os/oslib/src/chmemheaps.c ****  *          are guaranteed to be thread safe and there is the ability to
+  31:../../os/oslib/src/chmemheaps.c ****  *          return memory blocks aligned to arbitrary powers of two.<br>
+  32:../../os/oslib/src/chmemheaps.c ****  * @pre     In order to use the heap APIs the @p CH_CFG_USE_HEAP option must
+  33:../../os/oslib/src/chmemheaps.c ****  *          be enabled in @p chconf.h.
+  34:../../os/oslib/src/chmemheaps.c ****  * @note    Compatible with RT and NIL.
+  35:../../os/oslib/src/chmemheaps.c ****  * @{
+  36:../../os/oslib/src/chmemheaps.c ****  */
+  37:../../os/oslib/src/chmemheaps.c **** 
+  38:../../os/oslib/src/chmemheaps.c **** #include "ch.h"
+  39:../../os/oslib/src/chmemheaps.c **** 
+  40:../../os/oslib/src/chmemheaps.c **** #if (CH_CFG_USE_HEAP == TRUE) || defined(__DOXYGEN__)
+  41:../../os/oslib/src/chmemheaps.c **** 
+  42:../../os/oslib/src/chmemheaps.c **** /*===========================================================================*/
+  43:../../os/oslib/src/chmemheaps.c **** /* Module local definitions.                                                 */
+  44:../../os/oslib/src/chmemheaps.c **** /*===========================================================================*/
+  45:../../os/oslib/src/chmemheaps.c **** 
+  46:../../os/oslib/src/chmemheaps.c **** /*
+  47:../../os/oslib/src/chmemheaps.c ****  * Defaults on the best synchronization mechanism available.
+  48:../../os/oslib/src/chmemheaps.c ****  */
+  49:../../os/oslib/src/chmemheaps.c **** #if (CH_CFG_USE_MUTEXES == TRUE) || defined(__DOXYGEN__)
+  50:../../os/oslib/src/chmemheaps.c **** #define H_LOCK(h)       chMtxLock(&(h)->mtx)
+  51:../../os/oslib/src/chmemheaps.c **** #define H_UNLOCK(h)     chMtxUnlock(&(h)->mtx)
+  52:../../os/oslib/src/chmemheaps.c **** #else
+  53:../../os/oslib/src/chmemheaps.c **** #define H_LOCK(h)       (void) chSemWait(&(h)->sem)
+  54:../../os/oslib/src/chmemheaps.c **** #define H_UNLOCK(h)     chSemSignal(&(h)->sem)
+  55:../../os/oslib/src/chmemheaps.c **** #endif
+  56:../../os/oslib/src/chmemheaps.c **** 
+  57:../../os/oslib/src/chmemheaps.c **** #define H_BLOCK(hp)     ((hp) + 1U)
+  58:../../os/oslib/src/chmemheaps.c **** 
+  59:../../os/oslib/src/chmemheaps.c **** #define H_LIMIT(hp)     (H_BLOCK(hp) + H_PAGES(hp))
+  60:../../os/oslib/src/chmemheaps.c **** 
+  61:../../os/oslib/src/chmemheaps.c **** #define H_NEXT(hp)      ((hp)->free.next)
+  62:../../os/oslib/src/chmemheaps.c **** 
+  63:../../os/oslib/src/chmemheaps.c **** #define H_PAGES(hp)     ((hp)->free.pages)
+  64:../../os/oslib/src/chmemheaps.c **** 
+  65:../../os/oslib/src/chmemheaps.c **** #define H_HEAP(hp)      ((hp)->used.heap)
+  66:../../os/oslib/src/chmemheaps.c **** 
+  67:../../os/oslib/src/chmemheaps.c **** #define H_SIZE(hp)      ((hp)->used.size)
+  68:../../os/oslib/src/chmemheaps.c **** 
+  69:../../os/oslib/src/chmemheaps.c **** /*
+  70:../../os/oslib/src/chmemheaps.c ****  * Number of pages between two pointers in a MISRA-compatible way.
+  71:../../os/oslib/src/chmemheaps.c ****  */
+  72:../../os/oslib/src/chmemheaps.c **** #define NPAGES(p1, p2)                                                      \
+  73:../../os/oslib/src/chmemheaps.c ****   /*lint -save -e9033 [10.8] The cast is safe.*/                            \
+  74:../../os/oslib/src/chmemheaps.c ****   ((size_t)((p1) - (p2)))                                                   \
+  75:../../os/oslib/src/chmemheaps.c ****   /*lint -restore*/
+  76:../../os/oslib/src/chmemheaps.c **** 
+  77:../../os/oslib/src/chmemheaps.c **** /*===========================================================================*/
+  78:../../os/oslib/src/chmemheaps.c **** /* Module exported variables.                                                */
+  79:../../os/oslib/src/chmemheaps.c **** /*===========================================================================*/
+  80:../../os/oslib/src/chmemheaps.c **** 
+  81:../../os/oslib/src/chmemheaps.c **** /*===========================================================================*/
+  82:../../os/oslib/src/chmemheaps.c **** /* Module local types.                                                       */
+  83:../../os/oslib/src/chmemheaps.c **** /*===========================================================================*/
+  84:../../os/oslib/src/chmemheaps.c **** 
+  85:../../os/oslib/src/chmemheaps.c **** /*===========================================================================*/
+  86:../../os/oslib/src/chmemheaps.c **** /* Module local variables.                                                   */
+  87:../../os/oslib/src/chmemheaps.c **** /*===========================================================================*/
+  88:../../os/oslib/src/chmemheaps.c **** 
+  89:../../os/oslib/src/chmemheaps.c **** /**
+  90:../../os/oslib/src/chmemheaps.c ****  * @brief   Default heap descriptor.
+  91:../../os/oslib/src/chmemheaps.c ****  */
+  92:../../os/oslib/src/chmemheaps.c **** static memory_heap_t default_heap;
+  93:../../os/oslib/src/chmemheaps.c **** 
+  94:../../os/oslib/src/chmemheaps.c **** /*===========================================================================*/
+  95:../../os/oslib/src/chmemheaps.c **** /* Module local functions.                                                   */
+  96:../../os/oslib/src/chmemheaps.c **** /*===========================================================================*/
+  97:../../os/oslib/src/chmemheaps.c **** 
+  98:../../os/oslib/src/chmemheaps.c **** /*===========================================================================*/
+  99:../../os/oslib/src/chmemheaps.c **** /* Module exported functions.                                                */
+ 100:../../os/oslib/src/chmemheaps.c **** /*===========================================================================*/
+ 101:../../os/oslib/src/chmemheaps.c **** 
+ 102:../../os/oslib/src/chmemheaps.c **** /**
+ 103:../../os/oslib/src/chmemheaps.c ****  * @brief   Initializes the default heap.
+ 104:../../os/oslib/src/chmemheaps.c ****  *
+ 105:../../os/oslib/src/chmemheaps.c ****  * @notapi
+ 106:../../os/oslib/src/chmemheaps.c ****  */
+ 107:../../os/oslib/src/chmemheaps.c **** void __heap_init(void) {
   16               		.loc 1 107 0
   17               		.cfi_startproc
   18               	/* prologue: function */
   19               	/* frame size = 0 */
   20               	/* stack size = 0 */
   21               	.L__stack_usage = 0
- 108:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 109:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   default_heap.provider = chCoreAllocAlignedWithOffset;
+ 108:../../os/oslib/src/chmemheaps.c **** 
+ 109:../../os/oslib/src/chmemheaps.c ****   default_heap.provider = chCoreAllocAlignedWithOffset;
   22               		.loc 1 109 0
   23 0000 E0E0      		ldi r30,lo8(default_heap)
   24 0002 F0E0      		ldi r31,hi8(default_heap)
@@ -134,16 +134,16 @@
   26 0006 90E0      		ldi r25,hi8(gs(chCoreAllocFromTop))
   27 0008 9183      		std Z+1,r25
   28 000a 8083      		st Z,r24
- 110:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   H_NEXT(&default_heap.header) = NULL;
+ 110:../../os/oslib/src/chmemheaps.c ****   H_NEXT(&default_heap.header) = NULL;
   29               		.loc 1 110 0
   30 000c 1382      		std Z+3,__zero_reg__
   31 000e 1282      		std Z+2,__zero_reg__
- 111:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   H_PAGES(&default_heap.header) = 0;
+ 111:../../os/oslib/src/chmemheaps.c ****   H_PAGES(&default_heap.header) = 0;
   32               		.loc 1 111 0
   33 0010 1582      		std Z+5,__zero_reg__
   34 0012 1482      		std Z+4,__zero_reg__
- 112:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #if (CH_CFG_USE_MUTEXES == TRUE) || defined(__DOXYGEN__)
- 113:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   chMtxObjectInit(&default_heap.mtx);
+ 112:../../os/oslib/src/chmemheaps.c **** #if (CH_CFG_USE_MUTEXES == TRUE) || defined(__DOXYGEN__)
+ 113:../../os/oslib/src/chmemheaps.c ****   chMtxObjectInit(&default_heap.mtx);
   35               		.loc 1 113 0
   36 0014 80E0      		ldi r24,lo8(default_heap+6)
   37 0016 90E0      		ldi r25,hi8(default_heap+6)
@@ -155,24 +155,24 @@
   44               	.global	chHeapObjectInit
   46               	chHeapObjectInit:
   47               	.LFB196:
- 114:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #else
- 115:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   chSemObjectInit(&default_heap.sem, (cnt_t)1);
- 116:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #endif
- 117:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** }
- 118:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 119:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /**
- 120:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @brief   Initializes a memory heap from a static memory area.
- 121:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @note    The heap buffer base and size are adjusted if the passed buffer
- 122:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *          is not aligned to @p CH_HEAP_ALIGNMENT. This mean that the
- 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *          effective heap size can be less than @p size.
- 124:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *
- 125:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @param[out] heapp    pointer to the memory heap descriptor to be initialized
- 126:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @param[in] buf       heap buffer base
- 127:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @param[in] size      heap size
- 128:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *
- 129:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @init
- 130:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  */
- 131:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** void chHeapObjectInit(memory_heap_t *heapp, void *buf, size_t size) {
+ 114:../../os/oslib/src/chmemheaps.c **** #else
+ 115:../../os/oslib/src/chmemheaps.c ****   chSemObjectInit(&default_heap.sem, (cnt_t)1);
+ 116:../../os/oslib/src/chmemheaps.c **** #endif
+ 117:../../os/oslib/src/chmemheaps.c **** }
+ 118:../../os/oslib/src/chmemheaps.c **** 
+ 119:../../os/oslib/src/chmemheaps.c **** /**
+ 120:../../os/oslib/src/chmemheaps.c ****  * @brief   Initializes a memory heap from a static memory area.
+ 121:../../os/oslib/src/chmemheaps.c ****  * @note    The heap buffer base and size are adjusted if the passed buffer
+ 122:../../os/oslib/src/chmemheaps.c ****  *          is not aligned to @p CH_HEAP_ALIGNMENT. This mean that the
+ 123:../../os/oslib/src/chmemheaps.c ****  *          effective heap size can be less than @p size.
+ 124:../../os/oslib/src/chmemheaps.c ****  *
+ 125:../../os/oslib/src/chmemheaps.c ****  * @param[out] heapp    pointer to the memory heap descriptor to be initialized
+ 126:../../os/oslib/src/chmemheaps.c ****  * @param[in] buf       heap buffer base
+ 127:../../os/oslib/src/chmemheaps.c ****  * @param[in] size      heap size
+ 128:../../os/oslib/src/chmemheaps.c ****  *
+ 129:../../os/oslib/src/chmemheaps.c ****  * @init
+ 130:../../os/oslib/src/chmemheaps.c ****  */
+ 131:../../os/oslib/src/chmemheaps.c **** void chHeapObjectInit(memory_heap_t *heapp, void *buf, size_t size) {
   48               		.loc 1 131 0
   49               		.cfi_startproc
   50               	.LVL1:
@@ -180,50 +180,50 @@
   52               	/* frame size = 0 */
   53               	/* stack size = 0 */
   54               	.L__stack_usage = 0
- 132:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   heap_header_t *hp = (heap_header_t *)MEM_ALIGN_NEXT(buf, CH_HEAP_ALIGNMENT);
+ 132:../../os/oslib/src/chmemheaps.c ****   heap_header_t *hp = (heap_header_t *)MEM_ALIGN_NEXT(buf, CH_HEAP_ALIGNMENT);
   55               		.loc 1 132 0
   56 0000 FB01      		movw r30,r22
   57 0002 3396      		adiw r30,3
   58 0004 EC7F      		andi r30,252
   59               	.LVL2:
- 133:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 134:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   chDbgCheck((heapp != NULL) && (size > 0U));
- 135:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 136:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* Adjusting the size in case the initial block was not correctly
- 137:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****      aligned.*/
- 138:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /*lint -save -e9033 [10.8] Required cast operations.*/
- 139:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   size -= (size_t)((uint8_t *)hp - (uint8_t *)buf);
- 140:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /*lint restore*/
- 141:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 142:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* Initializing the heap header.*/
- 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   heapp->provider = NULL;
+ 133:../../os/oslib/src/chmemheaps.c **** 
+ 134:../../os/oslib/src/chmemheaps.c ****   chDbgCheck((heapp != NULL) && (size > 0U));
+ 135:../../os/oslib/src/chmemheaps.c **** 
+ 136:../../os/oslib/src/chmemheaps.c ****   /* Adjusting the size in case the initial block was not correctly
+ 137:../../os/oslib/src/chmemheaps.c ****      aligned.*/
+ 138:../../os/oslib/src/chmemheaps.c ****   /*lint -save -e9033 [10.8] Required cast operations.*/
+ 139:../../os/oslib/src/chmemheaps.c ****   size -= (size_t)((uint8_t *)hp - (uint8_t *)buf);
+ 140:../../os/oslib/src/chmemheaps.c ****   /*lint restore*/
+ 141:../../os/oslib/src/chmemheaps.c **** 
+ 142:../../os/oslib/src/chmemheaps.c ****   /* Initializing the heap header.*/
+ 143:../../os/oslib/src/chmemheaps.c ****   heapp->provider = NULL;
   60               		.loc 1 143 0
   61 0006 DC01      		movw r26,r24
   62 0008 1196      		adiw r26,1
   63 000a 1C92      		st X,__zero_reg__
   64 000c 1E92      		st -X,__zero_reg__
- 144:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   H_NEXT(&heapp->header) = hp;
+ 144:../../os/oslib/src/chmemheaps.c ****   H_NEXT(&heapp->header) = hp;
   65               		.loc 1 144 0
   66 000e 1396      		adiw r26,2+1
   67 0010 FC93      		st X,r31
   68 0012 EE93      		st -X,r30
   69 0014 1297      		sbiw r26,2
- 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   H_PAGES(&heapp->header) = 0;
+ 145:../../os/oslib/src/chmemheaps.c ****   H_PAGES(&heapp->header) = 0;
   70               		.loc 1 145 0
   71 0016 1596      		adiw r26,4+1
   72 0018 1C92      		st X,__zero_reg__
   73 001a 1E92      		st -X,__zero_reg__
   74 001c 1497      		sbiw r26,4
- 146:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   H_NEXT(hp) = NULL;
+ 146:../../os/oslib/src/chmemheaps.c ****   H_NEXT(hp) = NULL;
   75               		.loc 1 146 0
   76 001e 1182      		std Z+1,__zero_reg__
   77 0020 1082      		st Z,__zero_reg__
- 147:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   H_PAGES(hp) = (size - sizeof (heap_header_t)) / CH_HEAP_ALIGNMENT;
+ 147:../../os/oslib/src/chmemheaps.c ****   H_PAGES(hp) = (size - sizeof (heap_header_t)) / CH_HEAP_ALIGNMENT;
   78               		.loc 1 147 0
   79 0022 4450      		subi r20,4
   80 0024 5109      		sbc r21,__zero_reg__
   81               	.LVL3:
- 139:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /*lint restore*/
+ 139:../../os/oslib/src/chmemheaps.c ****   /*lint restore*/
   82               		.loc 1 139 0
   83 0026 9F01      		movw r18,r30
   84 0028 261B      		sub r18,r22
@@ -238,8 +238,8 @@
   93 0036 4795      		ror r20
   94 0038 5383      		std Z+3,r21
   95 003a 4283      		std Z+2,r20
- 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #if (CH_CFG_USE_MUTEXES == TRUE) || defined(__DOXYGEN__)
- 149:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   chMtxObjectInit(&heapp->mtx);
+ 148:../../os/oslib/src/chmemheaps.c **** #if (CH_CFG_USE_MUTEXES == TRUE) || defined(__DOXYGEN__)
+ 149:../../os/oslib/src/chmemheaps.c ****   chMtxObjectInit(&heapp->mtx);
   96               		.loc 1 149 0
   97 003c 0696      		adiw r24,6
   98               	.LVL5:
@@ -251,29 +251,29 @@
  105               	.global	chHeapAllocAligned
  107               	chHeapAllocAligned:
  108               	.LFB197:
- 150:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #else
- 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   chSemObjectInit(&heapp->sem, (cnt_t)1);
- 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** #endif
- 153:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** }
- 154:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 155:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /**
- 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @brief   Allocates a block of memory from the heap by using the first-fit
- 157:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *          algorithm.
- 158:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @details The allocated block is guaranteed to be properly aligned to the
- 159:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *          specified alignment.
- 160:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *
- 161:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @param[in] heapp     pointer to a heap descriptor or @p NULL in order to
- 162:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *                      access the default heap.
- 163:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @param[in] size      the size of the block to be allocated. Note that the
- 164:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *                      allocated block may be a bit bigger than the requested
- 165:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *                      size for alignment and fragmentation reasons.
- 166:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @param[in] align     desired memory alignment
- 167:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @return              A pointer to the aligned allocated block.
- 168:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @retval NULL         if the block cannot be allocated.
- 169:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *
- 170:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @api
- 171:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  */
- 172:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** void *chHeapAllocAligned(memory_heap_t *heapp, size_t size, unsigned align) {
+ 150:../../os/oslib/src/chmemheaps.c **** #else
+ 151:../../os/oslib/src/chmemheaps.c ****   chSemObjectInit(&heapp->sem, (cnt_t)1);
+ 152:../../os/oslib/src/chmemheaps.c **** #endif
+ 153:../../os/oslib/src/chmemheaps.c **** }
+ 154:../../os/oslib/src/chmemheaps.c **** 
+ 155:../../os/oslib/src/chmemheaps.c **** /**
+ 156:../../os/oslib/src/chmemheaps.c ****  * @brief   Allocates a block of memory from the heap by using the first-fit
+ 157:../../os/oslib/src/chmemheaps.c ****  *          algorithm.
+ 158:../../os/oslib/src/chmemheaps.c ****  * @details The allocated block is guaranteed to be properly aligned to the
+ 159:../../os/oslib/src/chmemheaps.c ****  *          specified alignment.
+ 160:../../os/oslib/src/chmemheaps.c ****  *
+ 161:../../os/oslib/src/chmemheaps.c ****  * @param[in] heapp     pointer to a heap descriptor or @p NULL in order to
+ 162:../../os/oslib/src/chmemheaps.c ****  *                      access the default heap.
+ 163:../../os/oslib/src/chmemheaps.c ****  * @param[in] size      the size of the block to be allocated. Note that the
+ 164:../../os/oslib/src/chmemheaps.c ****  *                      allocated block may be a bit bigger than the requested
+ 165:../../os/oslib/src/chmemheaps.c ****  *                      size for alignment and fragmentation reasons.
+ 166:../../os/oslib/src/chmemheaps.c ****  * @param[in] align     desired memory alignment
+ 167:../../os/oslib/src/chmemheaps.c ****  * @return              A pointer to the aligned allocated block.
+ 168:../../os/oslib/src/chmemheaps.c ****  * @retval NULL         if the block cannot be allocated.
+ 169:../../os/oslib/src/chmemheaps.c ****  *
+ 170:../../os/oslib/src/chmemheaps.c ****  * @api
+ 171:../../os/oslib/src/chmemheaps.c ****  */
+ 172:../../os/oslib/src/chmemheaps.c **** void *chHeapAllocAligned(memory_heap_t *heapp, size_t size, unsigned align) {
  109               		.loc 1 172 0
  110               		.cfi_startproc
  111               	.LVL7:
@@ -355,13 +355,13 @@
  187               	.L__stack_usage = 18
  188 0024 4C01      		movw r8,r24
  189 0026 1B01      		movw r2,r22
- 173:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   heap_header_t *qp, *hp, *ahp;
- 174:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   size_t pages;
- 175:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 176:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   chDbgCheck((size > 0U) && MEM_IS_VALID_ALIGNMENT(align));
- 177:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 178:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* If an heap is not specified then the default system header is used.*/
- 179:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   if (heapp == NULL) {
+ 173:../../os/oslib/src/chmemheaps.c ****   heap_header_t *qp, *hp, *ahp;
+ 174:../../os/oslib/src/chmemheaps.c ****   size_t pages;
+ 175:../../os/oslib/src/chmemheaps.c **** 
+ 176:../../os/oslib/src/chmemheaps.c ****   chDbgCheck((size > 0U) && MEM_IS_VALID_ALIGNMENT(align));
+ 177:../../os/oslib/src/chmemheaps.c **** 
+ 178:../../os/oslib/src/chmemheaps.c ****   /* If an heap is not specified then the default system header is used.*/
+ 179:../../os/oslib/src/chmemheaps.c ****   if (heapp == NULL) {
  190               		.loc 1 179 0
  191 0028 892B      		or r24,r25
  192 002a 01F4      		brne .+2
@@ -378,16 +378,16 @@
  203 003a 712C      		mov r7,__zero_reg__
  204               	.LVL10:
  205               	.L6:
- 180:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     heapp = &default_heap;
- 181:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   }
- 182:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 183:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* Minimum alignment is constrained by the heap header structure size.*/
- 184:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   if (align < CH_HEAP_ALIGNMENT) {
- 185:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     align = CH_HEAP_ALIGNMENT;
- 186:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   }
- 187:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 188:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* Size is converted in number of elementary allocation units.*/
- 189:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   pages = MEM_ALIGN_NEXT(size, CH_HEAP_ALIGNMENT) / CH_HEAP_ALIGNMENT;
+ 180:../../os/oslib/src/chmemheaps.c ****     heapp = &default_heap;
+ 181:../../os/oslib/src/chmemheaps.c ****   }
+ 182:../../os/oslib/src/chmemheaps.c **** 
+ 183:../../os/oslib/src/chmemheaps.c ****   /* Minimum alignment is constrained by the heap header structure size.*/
+ 184:../../os/oslib/src/chmemheaps.c ****   if (align < CH_HEAP_ALIGNMENT) {
+ 185:../../os/oslib/src/chmemheaps.c ****     align = CH_HEAP_ALIGNMENT;
+ 186:../../os/oslib/src/chmemheaps.c ****   }
+ 187:../../os/oslib/src/chmemheaps.c **** 
+ 188:../../os/oslib/src/chmemheaps.c ****   /* Size is converted in number of elementary allocation units.*/
+ 189:../../os/oslib/src/chmemheaps.c ****   pages = MEM_ALIGN_NEXT(size, CH_HEAP_ALIGNMENT) / CH_HEAP_ALIGNMENT;
  206               		.loc 1 189 0
  207 003c 5101      		movw r10,r2
  208 003e A3E0      		ldi r26,3
@@ -398,9 +398,9 @@
  213 0048 B694      		lsr r11
  214 004a A794      		ror r10
  215               	.LVL11:
- 190:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 191:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* Taking heap mutex/semaphore.*/
- 192:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   H_LOCK(heapp);
+ 190:../../os/oslib/src/chmemheaps.c **** 
+ 191:../../os/oslib/src/chmemheaps.c ****   /* Taking heap mutex/semaphore.*/
+ 192:../../os/oslib/src/chmemheaps.c ****   H_LOCK(heapp);
  216               		.loc 1 192 0
  217 004c 2401      		movw r4,r8
  218 004e B6E0      		ldi r27,6
@@ -409,20 +409,20 @@
  221 0054 C201      		movw r24,r4
  222 0056 0E94 0000 		call chMtxLock
  223               	.LVL12:
- 193:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 194:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* Start of the free blocks list.*/
- 195:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   qp = &heapp->header;
+ 193:../../os/oslib/src/chmemheaps.c **** 
+ 194:../../os/oslib/src/chmemheaps.c ****   /* Start of the free blocks list.*/
+ 195:../../os/oslib/src/chmemheaps.c ****   qp = &heapp->header;
  224               		.loc 1 195 0
  225 005a D401      		movw r26,r8
  226 005c 1296      		adiw r26,2
  227               	.LVL13:
- 196:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   while (H_NEXT(qp) != NULL) {
- 197:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 198:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     /* Next free block.*/
- 199:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     hp = H_NEXT(qp);
- 200:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 201:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     /* Pointer aligned to the requested alignment.*/
- 202:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     ahp = (heap_header_t *)MEM_ALIGN_NEXT(H_BLOCK(hp), align) - 1U;
+ 196:../../os/oslib/src/chmemheaps.c ****   while (H_NEXT(qp) != NULL) {
+ 197:../../os/oslib/src/chmemheaps.c **** 
+ 198:../../os/oslib/src/chmemheaps.c ****     /* Next free block.*/
+ 199:../../os/oslib/src/chmemheaps.c ****     hp = H_NEXT(qp);
+ 200:../../os/oslib/src/chmemheaps.c **** 
+ 201:../../os/oslib/src/chmemheaps.c ****     /* Pointer aligned to the requested alignment.*/
+ 202:../../os/oslib/src/chmemheaps.c ****     ahp = (heap_header_t *)MEM_ALIGN_NEXT(H_BLOCK(hp), align) - 1U;
  228               		.loc 1 202 0
  229 005e 6301      		movw r12,r6
  230 0060 E1E0      		ldi r30,1
@@ -432,7 +432,7 @@
  234 0068 FF24      		clr r15
  235 006a E618      		sub r14,r6
  236 006c F708      		sbc r15,r7
- 196:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   while (H_NEXT(qp) != NULL) {
+ 196:../../os/oslib/src/chmemheaps.c ****   while (H_NEXT(qp) != NULL) {
  237               		.loc 1 196 0
  238 006e ED91      		ld r30,X+
  239 0070 FC91      		ld r31,X
@@ -453,8 +453,8 @@
  254 0088 CE01      		movw r24,r28
  255 008a 0497      		sbiw r24,4
  256               	.LVL15:
- 203:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 204:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     if ((ahp < H_LIMIT(hp)) && (pages <= NPAGES(H_LIMIT(hp), ahp + 1U))) {
+ 203:../../os/oslib/src/chmemheaps.c **** 
+ 204:../../os/oslib/src/chmemheaps.c ****     if ((ahp < H_LIMIT(hp)) && (pages <= NPAGES(H_LIMIT(hp), ahp + 1U))) {
  257               		.loc 1 204 0
  258 008c 0281      		ldd r16,Z+2
  259 008e 1381      		ldd r17,Z+3
@@ -483,50 +483,50 @@
  282 00ba 00F4      		brsh .L21
  283               	.L8:
  284               	.LBB2:
- 205:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       /* The block is large enough to contain a correctly aligned area
- 206:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****          of sufficient size.*/
- 207:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 208:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       if (ahp > hp) {
- 209:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         /* The block is not properly aligned, must split it.*/
- 210:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         size_t bpages;
- 211:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 212:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         bpages = NPAGES(H_LIMIT(hp), H_BLOCK(ahp));
- 213:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         H_PAGES(hp) = NPAGES(ahp, H_BLOCK(hp));
- 214:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         if (bpages > pages) {
- 215:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           /* The block is bigger than required, must split the excess.*/
- 216:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           heap_header_t *fp;
- 217:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 218:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           /* Creating the excess block.*/
- 219:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           fp = H_BLOCK(ahp) + pages;
- 220:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           H_PAGES(fp) = (bpages - pages) - 1U;
- 221:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 222:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           /* Linking the excess block.*/
- 223:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           H_NEXT(fp) = H_NEXT(hp);
- 224:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           H_NEXT(hp) = fp;
- 225:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         }
- 226:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 227:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         hp = ahp;
- 228:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       }
- 229:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       else {
- 230:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         /* The block is already properly aligned.*/
- 231:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 232:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         if (H_PAGES(hp) == pages) {
- 233:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           /* Exact size, getting the whole block.*/
- 234:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           H_NEXT(qp) = H_NEXT(hp);
- 235:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         }
- 236:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         else {
- 237:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           /* The block is bigger than required, must split the excess.*/
- 238:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           heap_header_t *fp;
- 239:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 240:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           fp = H_BLOCK(hp) + pages;
- 241:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           H_NEXT(fp) = H_NEXT(hp);
- 242:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           H_PAGES(fp) = NPAGES(H_LIMIT(hp), H_BLOCK(fp));
- 243:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           H_NEXT(qp) = fp;
+ 205:../../os/oslib/src/chmemheaps.c ****       /* The block is large enough to contain a correctly aligned area
+ 206:../../os/oslib/src/chmemheaps.c ****          of sufficient size.*/
+ 207:../../os/oslib/src/chmemheaps.c **** 
+ 208:../../os/oslib/src/chmemheaps.c ****       if (ahp > hp) {
+ 209:../../os/oslib/src/chmemheaps.c ****         /* The block is not properly aligned, must split it.*/
+ 210:../../os/oslib/src/chmemheaps.c ****         size_t bpages;
+ 211:../../os/oslib/src/chmemheaps.c **** 
+ 212:../../os/oslib/src/chmemheaps.c ****         bpages = NPAGES(H_LIMIT(hp), H_BLOCK(ahp));
+ 213:../../os/oslib/src/chmemheaps.c ****         H_PAGES(hp) = NPAGES(ahp, H_BLOCK(hp));
+ 214:../../os/oslib/src/chmemheaps.c ****         if (bpages > pages) {
+ 215:../../os/oslib/src/chmemheaps.c ****           /* The block is bigger than required, must split the excess.*/
+ 216:../../os/oslib/src/chmemheaps.c ****           heap_header_t *fp;
+ 217:../../os/oslib/src/chmemheaps.c **** 
+ 218:../../os/oslib/src/chmemheaps.c ****           /* Creating the excess block.*/
+ 219:../../os/oslib/src/chmemheaps.c ****           fp = H_BLOCK(ahp) + pages;
+ 220:../../os/oslib/src/chmemheaps.c ****           H_PAGES(fp) = (bpages - pages) - 1U;
+ 221:../../os/oslib/src/chmemheaps.c **** 
+ 222:../../os/oslib/src/chmemheaps.c ****           /* Linking the excess block.*/
+ 223:../../os/oslib/src/chmemheaps.c ****           H_NEXT(fp) = H_NEXT(hp);
+ 224:../../os/oslib/src/chmemheaps.c ****           H_NEXT(hp) = fp;
+ 225:../../os/oslib/src/chmemheaps.c ****         }
+ 226:../../os/oslib/src/chmemheaps.c **** 
+ 227:../../os/oslib/src/chmemheaps.c ****         hp = ahp;
+ 228:../../os/oslib/src/chmemheaps.c ****       }
+ 229:../../os/oslib/src/chmemheaps.c ****       else {
+ 230:../../os/oslib/src/chmemheaps.c ****         /* The block is already properly aligned.*/
+ 231:../../os/oslib/src/chmemheaps.c **** 
+ 232:../../os/oslib/src/chmemheaps.c ****         if (H_PAGES(hp) == pages) {
+ 233:../../os/oslib/src/chmemheaps.c ****           /* Exact size, getting the whole block.*/
+ 234:../../os/oslib/src/chmemheaps.c ****           H_NEXT(qp) = H_NEXT(hp);
+ 235:../../os/oslib/src/chmemheaps.c ****         }
+ 236:../../os/oslib/src/chmemheaps.c ****         else {
+ 237:../../os/oslib/src/chmemheaps.c ****           /* The block is bigger than required, must split the excess.*/
+ 238:../../os/oslib/src/chmemheaps.c ****           heap_header_t *fp;
+ 239:../../os/oslib/src/chmemheaps.c **** 
+ 240:../../os/oslib/src/chmemheaps.c ****           fp = H_BLOCK(hp) + pages;
+ 241:../../os/oslib/src/chmemheaps.c ****           H_NEXT(fp) = H_NEXT(hp);
+ 242:../../os/oslib/src/chmemheaps.c ****           H_PAGES(fp) = NPAGES(H_LIMIT(hp), H_BLOCK(fp));
+ 243:../../os/oslib/src/chmemheaps.c ****           H_NEXT(qp) = fp;
  285               		.loc 1 243 0 is_stmt 1
  286 00bc DF01      		movw r26,r30
  287               	.LVL16:
  288               	.LBE2:
- 196:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
+ 196:../../os/oslib/src/chmemheaps.c **** 
  289               		.loc 1 196 0
  290 00be ED91      		ld r30,X+
  291 00c0 FC91      		ld r31,X
@@ -536,35 +536,35 @@
  295 00c6 01F4      		brne .L13
  296               	.LVL18:
  297               	.L20:
- 244:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         }
- 245:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       }
- 246:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 247:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       /* Setting in the block owner heap and size.*/
- 248:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       H_SIZE(hp) = size;
- 249:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       H_HEAP(hp) = heapp;
- 250:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 251:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       /* Releasing heap mutex/semaphore.*/
- 252:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       H_UNLOCK(heapp);
- 253:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 254:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       /*lint -save -e9087 [11.3] Safe cast.*/
- 255:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       return (void *)H_BLOCK(hp);
- 256:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       /*lint -restore*/
- 257:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     }
- 258:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 259:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     /* Next in the free blocks list.*/
- 260:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     qp = hp;
- 261:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   }
- 262:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 263:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* Releasing heap mutex/semaphore.*/
- 264:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   H_UNLOCK(heapp);
+ 244:../../os/oslib/src/chmemheaps.c ****         }
+ 245:../../os/oslib/src/chmemheaps.c ****       }
+ 246:../../os/oslib/src/chmemheaps.c **** 
+ 247:../../os/oslib/src/chmemheaps.c ****       /* Setting in the block owner heap and size.*/
+ 248:../../os/oslib/src/chmemheaps.c ****       H_SIZE(hp) = size;
+ 249:../../os/oslib/src/chmemheaps.c ****       H_HEAP(hp) = heapp;
+ 250:../../os/oslib/src/chmemheaps.c **** 
+ 251:../../os/oslib/src/chmemheaps.c ****       /* Releasing heap mutex/semaphore.*/
+ 252:../../os/oslib/src/chmemheaps.c ****       H_UNLOCK(heapp);
+ 253:../../os/oslib/src/chmemheaps.c **** 
+ 254:../../os/oslib/src/chmemheaps.c ****       /*lint -save -e9087 [11.3] Safe cast.*/
+ 255:../../os/oslib/src/chmemheaps.c ****       return (void *)H_BLOCK(hp);
+ 256:../../os/oslib/src/chmemheaps.c ****       /*lint -restore*/
+ 257:../../os/oslib/src/chmemheaps.c ****     }
+ 258:../../os/oslib/src/chmemheaps.c **** 
+ 259:../../os/oslib/src/chmemheaps.c ****     /* Next in the free blocks list.*/
+ 260:../../os/oslib/src/chmemheaps.c ****     qp = hp;
+ 261:../../os/oslib/src/chmemheaps.c ****   }
+ 262:../../os/oslib/src/chmemheaps.c **** 
+ 263:../../os/oslib/src/chmemheaps.c ****   /* Releasing heap mutex/semaphore.*/
+ 264:../../os/oslib/src/chmemheaps.c ****   H_UNLOCK(heapp);
  298               		.loc 1 264 0
  299 00c8 C201      		movw r24,r4
  300 00ca 0E94 0000 		call chMtxUnlock
  301               	.LVL19:
- 265:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 266:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* More memory is required, tries to get it from the associated provider
- 267:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****      else fails.*/
- 268:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   if (heapp->provider != NULL) {
+ 265:../../os/oslib/src/chmemheaps.c **** 
+ 266:../../os/oslib/src/chmemheaps.c ****   /* More memory is required, tries to get it from the associated provider
+ 267:../../os/oslib/src/chmemheaps.c ****      else fails.*/
+ 268:../../os/oslib/src/chmemheaps.c ****   if (heapp->provider != NULL) {
  302               		.loc 1 268 0
  303 00ce D401      		movw r26,r8
  304 00d0 ED91      		ld r30,X+
@@ -572,7 +572,7 @@
  306 00d4 3097      		sbiw r30,0
  307 00d6 01F4      		brne .+2
  308 00d8 00C0      		rjmp .L15
- 269:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     ahp = heapp->provider(pages * CH_HEAP_ALIGNMENT,
+ 269:../../os/oslib/src/chmemheaps.c ****     ahp = heapp->provider(pages * CH_HEAP_ALIGNMENT,
  309               		.loc 1 269 0
  310 00da 44E0      		ldi r20,lo8(4)
  311 00dc 50E0      		ldi r21,0
@@ -586,36 +586,36 @@
  319               	.LVL20:
  320 00ec EC01      		movw r28,r24
  321               	.LVL21:
- 270:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****                           align,
- 271:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****                           sizeof (heap_header_t));
- 272:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     if (ahp != NULL) {
+ 270:../../os/oslib/src/chmemheaps.c ****                           align,
+ 271:../../os/oslib/src/chmemheaps.c ****                           sizeof (heap_header_t));
+ 272:../../os/oslib/src/chmemheaps.c ****     if (ahp != NULL) {
  322               		.loc 1 272 0
  323 00ee 0097      		sbiw r24,0
  324 00f0 01F0      		breq .L4
  325               	.LVL22:
- 273:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       hp = ahp - 1U;
- 274:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       H_HEAP(hp) = heapp;
+ 273:../../os/oslib/src/chmemheaps.c ****       hp = ahp - 1U;
+ 274:../../os/oslib/src/chmemheaps.c ****       H_HEAP(hp) = heapp;
  326               		.loc 1 274 0
  327 00f2 FC01      		movw r30,r24
  328 00f4 3497      		sbiw r30,4
  329               	.LVL23:
  330 00f6 9182      		std Z+1,r9
  331 00f8 8082      		st Z,r8
- 275:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       H_SIZE(hp) = size;
+ 275:../../os/oslib/src/chmemheaps.c ****       H_SIZE(hp) = size;
  332               		.loc 1 275 0
  333 00fa 3382      		std Z+3,r3
  334 00fc 2282      		std Z+2,r2
  335               	.LVL24:
  336               	.L4:
- 276:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 277:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       /*lint -save -e9087 [11.3] Safe cast.*/
- 278:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       return (void *)ahp;
- 279:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       /*lint -restore*/
- 280:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     }
- 281:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   }
- 282:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 283:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   return NULL;
- 284:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** }
+ 276:../../os/oslib/src/chmemheaps.c **** 
+ 277:../../os/oslib/src/chmemheaps.c ****       /*lint -save -e9087 [11.3] Safe cast.*/
+ 278:../../os/oslib/src/chmemheaps.c ****       return (void *)ahp;
+ 279:../../os/oslib/src/chmemheaps.c ****       /*lint -restore*/
+ 280:../../os/oslib/src/chmemheaps.c ****     }
+ 281:../../os/oslib/src/chmemheaps.c ****   }
+ 282:../../os/oslib/src/chmemheaps.c **** 
+ 283:../../os/oslib/src/chmemheaps.c ****   return NULL;
+ 284:../../os/oslib/src/chmemheaps.c **** }
  337               		.loc 1 284 0
  338 00fe CE01      		movw r24,r28
  339               	/* epilogue start */
@@ -644,7 +644,7 @@
  362 0124 0895      		ret
  363               	.LVL29:
  364               	.L21:
- 208:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         /* The block is not properly aligned, must split it.*/
+ 208:../../os/oslib/src/chmemheaps.c ****         /* The block is not properly aligned, must split it.*/
  365               		.loc 1 208 0
  366 0126 E817      		cp r30,r24
  367 0128 F907      		cpc r31,r25
@@ -652,14 +652,14 @@
  369 012c 8081      		ld r24,Z
  370 012e 9181      		ldd r25,Z+1
  371               	.LVL30:
- 232:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           /* Exact size, getting the whole block.*/
+ 232:../../os/oslib/src/chmemheaps.c ****           /* Exact size, getting the whole block.*/
  372               		.loc 1 232 0
  373 0130 0A15      		cp r16,r10
  374 0132 1B05      		cpc r17,r11
  375 0134 01F4      		brne .+2
  376 0136 00C0      		rjmp .L23
  377               	.LBB3:
- 240:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           H_NEXT(fp) = H_NEXT(hp);
+ 240:../../os/oslib/src/chmemheaps.c ****           H_NEXT(fp) = H_NEXT(hp);
  378               		.loc 1 240 0
  379 0138 E501      		movw r28,r10
  380               	.LVL31:
@@ -671,11 +671,11 @@
  386 0144 CE0F      		add r28,r30
  387 0146 DF1F      		adc r29,r31
  388               	.LVL32:
- 241:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           H_PAGES(fp) = NPAGES(H_LIMIT(hp), H_BLOCK(fp));
+ 241:../../os/oslib/src/chmemheaps.c ****           H_PAGES(fp) = NPAGES(H_LIMIT(hp), H_BLOCK(fp));
  389               		.loc 1 241 0
  390 0148 9983      		std Y+1,r25
  391 014a 8883      		st Y,r24
- 242:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           H_NEXT(qp) = fp;
+ 242:../../os/oslib/src/chmemheaps.c ****           H_NEXT(qp) = fp;
  392               		.loc 1 242 0
  393 014c CE01      		movw r24,r28
  394 014e 0496      		adiw r24,4
@@ -687,45 +687,45 @@
  400 015a 2795      		ror r18
  401 015c 3B83      		std Y+3,r19
  402 015e 2A83      		std Y+2,r18
- 243:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         }
+ 243:../../os/oslib/src/chmemheaps.c ****         }
  403               		.loc 1 243 0
  404 0160 CD93      		st X+,r28
  405 0162 DC93      		st X,r29
  406               	.LBE3:
- 202:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
+ 202:../../os/oslib/src/chmemheaps.c **** 
  407               		.loc 1 202 0
  408 0164 EA01      		movw r28,r20
  409               	.LVL33:
  410               	.LBB4:
- 243:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         }
+ 243:../../os/oslib/src/chmemheaps.c ****         }
  411               		.loc 1 243 0
  412 0166 CF01      		movw r24,r30
  413               	.LVL34:
  414               	.L10:
  415               	.LBE4:
- 248:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       H_HEAP(hp) = heapp;
+ 248:../../os/oslib/src/chmemheaps.c ****       H_HEAP(hp) = heapp;
  416               		.loc 1 248 0
  417 0168 DC01      		movw r26,r24
  418 016a 1396      		adiw r26,2+1
  419 016c 3C92      		st X,r3
  420 016e 2E92      		st -X,r2
  421 0170 1297      		sbiw r26,2
- 249:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
+ 249:../../os/oslib/src/chmemheaps.c **** 
  422               		.loc 1 249 0
  423 0172 8D92      		st X+,r8
  424 0174 9C92      		st X,r9
- 252:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
+ 252:../../os/oslib/src/chmemheaps.c **** 
  425               		.loc 1 252 0
  426 0176 C201      		movw r24,r4
  427               	.LVL35:
  428 0178 0E94 0000 		call chMtxUnlock
  429               	.LVL36:
- 255:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       /*lint -restore*/
+ 255:../../os/oslib/src/chmemheaps.c ****       /*lint -restore*/
  430               		.loc 1 255 0
  431 017c 00C0      		rjmp .L4
  432               	.LVL37:
  433               	.L19:
- 180:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   }
+ 180:../../os/oslib/src/chmemheaps.c ****   }
  434               		.loc 1 180 0
  435 017e F0E0      		ldi r31,lo8(default_heap)
  436 0180 8F2E      		mov r8,r31
@@ -736,7 +736,7 @@
  441               	.LVL39:
  442               	.L22:
  443               	.LBB5:
- 213:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         if (bpages > pages) {
+ 213:../../os/oslib/src/chmemheaps.c ****         if (bpages > pages) {
  444               		.loc 1 213 0
  445 0188 9C01      		movw r18,r24
  446 018a 241B      		sub r18,r20
@@ -747,13 +747,13 @@
  451 0194 2795      		ror r18
  452 0196 3383      		std Z+3,r19
  453 0198 2283      		std Z+2,r18
- 214:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           /* The block is bigger than required, must split the excess.*/
+ 214:../../os/oslib/src/chmemheaps.c ****           /* The block is bigger than required, must split the excess.*/
  454               		.loc 1 214 0
  455 019a A616      		cp r10,r22
  456 019c B706      		cpc r11,r23
  457 019e 00F4      		brsh .L10
  458               	.LBB6:
- 219:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           H_PAGES(fp) = (bpages - pages) - 1U;
+ 219:../../os/oslib/src/chmemheaps.c ****           H_PAGES(fp) = (bpages - pages) - 1U;
  459               		.loc 1 219 0
  460 01a0 D501      		movw r26,r10
  461               	.LVL40:
@@ -765,7 +765,7 @@
  467 01ac A80F      		add r26,r24
  468 01ae B91F      		adc r27,r25
  469               	.LVL41:
- 220:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
+ 220:../../os/oslib/src/chmemheaps.c **** 
  470               		.loc 1 220 0
  471 01b0 A094      		com r10
  472 01b2 B094      		com r11
@@ -777,14 +777,14 @@
  478 01ba 7C93      		st X,r23
  479 01bc 6E93      		st -X,r22
  480 01be 1297      		sbiw r26,2
- 223:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****           H_NEXT(hp) = fp;
+ 223:../../os/oslib/src/chmemheaps.c ****           H_NEXT(hp) = fp;
  481               		.loc 1 223 0
  482 01c0 2081      		ld r18,Z
  483 01c2 3181      		ldd r19,Z+1
  484 01c4 1196      		adiw r26,1
  485 01c6 3C93      		st X,r19
  486 01c8 2E93      		st -X,r18
- 224:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         }
+ 224:../../os/oslib/src/chmemheaps.c ****         }
  487               		.loc 1 224 0
  488 01ca B183      		std Z+1,r27
  489 01cc A083      		st Z,r26
@@ -793,11 +793,11 @@
  492               	.L23:
  493               	.LBE6:
  494               	.LBE5:
- 234:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         }
+ 234:../../os/oslib/src/chmemheaps.c ****         }
  495               		.loc 1 234 0
  496 01d0 8D93      		st X+,r24
  497 01d2 9C93      		st X,r25
- 202:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
+ 202:../../os/oslib/src/chmemheaps.c **** 
  498               		.loc 1 202 0
  499 01d4 EA01      		movw r28,r20
  500               	.LVL45:
@@ -805,7 +805,7 @@
  502 01d8 00C0      		rjmp .L10
  503               	.LVL46:
  504               	.L15:
- 283:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** }
+ 283:../../os/oslib/src/chmemheaps.c **** }
  505               		.loc 1 283 0
  506 01da D0E0      		ldi r29,0
  507 01dc C0E0      		ldi r28,0
@@ -816,15 +816,15 @@
  513               	.global	chHeapFree
  515               	chHeapFree:
  516               	.LFB198:
- 285:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 286:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /**
- 287:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @brief   Frees a previously allocated memory block.
- 288:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *
- 289:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @param[in] p         pointer to the memory block to be freed
- 290:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *
- 291:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @api
- 292:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  */
- 293:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** void chHeapFree(void *p) {
+ 285:../../os/oslib/src/chmemheaps.c **** 
+ 286:../../os/oslib/src/chmemheaps.c **** /**
+ 287:../../os/oslib/src/chmemheaps.c ****  * @brief   Frees a previously allocated memory block.
+ 288:../../os/oslib/src/chmemheaps.c ****  *
+ 289:../../os/oslib/src/chmemheaps.c ****  * @param[in] p         pointer to the memory block to be freed
+ 290:../../os/oslib/src/chmemheaps.c ****  *
+ 291:../../os/oslib/src/chmemheaps.c ****  * @api
+ 292:../../os/oslib/src/chmemheaps.c ****  */
+ 293:../../os/oslib/src/chmemheaps.c **** void chHeapFree(void *p) {
  517               		.loc 1 293 0
  518               		.cfi_startproc
  519               	.LVL47:
@@ -856,50 +856,50 @@
  545               	/* frame size = 0 */
  546               	/* stack size = 6 */
  547               	.L__stack_usage = 6
- 294:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   heap_header_t *qp, *hp;
- 295:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   memory_heap_t *heapp;
- 296:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 297:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   chDbgCheck((p != NULL) && MEM_IS_ALIGNED(p, CH_HEAP_ALIGNMENT));
- 298:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 299:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /*lint -save -e9087 [11.3] Safe cast.*/
- 300:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   hp = (heap_header_t *)p - 1U;
+ 294:../../os/oslib/src/chmemheaps.c ****   heap_header_t *qp, *hp;
+ 295:../../os/oslib/src/chmemheaps.c ****   memory_heap_t *heapp;
+ 296:../../os/oslib/src/chmemheaps.c **** 
+ 297:../../os/oslib/src/chmemheaps.c ****   chDbgCheck((p != NULL) && MEM_IS_ALIGNED(p, CH_HEAP_ALIGNMENT));
+ 298:../../os/oslib/src/chmemheaps.c **** 
+ 299:../../os/oslib/src/chmemheaps.c ****   /*lint -save -e9087 [11.3] Safe cast.*/
+ 300:../../os/oslib/src/chmemheaps.c ****   hp = (heap_header_t *)p - 1U;
  548               		.loc 1 300 0
  549 000c EC01      		movw r28,r24
  550 000e 2497      		sbiw r28,4
  551               	.LVL48:
- 301:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /*lint -restore*/
- 302:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   heapp = H_HEAP(hp);
+ 301:../../os/oslib/src/chmemheaps.c ****   /*lint -restore*/
+ 302:../../os/oslib/src/chmemheaps.c ****   heapp = H_HEAP(hp);
  552               		.loc 1 302 0
  553 0010 E880      		ld r14,Y
  554 0012 F980      		ldd r15,Y+1
  555               	.LVL49:
- 303:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   qp = &heapp->header;
+ 303:../../os/oslib/src/chmemheaps.c ****   qp = &heapp->header;
  556               		.loc 1 303 0
  557 0014 8701      		movw r16,r14
  558 0016 0E5F      		subi r16,-2
  559 0018 1F4F      		sbci r17,-1
  560               	.LVL50:
- 304:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 305:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* Size is converted in number of elementary allocation units.*/
- 306:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   H_PAGES(hp) = MEM_ALIGN_NEXT(H_SIZE(hp),
+ 304:../../os/oslib/src/chmemheaps.c **** 
+ 305:../../os/oslib/src/chmemheaps.c ****   /* Size is converted in number of elementary allocation units.*/
+ 306:../../os/oslib/src/chmemheaps.c ****   H_PAGES(hp) = MEM_ALIGN_NEXT(H_SIZE(hp),
  561               		.loc 1 306 0
  562 001a 8A81      		ldd r24,Y+2
  563 001c 9B81      		ldd r25,Y+3
  564               	.LVL51:
  565 001e 0396      		adiw r24,3
- 307:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****                                CH_HEAP_ALIGNMENT) / CH_HEAP_ALIGNMENT;
+ 307:../../os/oslib/src/chmemheaps.c ****                                CH_HEAP_ALIGNMENT) / CH_HEAP_ALIGNMENT;
  566               		.loc 1 307 0
  567 0020 9695      		lsr r25
  568 0022 8795      		ror r24
  569 0024 9695      		lsr r25
  570 0026 8795      		ror r24
- 306:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****                                CH_HEAP_ALIGNMENT) / CH_HEAP_ALIGNMENT;
+ 306:../../os/oslib/src/chmemheaps.c ****                                CH_HEAP_ALIGNMENT) / CH_HEAP_ALIGNMENT;
  571               		.loc 1 306 0
  572 0028 9B83      		std Y+3,r25
  573 002a 8A83      		std Y+2,r24
- 308:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 309:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* Taking heap mutex/semaphore.*/
- 310:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   H_LOCK(heapp);
+ 308:../../os/oslib/src/chmemheaps.c **** 
+ 309:../../os/oslib/src/chmemheaps.c ****   /* Taking heap mutex/semaphore.*/
+ 310:../../os/oslib/src/chmemheaps.c ****   H_LOCK(heapp);
  574               		.loc 1 310 0
  575 002c 86E0      		ldi r24,6
  576 002e E80E      		add r14,r24
@@ -908,18 +908,18 @@
  579 0032 C701      		movw r24,r14
  580 0034 0E94 0000 		call chMtxLock
  581               	.LVL53:
- 303:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
+ 303:../../os/oslib/src/chmemheaps.c **** 
  582               		.loc 1 303 0
  583 0038 F801      		movw r30,r16
  584               	.LVL54:
  585               	.L25:
  586 003a 8081      		ld r24,Z
  587 003c 9181      		ldd r25,Z+1
- 311:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 312:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   while (true) {
- 313:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     chDbgAssert((hp < qp) || (hp >= H_LIMIT(qp)), "within free block");
- 314:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 315:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     if (((qp == &heapp->header) || (hp > qp)) &&
+ 311:../../os/oslib/src/chmemheaps.c **** 
+ 312:../../os/oslib/src/chmemheaps.c ****   while (true) {
+ 313:../../os/oslib/src/chmemheaps.c ****     chDbgAssert((hp < qp) || (hp >= H_LIMIT(qp)), "within free block");
+ 314:../../os/oslib/src/chmemheaps.c **** 
+ 315:../../os/oslib/src/chmemheaps.c ****     if (((qp == &heapp->header) || (hp > qp)) &&
  588               		.loc 1 315 0
  589 003e E017      		cp r30,r16
  590 0040 F107      		cpc r31,r17
@@ -932,30 +932,30 @@
  597               		.loc 1 315 0 discriminator 3
  598 004a 0097      		sbiw r24,0
  599 004c 01F0      		breq .L28
- 316:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         ((H_NEXT(qp) == NULL) || (hp < H_NEXT(qp)))) {
+ 316:../../os/oslib/src/chmemheaps.c ****         ((H_NEXT(qp) == NULL) || (hp < H_NEXT(qp)))) {
  600               		.loc 1 316 0 is_stmt 1
  601 004e C817      		cp r28,r24
  602 0050 D907      		cpc r29,r25
  603 0052 00F0      		brlo .L28
  604               	.L27:
- 293:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   heap_header_t *qp, *hp;
+ 293:../../os/oslib/src/chmemheaps.c ****   heap_header_t *qp, *hp;
  605               		.loc 1 293 0
  606 0054 FC01      		movw r30,r24
  607               	.LVL55:
  608 0056 00C0      		rjmp .L25
  609               	.LVL56:
  610               	.L28:
- 317:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       /* Insertion after qp.*/
- 318:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       H_NEXT(hp) = H_NEXT(qp);
+ 317:../../os/oslib/src/chmemheaps.c ****       /* Insertion after qp.*/
+ 318:../../os/oslib/src/chmemheaps.c ****       H_NEXT(hp) = H_NEXT(qp);
  611               		.loc 1 318 0
  612 0058 9983      		std Y+1,r25
  613 005a 8883      		st Y,r24
- 319:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       H_NEXT(qp) = hp;
+ 319:../../os/oslib/src/chmemheaps.c ****       H_NEXT(qp) = hp;
  614               		.loc 1 319 0
  615 005c D183      		std Z+1,r29
  616 005e C083      		st Z,r28
- 320:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       /* Verifies if the newly inserted block should be merged.*/
- 321:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       if (H_LIMIT(hp) == H_NEXT(hp)) {
+ 320:../../os/oslib/src/chmemheaps.c ****       /* Verifies if the newly inserted block should be merged.*/
+ 321:../../os/oslib/src/chmemheaps.c ****       if (H_LIMIT(hp) == H_NEXT(hp)) {
  617               		.loc 1 321 0
  618 0060 8A81      		ldd r24,Y+2
  619 0062 9B81      		ldd r25,Y+3
@@ -973,11 +973,11 @@
  631 007a B307      		cpc r27,r19
  632 007c 01F0      		breq .L34
  633               	.L29:
- 322:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         /* Merge with the next block.*/
- 323:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         H_PAGES(hp) += H_PAGES(H_NEXT(hp)) + 1U;
- 324:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         H_NEXT(hp) = H_NEXT(H_NEXT(hp));
- 325:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       }
- 326:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       if ((H_LIMIT(qp) == hp)) {
+ 322:../../os/oslib/src/chmemheaps.c ****         /* Merge with the next block.*/
+ 323:../../os/oslib/src/chmemheaps.c ****         H_PAGES(hp) += H_PAGES(H_NEXT(hp)) + 1U;
+ 324:../../os/oslib/src/chmemheaps.c ****         H_NEXT(hp) = H_NEXT(H_NEXT(hp));
+ 325:../../os/oslib/src/chmemheaps.c ****       }
+ 326:../../os/oslib/src/chmemheaps.c ****       if ((H_LIMIT(qp) == hp)) {
  634               		.loc 1 326 0
  635 007e 2281      		ldd r18,Z+2
  636 0080 3381      		ldd r19,Z+3
@@ -993,23 +993,23 @@
  646 0094 D907      		cpc r29,r25
  647 0096 01F0      		breq .L35
  648               	.L30:
- 327:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         /* Merge with the previous block.*/
- 328:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         H_PAGES(qp) += H_PAGES(hp) + 1U;
- 329:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         H_NEXT(qp) = H_NEXT(hp);
- 330:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       }
- 331:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       break;
- 332:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     }
- 333:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     qp = H_NEXT(qp);
- 334:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   }
- 335:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 336:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* Releasing heap mutex/semaphore.*/
- 337:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   H_UNLOCK(heapp);
+ 327:../../os/oslib/src/chmemheaps.c ****         /* Merge with the previous block.*/
+ 328:../../os/oslib/src/chmemheaps.c ****         H_PAGES(qp) += H_PAGES(hp) + 1U;
+ 329:../../os/oslib/src/chmemheaps.c ****         H_NEXT(qp) = H_NEXT(hp);
+ 330:../../os/oslib/src/chmemheaps.c ****       }
+ 331:../../os/oslib/src/chmemheaps.c ****       break;
+ 332:../../os/oslib/src/chmemheaps.c ****     }
+ 333:../../os/oslib/src/chmemheaps.c ****     qp = H_NEXT(qp);
+ 334:../../os/oslib/src/chmemheaps.c ****   }
+ 335:../../os/oslib/src/chmemheaps.c **** 
+ 336:../../os/oslib/src/chmemheaps.c ****   /* Releasing heap mutex/semaphore.*/
+ 337:../../os/oslib/src/chmemheaps.c ****   H_UNLOCK(heapp);
  649               		.loc 1 337 0
  650 0098 C701      		movw r24,r14
  651               	/* epilogue start */
- 338:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 339:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   return;
- 340:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** }
+ 338:../../os/oslib/src/chmemheaps.c **** 
+ 339:../../os/oslib/src/chmemheaps.c ****   return;
+ 340:../../os/oslib/src/chmemheaps.c **** }
  652               		.loc 1 340 0
  653 009a DF91      		pop r29
  654 009c CF91      		pop r28
@@ -1019,12 +1019,12 @@
  658 00a2 FF90      		pop r15
  659 00a4 EF90      		pop r14
  660               	.LVL58:
- 337:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
+ 337:../../os/oslib/src/chmemheaps.c **** 
  661               		.loc 1 337 0
  662 00a6 0C94 0000 		jmp chMtxUnlock
  663               	.LVL59:
  664               	.L34:
- 323:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         H_NEXT(hp) = H_NEXT(H_NEXT(hp));
+ 323:../../os/oslib/src/chmemheaps.c ****         H_NEXT(hp) = H_NEXT(H_NEXT(hp));
  665               		.loc 1 323 0
  666 00aa 1296      		adiw r26,2
  667 00ac 2D91      		ld r18,X+
@@ -1034,7 +1034,7 @@
  671 00b4 931F      		adc r25,r19
  672 00b6 9B83      		std Y+3,r25
  673 00b8 8A83      		std Y+2,r24
- 324:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       }
+ 324:../../os/oslib/src/chmemheaps.c ****       }
  674               		.loc 1 324 0
  675 00ba 8D91      		ld r24,X+
  676 00bc 9C91      		ld r25,X
@@ -1042,7 +1042,7 @@
  678 00c0 8883      		st Y,r24
  679 00c2 00C0      		rjmp .L29
  680               	.L35:
- 328:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****         H_NEXT(qp) = H_NEXT(hp);
+ 328:../../os/oslib/src/chmemheaps.c ****         H_NEXT(qp) = H_NEXT(hp);
  681               		.loc 1 328 0
  682 00c4 8A81      		ldd r24,Y+2
  683 00c6 9B81      		ldd r25,Y+3
@@ -1051,7 +1051,7 @@
  686 00cc 391F      		adc r19,r25
  687 00ce 3383      		std Z+3,r19
  688 00d0 2283      		std Z+2,r18
- 329:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       }
+ 329:../../os/oslib/src/chmemheaps.c ****       }
  689               		.loc 1 329 0
  690 00d2 8881      		ld r24,Y
  691 00d4 9981      		ldd r25,Y+1
@@ -1064,23 +1064,23 @@
  699               	.global	chHeapStatus
  701               	chHeapStatus:
  702               	.LFB199:
- 341:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 342:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** /**
- 343:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @brief   Reports the heap status.
- 344:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @note    This function is meant to be used in the test suite, it should
- 345:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *          not be really useful for the application code.
- 346:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *
- 347:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @param[in] heapp     pointer to a heap descriptor or @p NULL in order to
- 348:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *                      access the default heap.
- 349:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @param[in] totalp    pointer to a variable that will receive the total
- 350:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *                      fragmented free space or @p NULL
- 351:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @param[in] largestp  pointer to a variable that will receive the largest
- 352:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *                      free free block found space or @p NULL
- 353:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @return              The number of fragments in the heap.
- 354:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  *
- 355:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  * @api
- 356:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****  */
- 357:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** size_t chHeapStatus(memory_heap_t *heapp, size_t *totalp, size_t *largestp) {
+ 341:../../os/oslib/src/chmemheaps.c **** 
+ 342:../../os/oslib/src/chmemheaps.c **** /**
+ 343:../../os/oslib/src/chmemheaps.c ****  * @brief   Reports the heap status.
+ 344:../../os/oslib/src/chmemheaps.c ****  * @note    This function is meant to be used in the test suite, it should
+ 345:../../os/oslib/src/chmemheaps.c ****  *          not be really useful for the application code.
+ 346:../../os/oslib/src/chmemheaps.c ****  *
+ 347:../../os/oslib/src/chmemheaps.c ****  * @param[in] heapp     pointer to a heap descriptor or @p NULL in order to
+ 348:../../os/oslib/src/chmemheaps.c ****  *                      access the default heap.
+ 349:../../os/oslib/src/chmemheaps.c ****  * @param[in] totalp    pointer to a variable that will receive the total
+ 350:../../os/oslib/src/chmemheaps.c ****  *                      fragmented free space or @p NULL
+ 351:../../os/oslib/src/chmemheaps.c ****  * @param[in] largestp  pointer to a variable that will receive the largest
+ 352:../../os/oslib/src/chmemheaps.c ****  *                      free free block found space or @p NULL
+ 353:../../os/oslib/src/chmemheaps.c ****  * @return              The number of fragments in the heap.
+ 354:../../os/oslib/src/chmemheaps.c ****  *
+ 355:../../os/oslib/src/chmemheaps.c ****  * @api
+ 356:../../os/oslib/src/chmemheaps.c ****  */
+ 357:../../os/oslib/src/chmemheaps.c **** size_t chHeapStatus(memory_heap_t *heapp, size_t *totalp, size_t *largestp) {
  703               		.loc 1 357 0
  704               		.cfi_startproc
  705               	.LVL60:
@@ -1123,20 +1123,20 @@
  742 0010 EC01      		movw r28,r24
  743 0012 6B01      		movw r12,r22
  744 0014 7A01      		movw r14,r20
- 358:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   heap_header_t *qp;
- 359:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   size_t n, tpages, lpages;
- 360:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 361:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   if (heapp == NULL) {
+ 358:../../os/oslib/src/chmemheaps.c ****   heap_header_t *qp;
+ 359:../../os/oslib/src/chmemheaps.c ****   size_t n, tpages, lpages;
+ 360:../../os/oslib/src/chmemheaps.c **** 
+ 361:../../os/oslib/src/chmemheaps.c ****   if (heapp == NULL) {
  745               		.loc 1 361 0
  746 0016 892B      		or r24,r25
  747 0018 01F4      		brne .+2
  748 001a 00C0      		rjmp .L51
  749               	.L37:
  750               	.LVL61:
- 362:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     heapp = &default_heap;
- 363:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   }
- 364:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 365:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   H_LOCK(heapp);
+ 362:../../os/oslib/src/chmemheaps.c ****     heapp = &default_heap;
+ 363:../../os/oslib/src/chmemheaps.c ****   }
+ 364:../../os/oslib/src/chmemheaps.c **** 
+ 365:../../os/oslib/src/chmemheaps.c ****   H_LOCK(heapp);
  751               		.loc 1 365 0
  752 001c 8E01      		movw r16,r28
  753 001e 0A5F      		subi r16,-6
@@ -1144,23 +1144,23 @@
  755 0022 C801      		movw r24,r16
  756 0024 0E94 0000 		call chMtxLock
  757               	.LVL62:
- 366:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   tpages = 0U;
- 367:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   lpages = 0U;
- 368:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   n = 0U;
- 369:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   qp = &heapp->header;
- 370:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   while (H_NEXT(qp) != NULL) {
+ 366:../../os/oslib/src/chmemheaps.c ****   tpages = 0U;
+ 367:../../os/oslib/src/chmemheaps.c ****   lpages = 0U;
+ 368:../../os/oslib/src/chmemheaps.c ****   n = 0U;
+ 369:../../os/oslib/src/chmemheaps.c ****   qp = &heapp->header;
+ 370:../../os/oslib/src/chmemheaps.c ****   while (H_NEXT(qp) != NULL) {
  758               		.loc 1 370 0
  759 0028 EA81      		ldd r30,Y+2
  760 002a FB81      		ldd r31,Y+3
- 367:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   n = 0U;
+ 367:../../os/oslib/src/chmemheaps.c ****   n = 0U;
  761               		.loc 1 367 0
  762 002c 50E0      		ldi r21,0
  763 002e 40E0      		ldi r20,0
- 366:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   tpages = 0U;
+ 366:../../os/oslib/src/chmemheaps.c ****   tpages = 0U;
  764               		.loc 1 366 0
  765 0030 30E0      		ldi r19,0
  766 0032 20E0      		ldi r18,0
- 368:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   qp = &heapp->header;
+ 368:../../os/oslib/src/chmemheaps.c ****   qp = &heapp->header;
  767               		.loc 1 368 0
  768 0034 D0E0      		ldi r29,0
  769 0036 C0E0      		ldi r28,0
@@ -1171,18 +1171,18 @@
  774               	.LVL64:
  775               	.L40:
  776               	.LBB7:
- 371:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     size_t pages = H_PAGES(H_NEXT(qp));
+ 371:../../os/oslib/src/chmemheaps.c ****     size_t pages = H_PAGES(H_NEXT(qp));
  777               		.loc 1 371 0
  778 003c 8281      		ldd r24,Z+2
  779 003e 9381      		ldd r25,Z+3
  780               	.LVL65:
- 372:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 373:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     /* Updating counters.*/
- 374:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     n++;
+ 372:../../os/oslib/src/chmemheaps.c **** 
+ 373:../../os/oslib/src/chmemheaps.c ****     /* Updating counters.*/
+ 374:../../os/oslib/src/chmemheaps.c ****     n++;
  781               		.loc 1 374 0
  782 0040 2196      		adiw r28,1
  783               	.LVL66:
- 375:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     tpages += pages;
+ 375:../../os/oslib/src/chmemheaps.c ****     tpages += pages;
  784               		.loc 1 375 0
  785 0042 280F      		add r18,r24
  786 0044 391F      		adc r19,r25
@@ -1194,7 +1194,7 @@
  792               	.LVL68:
  793               	.L39:
  794               	.LBE7:
- 370:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     size_t pages = H_PAGES(H_NEXT(qp));
+ 370:../../os/oslib/src/chmemheaps.c ****     size_t pages = H_PAGES(H_NEXT(qp));
  795               		.loc 1 370 0
  796 004e 0190      		ld __tmp_reg__,Z+
  797 0050 F081      		ld r31,Z
@@ -1204,20 +1204,20 @@
  801 0056 01F4      		brne .L40
  802               	.LVL70:
  803               	.L38:
- 376:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     if (pages > lpages) {
- 377:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****       lpages = pages;
- 378:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     }
- 379:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 380:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     qp = H_NEXT(qp);
- 381:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   }
- 382:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 383:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* Writing out fragmented free memory.*/
- 384:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   if (totalp != NULL) {
+ 376:../../os/oslib/src/chmemheaps.c ****     if (pages > lpages) {
+ 377:../../os/oslib/src/chmemheaps.c ****       lpages = pages;
+ 378:../../os/oslib/src/chmemheaps.c ****     }
+ 379:../../os/oslib/src/chmemheaps.c **** 
+ 380:../../os/oslib/src/chmemheaps.c ****     qp = H_NEXT(qp);
+ 381:../../os/oslib/src/chmemheaps.c ****   }
+ 382:../../os/oslib/src/chmemheaps.c **** 
+ 383:../../os/oslib/src/chmemheaps.c ****   /* Writing out fragmented free memory.*/
+ 384:../../os/oslib/src/chmemheaps.c ****   if (totalp != NULL) {
  804               		.loc 1 384 0
  805 0058 C114      		cp r12,__zero_reg__
  806 005a D104      		cpc r13,__zero_reg__
  807 005c 01F0      		breq .L41
- 385:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     *totalp = tpages * CH_HEAP_ALIGNMENT;
+ 385:../../os/oslib/src/chmemheaps.c ****     *totalp = tpages * CH_HEAP_ALIGNMENT;
  808               		.loc 1 385 0
  809 005e 220F      		lsl r18
  810 0060 331F      		rol r19
@@ -1227,15 +1227,15 @@
  814 0068 3183      		std Z+1,r19
  815 006a 2083      		st Z,r18
  816               	.L41:
- 386:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   }
- 387:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 388:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   /* Writing out unfragmented free memory.*/
- 389:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   if (largestp != NULL) {
+ 386:../../os/oslib/src/chmemheaps.c ****   }
+ 387:../../os/oslib/src/chmemheaps.c **** 
+ 388:../../os/oslib/src/chmemheaps.c ****   /* Writing out unfragmented free memory.*/
+ 389:../../os/oslib/src/chmemheaps.c ****   if (largestp != NULL) {
  817               		.loc 1 389 0
  818 006c E114      		cp r14,__zero_reg__
  819 006e F104      		cpc r15,__zero_reg__
  820 0070 01F0      		breq .L42
- 390:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****     *largestp = lpages * CH_HEAP_ALIGNMENT;
+ 390:../../os/oslib/src/chmemheaps.c ****     *largestp = lpages * CH_HEAP_ALIGNMENT;
  821               		.loc 1 390 0
  822 0072 440F      		lsl r20
  823 0074 551F      		rol r21
@@ -1245,15 +1245,15 @@
  827 007c 5183      		std Z+1,r21
  828 007e 4083      		st Z,r20
  829               	.L42:
- 391:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   }
- 392:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   H_UNLOCK(heapp);
+ 391:../../os/oslib/src/chmemheaps.c ****   }
+ 392:../../os/oslib/src/chmemheaps.c ****   H_UNLOCK(heapp);
  830               		.loc 1 392 0
  831 0080 C801      		movw r24,r16
  832 0082 0E94 0000 		call chMtxUnlock
  833               	.LVL71:
- 393:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** 
- 394:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   return n;
- 395:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c **** }
+ 393:../../os/oslib/src/chmemheaps.c **** 
+ 394:../../os/oslib/src/chmemheaps.c ****   return n;
+ 395:../../os/oslib/src/chmemheaps.c **** }
  834               		.loc 1 395 0
  835 0086 CE01      		movw r24,r28
  836               	/* epilogue start */
@@ -1271,7 +1271,7 @@
  848 0098 0895      		ret
  849               	.LVL75:
  850               	.L51:
- 362:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/src/chmemheaps.c ****   }
+ 362:../../os/oslib/src/chmemheaps.c ****   }
  851               		.loc 1 362 0
  852 009a C0E0      		ldi r28,lo8(default_heap)
  853 009c D0E0      		ldi r29,hi8(default_heap)
@@ -1288,33 +1288,33 @@
  864               	.Letext0:
  865               		.file 2 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
  866               		.file 3 "/usr/lib/avr/include/stdint.h"
- 867               		.file 4 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
- 868               		.file 5 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
- 869               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
- 870               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
- 871               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
- 872               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
- 873               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
- 874               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
- 875               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
- 876               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
- 877               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
- 878               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
- 879               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
- 880               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemheaps.h
+ 867               		.file 4 "../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+ 868               		.file 5 "../../os/rt/include/chearly.h"
+ 869               		.file 6 "../../os/rt/include/chobjects.h"
+ 870               		.file 7 "../../os/rt/include/chrfcu.h"
+ 871               		.file 8 "../../os/rt/include/chdebug.h"
+ 872               		.file 9 "../../os/rt/include/chtime.h"
+ 873               		.file 10 "../../os/rt/include/chlists.h"
+ 874               		.file 11 "../../os/common/ports/AVR/chcore.h"
+ 875               		.file 12 "../../os/rt/include/chsem.h"
+ 876               		.file 13 "../../os/rt/include/chmtx.h"
+ 877               		.file 14 "../../os/rt/include/chsys.h"
+ 878               		.file 15 "../../os/rt/include/chregistry.h"
+ 879               		.file 16 "../../os/oslib/include/chmemcore.h"
+ 880               		.file 17 "../../os/oslib/include/chmemheaps.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chmemheaps.c
-     /tmp/ccudXWaM.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccudXWaM.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccudXWaM.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccudXWaM.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccudXWaM.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccudXWaM.s:13     .text.__heap_init:0000000000000000 __heap_init
-     /tmp/ccudXWaM.s:861    .bss.default_heap:0000000000000000 default_heap
-     /tmp/ccudXWaM.s:46     .text.chHeapObjectInit:0000000000000000 chHeapObjectInit
-     /tmp/ccudXWaM.s:107    .text.chHeapAllocAligned:0000000000000000 chHeapAllocAligned
-     /tmp/ccudXWaM.s:515    .text.chHeapFree:0000000000000000 chHeapFree
-     /tmp/ccudXWaM.s:701    .text.chHeapStatus:0000000000000000 chHeapStatus
+     /tmp/ccUMagwK.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccUMagwK.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccUMagwK.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccUMagwK.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccUMagwK.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccUMagwK.s:13     .text.__heap_init:0000000000000000 __heap_init
+     /tmp/ccUMagwK.s:861    .bss.default_heap:0000000000000000 default_heap
+     /tmp/ccUMagwK.s:46     .text.chHeapObjectInit:0000000000000000 chHeapObjectInit
+     /tmp/ccUMagwK.s:107    .text.chHeapAllocAligned:0000000000000000 chHeapAllocAligned
+     /tmp/ccUMagwK.s:515    .text.chHeapFree:0000000000000000 chHeapFree
+     /tmp/ccUMagwK.s:701    .text.chHeapStatus:0000000000000000 chHeapStatus
 
 UNDEFINED SYMBOLS
 chCoreAllocFromTop

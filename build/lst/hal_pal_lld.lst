@@ -11,71 +11,71 @@
   11               	.global	_pal_lld_init
   13               	_pal_lld_init:
   14               	.LFB243:
-  15               		.file 1 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIO
-   1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*
-   2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
-   3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-   4:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     Licensed under the Apache License, Version 2.0 (the "License");
-   5:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     you may not use this file except in compliance with the License.
-   6:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     You may obtain a copy of the License at
-   7:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-   8:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****         http://www.apache.org/licenses/LICENSE-2.0
-   9:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  10:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     Unless required by applicable law or agreed to in writing, software
-  11:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     distributed under the License is distributed on an "AS IS" BASIS,
-  12:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  13:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     See the License for the specific language governing permissions and
-  14:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     limitations under the License.
-  15:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** */
-  16:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  17:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
-  18:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @file    GPIOv1/hal_pal_lld.c
-  19:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   AVR/MEGA PAL subsystem low level driver source.
-  20:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
-  21:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @addtogroup PAL
-  22:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @{
-  23:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
-  24:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  25:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #include "hal.h"
-  26:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  27:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if HAL_USE_PAL || defined(__DOXYGEN__)
-  28:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  29:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
-  30:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /* Driver exported variables.                                               */
-  31:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
-  32:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  33:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if (PAL_USE_WAIT == TRUE) || (PAL_USE_CALLBACKS == TRUE)
-  34:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
-  35:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   Event records for the 16 GPIO EXTI channels.
-  36:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
-  37:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** palevent_t _pal_events[16];
-  38:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
-  39:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  40:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
-  41:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /* Driver local variables and types.                                        */
-  42:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
-  43:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  44:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
-  45:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /* Driver local functions.                                                  */
-  46:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
-  47:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  48:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
-  49:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /* Driver interrupt handlers.                                               */
-  50:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
-  51:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  52:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
-  53:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /* Driver exported functions.                                               */
-  54:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
-  55:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  56:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
-  57:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   AVR GPIO ports configuration.
-  58:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @details GPIO registers initialization.
-  59:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
-  60:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] config    the AVR ports configuration
-  61:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
-  62:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @notapi
-  63:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
-  64:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** void _pal_lld_init(const PALConfig *config) {
+  15               		.file 1 "../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c"
+   1:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*
+   2:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
+   3:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+   4:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     you may not use this file except in compliance with the License.
+   6:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     You may obtain a copy of the License at
+   7:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+   8:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  10:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     Unless required by applicable law or agreed to in writing, software
+  11:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     See the License for the specific language governing permissions and
+  14:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     limitations under the License.
+  15:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** */
+  16:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  17:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
+  18:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @file    GPIOv1/hal_pal_lld.c
+  19:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   AVR/MEGA PAL subsystem low level driver source.
+  20:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+  21:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @addtogroup PAL
+  22:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @{
+  23:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
+  24:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  25:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #include "hal.h"
+  26:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  27:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if HAL_USE_PAL || defined(__DOXYGEN__)
+  28:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  29:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
+  30:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /* Driver exported variables.                                               */
+  31:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
+  32:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  33:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if (PAL_USE_WAIT == TRUE) || (PAL_USE_CALLBACKS == TRUE)
+  34:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
+  35:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   Event records for the 16 GPIO EXTI channels.
+  36:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
+  37:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** palevent_t _pal_events[16];
+  38:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
+  39:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  40:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
+  41:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /* Driver local variables and types.                                        */
+  42:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
+  43:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  44:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
+  45:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /* Driver local functions.                                                  */
+  46:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
+  47:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  48:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
+  49:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /* Driver interrupt handlers.                                               */
+  50:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
+  51:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  52:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
+  53:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /* Driver exported functions.                                               */
+  54:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /*==========================================================================*/
+  55:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  56:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
+  57:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   AVR GPIO ports configuration.
+  58:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @details GPIO registers initialization.
+  59:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+  60:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] config    the AVR ports configuration
+  61:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+  62:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @notapi
+  63:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
+  64:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** void _pal_lld_init(const PALConfig *config) {
   16               		.loc 1 64 0
   17               		.cfi_startproc
   18               	.LVL0:
@@ -84,82 +84,82 @@
   21               	/* stack size = 0 */
   22               	.L__stack_usage = 0
   23 0000 FC01      		movw r30,r24
-  65:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  66:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTA) || defined(__DOXYGEN__)
-  67:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTA = config->porta.out;
-  68:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRA = config->porta.dir;
-  69:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
-  70:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  71:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTB) || defined(__DOXYGEN__)
-  72:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTB = config->portb.out;
+  65:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  66:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTA) || defined(__DOXYGEN__)
+  67:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTA = config->porta.out;
+  68:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRA = config->porta.dir;
+  69:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
+  70:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  71:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTB) || defined(__DOXYGEN__)
+  72:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTB = config->portb.out;
   24               		.loc 1 72 0
   25 0002 8081      		ld r24,Z
   26               	.LVL1:
   27 0004 85B9      		out 0x5,r24
-  73:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRB = config->portb.dir;
+  73:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRB = config->portb.dir;
   28               		.loc 1 73 0
   29 0006 8181      		ldd r24,Z+1
   30 0008 84B9      		out 0x4,r24
-  74:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
-  75:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  76:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTC) || defined(__DOXYGEN__)
-  77:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTC = config->portc.out;
+  74:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
+  75:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  76:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTC) || defined(__DOXYGEN__)
+  77:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTC = config->portc.out;
   31               		.loc 1 77 0
   32 000a 8281      		ldd r24,Z+2
   33 000c 88B9      		out 0x8,r24
-  78:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRC = config->portc.dir;
+  78:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRC = config->portc.dir;
   34               		.loc 1 78 0
   35 000e 8381      		ldd r24,Z+3
   36 0010 87B9      		out 0x7,r24
-  79:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
-  80:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  81:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTD) || defined(__DOXYGEN__)
-  82:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTD = config->portd.out;
+  79:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
+  80:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  81:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTD) || defined(__DOXYGEN__)
+  82:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTD = config->portd.out;
   37               		.loc 1 82 0
   38 0012 8481      		ldd r24,Z+4
   39 0014 8BB9      		out 0xb,r24
-  83:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRD = config->portd.dir;
+  83:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRD = config->portd.dir;
   40               		.loc 1 83 0
   41 0016 8581      		ldd r24,Z+5
   42 0018 8AB9      		out 0xa,r24
   43               	/* epilogue start */
-  84:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
-  85:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  86:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTE) || defined(__DOXYGEN__)
-  87:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTE = config->porte.out;
-  88:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRE = config->porte.dir;
-  89:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
-  90:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  91:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTF) || defined(__DOXYGEN__)
-  92:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTF = config->portf.out;
-  93:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRF = config->portf.dir;
-  94:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
-  95:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
-  96:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTG) || defined(__DOXYGEN__)
-  97:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTG = config->portg.out;
-  98:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRG = config->portg.dir;
-  99:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
- 100:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 101:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTH) || defined(__DOXYGEN__)
- 102:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTH = config->porth.out;
- 103:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRH = config->porth.dir;
- 104:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
- 105:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTJ) || defined(__DOXYGEN__)
- 107:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTJ = config->portj.out;
- 108:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRJ = config->portj.dir;
- 109:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
- 110:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 111:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTK) || defined(__DOXYGEN__)
- 112:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTK = config->portk.out;
- 113:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRK = config->portk.dir;
- 114:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
- 115:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 116:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTL) || defined(__DOXYGEN__)
- 117:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTL = config->portl.out;
- 118:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRL = config->portl.dir;
- 119:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
- 120:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** }
+  84:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
+  85:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  86:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTE) || defined(__DOXYGEN__)
+  87:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTE = config->porte.out;
+  88:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRE = config->porte.dir;
+  89:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
+  90:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  91:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTF) || defined(__DOXYGEN__)
+  92:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTF = config->portf.out;
+  93:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRF = config->portf.dir;
+  94:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
+  95:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+  96:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTG) || defined(__DOXYGEN__)
+  97:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTG = config->portg.out;
+  98:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRG = config->portg.dir;
+  99:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
+ 100:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 101:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTH) || defined(__DOXYGEN__)
+ 102:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTH = config->porth.out;
+ 103:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRH = config->porth.dir;
+ 104:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
+ 105:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 106:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTJ) || defined(__DOXYGEN__)
+ 107:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTJ = config->portj.out;
+ 108:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRJ = config->portj.dir;
+ 109:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
+ 110:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 111:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTK) || defined(__DOXYGEN__)
+ 112:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTK = config->portk.out;
+ 113:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRK = config->portk.dir;
+ 114:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
+ 115:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 116:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #if defined(PORTL) || defined(__DOXYGEN__)
+ 117:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   PORTL = config->portl.out;
+ 118:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   DDRL = config->portl.dir;
+ 119:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** #endif
+ 120:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** }
   44               		.loc 1 120 0
   45 001a 0895      		ret
   46               		.cfi_endproc
@@ -168,27 +168,27 @@
   50               	.global	_pal_lld_setgroupmode
   52               	_pal_lld_setgroupmode:
   53               	.LFB244:
- 121:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 122:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
- 123:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   Pads mode setup.
- 124:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @details This function programs a pads group belonging to the same port
- 125:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *          with the specified mode.
- 126:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 127:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] port the port identifier
- 128:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] mask the group mask
- 129:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] mode the mode
- 130:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 131:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @note This function is not meant to be invoked directly by the application
- 132:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *       code.
- 133:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @note @p PAL_MODE_UNCONNECTED is implemented as output as recommended by
- 134:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *       the AVR Family User's Guide. Unconnected pads are set to input
- 135:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *       with pull-up by default.
- 136:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 137:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @notapi
- 138:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
- 139:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** void _pal_lld_setgroupmode(ioportid_t port,
- 140:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****                            ioportmask_t mask,
- 141:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****                            iomode_t mode) {
+ 121:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 122:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
+ 123:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   Pads mode setup.
+ 124:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @details This function programs a pads group belonging to the same port
+ 125:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *          with the specified mode.
+ 126:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 127:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] port the port identifier
+ 128:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] mask the group mask
+ 129:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] mode the mode
+ 130:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 131:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @note This function is not meant to be invoked directly by the application
+ 132:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *       code.
+ 133:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @note @p PAL_MODE_UNCONNECTED is implemented as output as recommended by
+ 134:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *       the AVR Family User's Guide. Unconnected pads are set to input
+ 135:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *       with pull-up by default.
+ 136:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 137:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @notapi
+ 138:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
+ 139:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** void _pal_lld_setgroupmode(ioportid_t port,
+ 140:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****                            ioportmask_t mask,
+ 141:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****                            iomode_t mode) {
   54               		.loc 1 141 0
   55               		.cfi_startproc
   56               	.LVL2:
@@ -197,8 +197,8 @@
   59               	/* stack size = 0 */
   60               	.L__stack_usage = 0
   61 0000 FC01      		movw r30,r24
- 142:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   switch (mode) {
+ 142:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 143:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   switch (mode) {
   62               		.loc 1 143 0
   63 0002 4230      		cpi r20,lo8(2)
   64 0004 01F0      		breq .L5
@@ -207,19 +207,19 @@
   67 000a 01F0      		breq .L5
   68 000c 4630      		cpi r20,lo8(6)
   69 000e 01F4      		brne .L25
- 144:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_RESET:
- 145:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_INPUT:
- 146:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_INPUT_ANALOG:
- 147:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->dir &= ~mask;
- 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->out &= ~mask;
- 149:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     break;
- 150:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_UNCONNECTED:
- 151:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_INPUT_PULLUP:
- 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->dir &= ~mask;
- 153:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->out |= mask;
- 154:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     break;
- 155:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_OUTPUT_PUSHPULL:
- 156:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->dir |= mask;
+ 144:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_RESET:
+ 145:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_INPUT:
+ 146:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_INPUT_ANALOG:
+ 147:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->dir &= ~mask;
+ 148:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->out &= ~mask;
+ 149:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     break;
+ 150:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_UNCONNECTED:
+ 151:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_INPUT_PULLUP:
+ 152:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->dir &= ~mask;
+ 153:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->out |= mask;
+ 154:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     break;
+ 155:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_OUTPUT_PUSHPULL:
+ 156:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->dir |= mask;
   70               		.loc 1 156 0
   71 0010 8181      		ldd r24,Z+1
   72               	.LVL3:
@@ -228,19 +228,19 @@
   75 0014 6183      		std Z+1,r22
   76               	.L3:
   77               	/* epilogue start */
- 157:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     break;
- 158:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   }
- 159:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** }
+ 157:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     break;
+ 158:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   }
+ 159:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** }
   78               		.loc 1 159 0
   79 0016 0895      		ret
   80               	.LVL5:
   81               	.L25:
- 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_RESET:
+ 143:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_RESET:
   82               		.loc 1 143 0
   83 0018 4330      		cpi r20,lo8(3)
   84 001a 01F4      		brne .L3
   85               	.L7:
- 152:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->out |= mask;
+ 152:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->out |= mask;
   86               		.loc 1 152 0
   87 001c 9181      		ldd r25,Z+1
   88 001e 862F      		mov r24,r22
@@ -248,18 +248,18 @@
   90 0020 8095      		com r24
   91 0022 8923      		and r24,r25
   92 0024 8183      		std Z+1,r24
- 153:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     break;
+ 153:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     break;
   93               		.loc 1 153 0
   94 0026 8281      		ldd r24,Z+2
   95 0028 682B      		or r22,r24
   96               	.LVL7:
   97 002a 6283      		std Z+2,r22
- 154:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_OUTPUT_PUSHPULL:
+ 154:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_OUTPUT_PUSHPULL:
   98               		.loc 1 154 0
   99 002c 0895      		ret
  100               	.LVL8:
  101               	.L24:
- 143:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_RESET:
+ 143:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_RESET:
  102               		.loc 1 143 0
  103 002e 4423      		tst r20
  104 0030 01F0      		breq .L5
@@ -267,7 +267,7 @@
  106 0034 01F0      		breq .L7
  107 0036 0895      		ret
  108               	.L5:
- 147:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->out &= ~mask;
+ 147:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     port->out &= ~mask;
  109               		.loc 1 147 0
  110 0038 8181      		ldd r24,Z+1
  111               	.LVL9:
@@ -275,13 +275,13 @@
  113               	.LVL10:
  114 003c 8623      		and r24,r22
  115 003e 8183      		std Z+1,r24
- 148:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     break;
+ 148:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****     break;
  116               		.loc 1 148 0
  117 0040 8281      		ldd r24,Z+2
  118 0042 6823      		and r22,r24
  119               	.LVL11:
  120 0044 6283      		std Z+2,r22
- 149:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_UNCONNECTED:
+ 149:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   case PAL_MODE_UNCONNECTED:
  121               		.loc 1 149 0
  122 0046 0895      		ret
  123               		.cfi_endproc
@@ -290,25 +290,25 @@
  127               	.global	_pal_lld_enablepadevent
  129               	_pal_lld_enablepadevent:
  130               	.LFB245:
- 160:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 161:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
- 162:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   Pad event enable.
- 163:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @details This function programs an event callback in the specified mode.
- 164:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @note    Programming an unknown or unsupported mode is silently ignored.
- 165:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 166:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] port      port identifier
- 167:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] pad       pad number within the port
- 168:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] mode      pad event mode
- 169:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] callback  event callback function
- 170:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] arg       callback argument
- 171:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 172:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @notapi
- 173:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
- 174:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** void _pal_lld_enablepadevent(ioportid_t     port,
- 175:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****                              iopadid_t      pad,
- 176:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****                              ioeventmode_t  mode,
- 177:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****                              palcallback_t  callback,
- 178:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****                              void           *arg) {
+ 160:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 161:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
+ 162:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   Pad event enable.
+ 163:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @details This function programs an event callback in the specified mode.
+ 164:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @note    Programming an unknown or unsupported mode is silently ignored.
+ 165:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 166:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] port      port identifier
+ 167:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] pad       pad number within the port
+ 168:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] mode      pad event mode
+ 169:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] callback  event callback function
+ 170:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] arg       callback argument
+ 171:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 172:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @notapi
+ 173:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
+ 174:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** void _pal_lld_enablepadevent(ioportid_t     port,
+ 175:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****                              iopadid_t      pad,
+ 176:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****                              ioeventmode_t  mode,
+ 177:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****                              palcallback_t  callback,
+ 178:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****                              void           *arg) {
  131               		.loc 1 178 0
  132               		.cfi_startproc
  133               	.LVL12:
@@ -317,14 +317,14 @@
  136               	/* stack size = 0 */
  137               	.L__stack_usage = 0
  138               	/* epilogue start */
- 179:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   (void)port;
- 180:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   (void)pad;
- 181:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   (void)mode;
- 182:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   (void)callback;
- 183:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   (void)arg;
- 184:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 185:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   /* TODO: Implement the interruption here. */
- 186:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** }
+ 179:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   (void)port;
+ 180:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   (void)pad;
+ 181:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   (void)mode;
+ 182:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   (void)callback;
+ 183:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   (void)arg;
+ 184:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 185:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   /* TODO: Implement the interruption here. */
+ 186:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** }
  139               		.loc 1 186 0
  140 0000 0895      		ret
  141               		.cfi_endproc
@@ -333,18 +333,18 @@
  145               	.global	_pal_lld_setlineid
  147               	_pal_lld_setlineid:
  148               	.LFB246:
- 187:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 188:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
- 189:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   Make a line identifier with a given port and pad identifiers.
- 190:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 191:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] port  the port identifier
- 192:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] pad   the pad identifier
- 193:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 194:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @return    line  the builded line
- 195:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 196:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @notapi
- 197:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
- 198:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** ioline_t _pal_lld_setlineid(ioportid_t port, uint8_t pad) {
+ 187:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 188:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
+ 189:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   Make a line identifier with a given port and pad identifiers.
+ 190:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 191:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] port  the port identifier
+ 192:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] pad   the pad identifier
+ 193:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 194:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @return    line  the builded line
+ 195:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 196:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @notapi
+ 197:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
+ 198:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** ioline_t _pal_lld_setlineid(ioportid_t port, uint8_t pad) {
  149               		.loc 1 198 0
  150               		.cfi_startproc
  151               	.LVL13:
@@ -355,14 +355,14 @@
  156 0000 282F      		mov r18,r24
  157 0002 862F      		mov r24,r22
  158               	.LVL14:
- 199:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 200:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   ioline_t line;
- 201:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 202:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   line.port = port;
- 203:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   line.pad  = pad;
- 204:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 205:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   return line;
- 206:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** }
+ 199:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 200:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   ioline_t line;
+ 201:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 202:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   line.port = port;
+ 203:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   line.pad  = pad;
+ 204:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 205:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   return line;
+ 206:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** }
  159               		.loc 1 206 0
  160 0004 622F      		mov r22,r18
  161               	.LVL15:
@@ -375,17 +375,17 @@
  169               	.global	_pal_lld_getportfromline
  171               	_pal_lld_getportfromline:
  172               	.LFB247:
- 207:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 208:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
- 209:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   Get a port identifier from a line identifier.
- 210:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 211:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] line  the line identifier
- 212:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 213:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @return    port  the port of the corresponding line
- 214:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 215:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @notapi
- 216:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
- 217:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** ioportid_t _pal_lld_getportfromline(ioline_t line) {
+ 207:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 208:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
+ 209:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   Get a port identifier from a line identifier.
+ 210:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 211:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] line  the line identifier
+ 212:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 213:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @return    port  the port of the corresponding line
+ 214:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 215:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @notapi
+ 216:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
+ 217:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** ioportid_t _pal_lld_getportfromline(ioline_t line) {
  173               		.loc 1 217 0
  174               		.cfi_startproc
  175               	.LVL16:
@@ -395,9 +395,9 @@
  179               	.L__stack_usage = 0
  180 0000 CB01      		movw r24,r22
  181               	/* epilogue start */
- 218:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 219:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   return line.port;
- 220:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** }
+ 218:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 219:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   return line.port;
+ 220:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** }
  182               		.loc 1 220 0
  183 0002 0895      		ret
  184               		.cfi_endproc
@@ -406,17 +406,17 @@
  188               	.global	_pal_lld_getpadfromline
  190               	_pal_lld_getpadfromline:
  191               	.LFB248:
- 221:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 222:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
- 223:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   Get a pad identifier from a line identifier.
- 224:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 225:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] line  the line identifier
- 226:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 227:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @return    pad   the pad of the corresponding line
- 228:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
- 229:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @notapi
- 230:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
- 231:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** uint8_t _pal_lld_getpadfromline(ioline_t line) {
+ 221:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 222:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** /**
+ 223:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @brief   Get a pad identifier from a line identifier.
+ 224:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 225:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @param[in] line  the line identifier
+ 226:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 227:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @return    pad   the pad of the corresponding line
+ 228:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  *
+ 229:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  * @notapi
+ 230:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****  */
+ 231:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** uint8_t _pal_lld_getpadfromline(ioline_t line) {
  192               		.loc 1 231 0
  193               		.cfi_startproc
  194               	.LVL17:
@@ -425,9 +425,9 @@
  197               	/* stack size = 0 */
  198               	.L__stack_usage = 0
  199               	/* epilogue start */
- 232:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
- 233:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   return line.pad;
- 234:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** }
+ 232:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** 
+ 233:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c ****   return line.pad;
+ 234:../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.c **** }
  200               		.loc 1 234 0
  201 0000 0895      		ret
  202               		.cfi_endproc
@@ -436,37 +436,37 @@
  206               	.Letext0:
  207               		.file 2 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
  208               		.file 3 "/usr/lib/avr/include/stdint.h"
- 209               		.file 4 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
- 210               		.file 5 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
- 211               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
- 212               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
- 213               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
- 214               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
- 215               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
- 216               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
- 217               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
- 218               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
- 219               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
- 220               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
- 221               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chevents.h"
- 222               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
- 223               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_queues.h"
- 224               		.file 19 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_pal.h"
- 225               		.file 20 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPI
- 226               		.file 21 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_serial.h"
- 227               		.file 22 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
+ 209               		.file 4 "../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+ 210               		.file 5 "../../os/rt/include/chearly.h"
+ 211               		.file 6 "../../os/rt/include/chobjects.h"
+ 212               		.file 7 "../../os/rt/include/chrfcu.h"
+ 213               		.file 8 "../../os/rt/include/chdebug.h"
+ 214               		.file 9 "../../os/rt/include/chtime.h"
+ 215               		.file 10 "../../os/rt/include/chlists.h"
+ 216               		.file 11 "../../os/common/ports/AVR/chcore.h"
+ 217               		.file 12 "../../os/rt/include/chsem.h"
+ 218               		.file 13 "../../os/rt/include/chmtx.h"
+ 219               		.file 14 "../../os/rt/include/chsys.h"
+ 220               		.file 15 "../../os/rt/include/chregistry.h"
+ 221               		.file 16 "../../os/rt/include/chevents.h"
+ 222               		.file 17 "../../os/oslib/include/chmemcore.h"
+ 223               		.file 18 "../../os/hal/include/hal_queues.h"
+ 224               		.file 19 "../../os/hal/include/hal_pal.h"
+ 225               		.file 20 "../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.h"
+ 226               		.file 21 "../../os/hal/include/hal_serial.h"
+ 227               		.file 22 "../../os/hal/ports/AVR/MEGA/LLD/USARTv1/hal_serial_lld.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_pal_lld.c
-     /tmp/ccnudsDQ.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccnudsDQ.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccnudsDQ.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccnudsDQ.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccnudsDQ.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccnudsDQ.s:13     .text._pal_lld_init:0000000000000000 _pal_lld_init
-     /tmp/ccnudsDQ.s:52     .text._pal_lld_setgroupmode:0000000000000000 _pal_lld_setgroupmode
-     /tmp/ccnudsDQ.s:129    .text._pal_lld_enablepadevent:0000000000000000 _pal_lld_enablepadevent
-     /tmp/ccnudsDQ.s:147    .text._pal_lld_setlineid:0000000000000000 _pal_lld_setlineid
-     /tmp/ccnudsDQ.s:171    .text._pal_lld_getportfromline:0000000000000000 _pal_lld_getportfromline
-     /tmp/ccnudsDQ.s:190    .text._pal_lld_getpadfromline:0000000000000000 _pal_lld_getpadfromline
+     /tmp/cchJXjZz.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cchJXjZz.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cchJXjZz.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cchJXjZz.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cchJXjZz.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cchJXjZz.s:13     .text._pal_lld_init:0000000000000000 _pal_lld_init
+     /tmp/cchJXjZz.s:52     .text._pal_lld_setgroupmode:0000000000000000 _pal_lld_setgroupmode
+     /tmp/cchJXjZz.s:129    .text._pal_lld_enablepadevent:0000000000000000 _pal_lld_enablepadevent
+     /tmp/cchJXjZz.s:147    .text._pal_lld_setlineid:0000000000000000 _pal_lld_setlineid
+     /tmp/cchJXjZz.s:171    .text._pal_lld_getportfromline:0000000000000000 _pal_lld_getportfromline
+     /tmp/cchJXjZz.s:190    .text._pal_lld_getpadfromline:0000000000000000 _pal_lld_getpadfromline
 
 NO UNDEFINED SYMBOLS

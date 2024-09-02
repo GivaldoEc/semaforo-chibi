@@ -88,7 +88,7 @@ endif
 PROJECT = ch
 
 # Imported source files and paths.
-CHIBIOS  := /home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x
+CHIBIOS  := ../..
 CONFDIR  := ./cfg
 BUILDDIR := ./build
 DEPDIR   := ./.dep
@@ -195,7 +195,7 @@ ULIBS =
 
 # List of available AVR programmer.
 AVRDUDE_PROGRAMMER    = avrdude
-AVRDUDE_PROGRAMMER_ID = wiring
+AVRDUDE_PROGRAMMER_ID = arduino
 DFU_PROGRAMMER        = dfu-programmer
 MICRONUCLEUS          = micronucleus
 
@@ -235,7 +235,7 @@ ifeq ($(AVR_PROGRAMMER),$(AVRDUDE_PROGRAMMER))
 AVRDUDE_FLAGS =  -p $(MCU)
 AVRDUDE_FLAGS += -P $(AVRDUDE_PORT)
 AVRDUDE_FLAGS += -b 57600
-AVRDUDE_FLAGS += -c arduino
+AVRDUDE_FLAGS += -c $(AVRDUDE_PROGRAMMER_ID)
 AVRDUDE_FLAGS += $(AVRDUDE_NO_VERIFY)
 AVRDUDE_FLAGS += $(AVRDUDE_VERBOSE)
 AVRDUDE_FLAGS += $(AVRDUDE_ERASE_COUNTER)

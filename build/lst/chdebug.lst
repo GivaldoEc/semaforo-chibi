@@ -9,25 +9,25 @@
    9               		.cfi_sections	.debug_frame
   10               	.Letext0:
   11               		.file 1 "/usr/lib/avr/include/stdint.h"
-  12               		.file 2 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
-  13               		.file 3 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
-  14               		.file 4 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
-  15               		.file 5 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
-  16               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
-  17               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
-  18               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
-  19               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
-  20               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
-  21               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
-  22               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
-  23               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
-  24               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
+  12               		.file 2 "../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+  13               		.file 3 "../../os/rt/include/chearly.h"
+  14               		.file 4 "../../os/rt/include/chobjects.h"
+  15               		.file 5 "../../os/rt/include/chrfcu.h"
+  16               		.file 6 "../../os/rt/include/chdebug.h"
+  17               		.file 7 "../../os/rt/include/chtime.h"
+  18               		.file 8 "../../os/rt/include/chlists.h"
+  19               		.file 9 "../../os/common/ports/AVR/chcore.h"
+  20               		.file 10 "../../os/rt/include/chsem.h"
+  21               		.file 11 "../../os/rt/include/chmtx.h"
+  22               		.file 12 "../../os/rt/include/chsys.h"
+  23               		.file 13 "../../os/rt/include/chregistry.h"
+  24               		.file 14 "../../os/oslib/include/chmemcore.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chdebug.c
-     /tmp/ccuABPPA.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccuABPPA.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccuABPPA.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccuABPPA.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccuABPPA.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccRhpIgH.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccRhpIgH.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccRhpIgH.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccRhpIgH.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccRhpIgH.s:6      *ABS*:0000000000000001 __zero_reg__
 
 NO UNDEFINED SYMBOLS

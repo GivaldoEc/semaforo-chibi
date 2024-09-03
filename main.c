@@ -19,6 +19,7 @@
 
 #define LED_PERIODO 10000
 #define BUFFER_SIZE 8
+#define QUEUE_SIZE 128
 
 /* Definições de pinos*/
 // LEDS
@@ -37,6 +38,14 @@
 #define SEC_FLAG PAL_LINE(IOPORT3, 4)
 #define PED_FLAG PAL_LINE(IOPORT3, 2)
 
+// Buffer
+static msg_t queue[QUEUE_SIZE], *rdp, *wrp;
+static size_t qsize;
+static mutex_t qmtx;
+static condition_variable_t qempty;
+static condition_variable_t qfull;
+
+
 typedef struct
 {
   uint8_t events[BUFFER_SIZE];
@@ -47,10 +56,9 @@ typedef struct
 
 EventBuffer ev_buffer;
 
-void config_gpio();
-void bufferInit(EventBuffer *cb);
-bool isBufferEmpty(EventBuffer *buffer);
-bool isBufferFull(EventBuffer *buffer);
+void queueInit(void);
+void enqueue(msg_t msg);
+msg_t dequeue(void);
 void bufferPush(EventBuffer *cb, uint8_t event);
 uint8_t bufferPop(EventBuffer *cb);
 void vt_cb(void *arg);
@@ -75,8 +83,19 @@ static THD_FUNCTION(Thread1, arg)
   chVTObjectInit(&vt);
   chVTSet(&vt, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, (void *)&vt);
 
+  msg_t ev;
   while (1)
   {
+    ev = dequeue();
+    if (ev == AMB_PRIMARIO){
+      palSetLine(PRIMARIO_VERDE);
+    } else if (ev == AMB_SECUNDARIO){
+      palToggleLine(SECUNDARIO_VERDE);
+    } else if (ev == SECUNDARIO){
+      palSetLine(SECUNDARIO_VERMELHO);
+    } else if (ev == PEDESTRE){
+      palSetLine(PEDESTRE_VERDE);
+    }
     chThdSleepMilliseconds(100);
   }
 }
@@ -86,7 +105,7 @@ static THD_FUNCTION(Thread1, arg)
  */
 int main(void)
 {
-  bufferInit(&ev_buffer);
+  queueInit();
   /*
    * System initializations.
    * - HAL initialization, this also initializes the configured device drivers
@@ -134,60 +153,91 @@ int main(void)
   {
     if (palReadLine(AMB_SEC) == PAL_LOW)
     {
-      palToggleLine(PEDESTRE_VERDE);
+      enqueue(AMB_SECUNDARIO);
     }
     else if (palReadLine(AMB_PRIM) == PAL_LOW)
     {
-      palToggleLine(PRIMARIO_AMARELO);
+      enqueue(AMB_PRIMARIO);
     }
     else if (palReadLine(SEC_FLAG) == PAL_LOW)
     {
-      palToggleLine(PRIMARIO_VERMELHO);
+      enqueue(SECUNDARIO);
     }
     else if (palReadLine(PED_FLAG) == PAL_LOW)
     {
-      palToggleLine(SECUNDARIO_VERDE);
+      enqueue(PEDESTRE);
     }
     /* Debouncing. */
-    chThdSleepMilliseconds(200);
+    chThdSleepMilliseconds(50);
   }
 }
 
-void bufferInit(EventBuffer *buffer)
-{
-  buffer->head = 0;
-  buffer->tail = 0;
-  buffer->size = 0;
+/*
+ * Synchronized queue initialization.
+ */
+void queueInit(void) {
+ 
+  chMtxObjectInit(&qmtx);
+  chCondObjectInit(&qempty);
+  chCondObjectInit(&qfull);
+ 
+  rdp = wrp = &queue[0];
+  qsize = 0;
 }
 
-bool isBufferEmpty(EventBuffer *buffer)
-{
-  return buffer->size == 0;
+/*
+ * Writes a message into the queue, if the queue is full waits
+ * for a free slot.
+ */
+void enqueue(msg_t msg) {
+ 
+  /* Entering monitor.*/
+  chMtxLock(&qmtx);
+ 
+  /* Waiting for space in the queue.*/
+  while (qsize >= QUEUE_SIZE)
+    chCondWait(&qfull);
+ 
+  /* Writing the message in the queue.*/  
+  *wrp = msg;
+  if (++wrp >= &queue[QUEUE_SIZE])
+    wrp = &queue[0];
+  qsize++;
+ 
+  /* Signaling that there is at least a message.*/
+  chCondSignal(&qempty);
+ 
+  /* Leaving monitor.*/
+  chMtxUnlock(&qmtx);
 }
 
-bool isBufferFull(EventBuffer *buffer)
-{
-  return buffer->size == BUFFER_SIZE;
-}
-
-void bufferPush(EventBuffer *buffer, uint8_t event)
-{
-  buffer->events[buffer->tail] = event;
-  buffer->tail = (buffer->tail + 1) % BUFFER_SIZE;
-  buffer->size++;
-}
-
-uint8_t bufferPop(EventBuffer *buffer)
-{
-  if (isBufferEmpty(buffer))
-  {
-    return false; // Buffer vazio
-  }
-
-  uint8_t event = buffer->events[buffer->head];
-  buffer->head = (buffer->head + 1) % BUFFER_SIZE;
-  buffer->size--;
-  return event;
+/*
+ * Reads a message from the queue, if the queue is empty waits
+ * for a message.
+ */
+msg_t dequeue(void) {
+  msg_t msg;
+ 
+  /* Entering monitor.*/
+  chMtxLock(&qmtx);
+ 
+  /* Waiting for messages in the queue.*/
+  while (qsize == 0)
+    chCondWait(&qempty);
+ 
+  /* Reading the message from the queue.*/  
+  msg = *rdp;
+  if (++rdp >= &queue[QUEUE_SIZE])
+    rdp = &queue[0];
+  qsize--;
+ 
+  /* Signaling that there is at least one free slot.*/
+  chCondSignal(&qfull);
+ 
+  /* Leaving monitor.*/
+  chMtxUnlock(&qmtx);
+ 
+  return msg;
 }
 
 void vt_cb(void *arg)

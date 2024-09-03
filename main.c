@@ -17,7 +17,8 @@
 #include "ch.h"
 #include "hal.h"
 
-#define LED_PERIODO 10000
+#define PEDESTRE_LINE_GREEN PAL_LINE(IOPORT2, 3)
+#define PEDESTRE_LINE_RED PAL_LINE(IOPORT2, 2)
 
 void vt_cb(void *arg)
 {
@@ -30,6 +31,7 @@ void vt_cb(void *arg)
 /*
  * LED blinker thread, times are in milliseconds.
  */
+/*
 static THD_WORKING_AREA(waThread1, 32);
 static THD_FUNCTION(Thread1, arg)
 {
@@ -42,7 +44,7 @@ static THD_FUNCTION(Thread1, arg)
   {
   }
 }
-
+*/
 /*
  * Application entry point.
  */
@@ -72,10 +74,8 @@ int main(void)
   palClearPad(IOPORT2, 0);
 
   // Pedestre: Vermelho, Verde
-  palSetPadMode(IOPORT2, 3, PAL_MODE_OUTPUT_PUSHPULL);
-  palClearPad(IOPORT2, 3);
-  palSetPadMode(IOPORT2, 2, PAL_MODE_OUTPUT_PUSHPULL);
-  palClearPad(IOPORT2, 2);
+  palSetLineMode(PEDESTRE_LINE_GREEN, PAL_MODE_OUTPUT_PUSHPULL);
+  palSetLineMode(PEDESTRE_LINE_RED, PAL_MODE_OUTPUT_PUSHPULL);
 
   // LED Interno:
   palSetPadMode(IOPORT2, PORTB_LED1, PAL_MODE_OUTPUT_PUSHPULL);
@@ -86,7 +86,10 @@ int main(void)
   /*
    * Starts the LED blinker thread.
    */
-  chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO + 1, Thread1, NULL);
+  // chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO + 1, Thread1, NULL);
+
+  palSetLine(PEDESTRE_LINE_GREEN);
+  palSetLine(PEDESTRE_LINE_RED);
 
   while (1)
   {

@@ -34,6 +34,8 @@ Trabalho de conclusão da disciplina "Desenvolvimento de sistemas embarcados em 
 #### Secundário
 - PB1: Verde
 - PB0: Vermelho
+- PD5: Amarelo
 #### Primário
 - PD7: Verde
 - PD6: Vermelho
+- PD4: Amarelo

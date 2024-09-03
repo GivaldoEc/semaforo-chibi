@@ -111,13 +111,13 @@
   65               		.file 22 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 board.c
-     /tmp/ccNBvsR5.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccNBvsR5.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccNBvsR5.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccNBvsR5.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccNBvsR5.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccNBvsR5.s:13     .text.boardInit:0000000000000000 boardInit
-     /tmp/ccNBvsR5.s:36     .rodata.pal_default_config:0000000000000000 pal_default_config
+     /tmp/cc006jeh.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc006jeh.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc006jeh.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc006jeh.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc006jeh.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc006jeh.s:13     .text.boardInit:0000000000000000 boardInit
+     /tmp/cc006jeh.s:36     .rodata.pal_default_config:0000000000000000 pal_default_config
 
 UNDEFINED SYMBOLS
 __do_copy_data

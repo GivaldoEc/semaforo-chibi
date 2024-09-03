@@ -2595,20 +2595,20 @@
  850               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chcond.c
-     /tmp/cc3ipPEb.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cc3ipPEb.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cc3ipPEb.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cc3ipPEb.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cc3ipPEb.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cc3ipPEb.s:13     .text.chCondObjectInit:0000000000000000 chCondObjectInit
-     /tmp/cc3ipPEb.s:45     .text.chCondSignal:0000000000000000 chCondSignal
-     /tmp/cc3ipPEb.s:137    .text.chCondSignalI:0000000000000000 chCondSignalI
-     /tmp/cc3ipPEb.s:211    .text.chCondBroadcast:0000000000000000 chCondBroadcast
-     /tmp/cc3ipPEb.s:336    .text.chCondBroadcastI:0000000000000000 chCondBroadcastI
-     /tmp/cc3ipPEb.s:428    .text.chCondWaitS:0000000000000000 chCondWaitS
-     /tmp/cc3ipPEb.s:575    .text.chCondWait:0000000000000000 chCondWait
-     /tmp/cc3ipPEb.s:622    .text.chCondWaitTimeoutS:0000000000000000 chCondWaitTimeoutS
-     /tmp/cc3ipPEb.s:793    .text.chCondWaitTimeout:0000000000000000 chCondWaitTimeout
+     /tmp/ccPLAsLl.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccPLAsLl.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccPLAsLl.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccPLAsLl.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccPLAsLl.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccPLAsLl.s:13     .text.chCondObjectInit:0000000000000000 chCondObjectInit
+     /tmp/ccPLAsLl.s:45     .text.chCondSignal:0000000000000000 chCondSignal
+     /tmp/ccPLAsLl.s:137    .text.chCondSignalI:0000000000000000 chCondSignalI
+     /tmp/ccPLAsLl.s:211    .text.chCondBroadcast:0000000000000000 chCondBroadcast
+     /tmp/ccPLAsLl.s:336    .text.chCondBroadcastI:0000000000000000 chCondBroadcastI
+     /tmp/ccPLAsLl.s:428    .text.chCondWaitS:0000000000000000 chCondWaitS
+     /tmp/ccPLAsLl.s:575    .text.chCondWait:0000000000000000 chCondWait
+     /tmp/ccPLAsLl.s:622    .text.chCondWaitTimeoutS:0000000000000000 chCondWaitTimeoutS
+     /tmp/ccPLAsLl.s:793    .text.chCondWaitTimeout:0000000000000000 chCondWaitTimeout
 
 UNDEFINED SYMBOLS
 chSchWakeupS

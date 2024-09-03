@@ -1103,19 +1103,19 @@
  436               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chmemcore.c
-     /tmp/ccYBc4bH.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccYBc4bH.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccYBc4bH.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccYBc4bH.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccYBc4bH.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccYBc4bH.s:13     .text.__core_init:0000000000000000 __core_init
+     /tmp/ccw4VVnE.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccw4VVnE.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccw4VVnE.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccw4VVnE.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccw4VVnE.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccw4VVnE.s:13     .text.__core_init:0000000000000000 __core_init
                             *COM*:0000000000000004 ch_memcore
-     /tmp/ccYBc4bH.s:418    .bss.static_heap.3139:0000000000000000 static_heap.3139
-     /tmp/ccYBc4bH.s:43     .text.chCoreAllocFromBaseI:0000000000000000 chCoreAllocFromBaseI
-     /tmp/ccYBc4bH.s:109    .text.chCoreAllocFromTopI:0000000000000000 chCoreAllocFromTopI
-     /tmp/ccYBc4bH.s:168    .text.chCoreAllocFromBase:0000000000000000 chCoreAllocFromBase
-     /tmp/ccYBc4bH.s:282    .text.chCoreAllocFromTop:0000000000000000 chCoreAllocFromTop
-     /tmp/ccYBc4bH.s:392    .text.chCoreGetStatusX:0000000000000000 chCoreGetStatusX
+     /tmp/ccw4VVnE.s:418    .bss.static_heap.3139:0000000000000000 static_heap.3139
+     /tmp/ccw4VVnE.s:43     .text.chCoreAllocFromBaseI:0000000000000000 chCoreAllocFromBaseI
+     /tmp/ccw4VVnE.s:109    .text.chCoreAllocFromTopI:0000000000000000 chCoreAllocFromTopI
+     /tmp/ccw4VVnE.s:168    .text.chCoreAllocFromBase:0000000000000000 chCoreAllocFromBase
+     /tmp/ccw4VVnE.s:282    .text.chCoreAllocFromTop:0000000000000000 chCoreAllocFromTop
+     /tmp/ccw4VVnE.s:392    .text.chCoreGetStatusX:0000000000000000 chCoreGetStatusX
 
 UNDEFINED SYMBOLS
 __do_clear_bss

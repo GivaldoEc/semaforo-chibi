@@ -458,17 +458,17 @@
  228               		.file 22 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_pal_lld.c
-     /tmp/ccxGQvCx.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccxGQvCx.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccxGQvCx.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccxGQvCx.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccxGQvCx.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccxGQvCx.s:13     .text._pal_lld_init:0000000000000000 _pal_lld_init
-     /tmp/ccxGQvCx.s:52     .text._pal_lld_setgroupmode:0000000000000000 _pal_lld_setgroupmode
-     /tmp/ccxGQvCx.s:129    .text._pal_lld_enablepadevent:0000000000000000 _pal_lld_enablepadevent
-     /tmp/ccxGQvCx.s:147    .text._pal_lld_setlineid:0000000000000000 _pal_lld_setlineid
-     /tmp/ccxGQvCx.s:171    .text._pal_lld_getportfromline:0000000000000000 _pal_lld_getportfromline
-     /tmp/ccxGQvCx.s:190    .text._pal_lld_getpadfromline:0000000000000000 _pal_lld_getpadfromline
+     /tmp/ccR9TARf.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccR9TARf.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccR9TARf.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccR9TARf.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccR9TARf.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccR9TARf.s:13     .text._pal_lld_init:0000000000000000 _pal_lld_init
+     /tmp/ccR9TARf.s:52     .text._pal_lld_setgroupmode:0000000000000000 _pal_lld_setgroupmode
+     /tmp/ccR9TARf.s:129    .text._pal_lld_enablepadevent:0000000000000000 _pal_lld_enablepadevent
+     /tmp/ccR9TARf.s:147    .text._pal_lld_setlineid:0000000000000000 _pal_lld_setlineid
+     /tmp/ccR9TARf.s:171    .text._pal_lld_getportfromline:0000000000000000 _pal_lld_getportfromline
+     /tmp/ccR9TARf.s:190    .text._pal_lld_getpadfromline:0000000000000000 _pal_lld_getpadfromline
                             *COM*:0000000000000080 _pal_events
 
 UNDEFINED SYMBOLS

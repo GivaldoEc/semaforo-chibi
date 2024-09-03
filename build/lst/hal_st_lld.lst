@@ -1092,13 +1092,13 @@
  186               		.file 24 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chschd.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_st_lld.c
-     /tmp/ccuVYMKZ.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccuVYMKZ.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccuVYMKZ.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccuVYMKZ.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccuVYMKZ.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccuVYMKZ.s:13     .text.__vector_11:0000000000000000 __vector_11
-     /tmp/ccuVYMKZ.s:126    .text.st_lld_init:0000000000000000 st_lld_init
+     /tmp/ccnd0tok.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccnd0tok.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccnd0tok.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccnd0tok.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccnd0tok.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccnd0tok.s:13     .text.__vector_11:0000000000000000 __vector_11
+     /tmp/ccnd0tok.s:126    .text.st_lld_init:0000000000000000 st_lld_init
 
 UNDEFINED SYMBOLS
 __avr_in_isr

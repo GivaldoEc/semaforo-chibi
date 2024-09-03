@@ -20,6 +20,17 @@
 #define LED_PERIODO 10000
 #define BUFFER_SIZE 8
 
+/* Definições de pinos*/
+// LEDS
+#define PEDESTRE_VERDE PAL_LINE(IOPORT2, 3)
+#define PEDESTRE_VERMELHO PAL_LINE(IOPORT2, 2)
+#define PRIMARIO_VERDE PAL_LINE(IOPORT4, 7)
+#define PRIMARIO_AMARELO PAL_LINE(IOPORT4, 4)
+#define PRIMARIO_VERMELHO PAL_LINE(IOPORT4, 6)
+#define SECUNDARIO_VERDE PAL_LINE(IOPORT2, 1)
+#define SECUNDARIO_AMARELO PAL_LINE(IOPORT4, 5)
+#define SECUNDARIO_VERMELHO PAL_LINE(IOPORT2, 0)
+
 typedef struct
 {
   uint8_t events[BUFFER_SIZE];
@@ -36,6 +47,7 @@ bool isBufferFull(EventBuffer *buffer);
 void bufferPush(EventBuffer *cb, uint8_t event);
 uint8_t bufferPop(EventBuffer *cb);
 void vt_cb(void *arg);
+void vt_cb2(void *arg);
 
 enum
 {
@@ -48,7 +60,7 @@ enum
 /*
  * LED blinker thread, times are in milliseconds.
  */
-/*
+
 static THD_WORKING_AREA(waThread1, 32);
 static THD_FUNCTION(Thread1, arg)
 {
@@ -61,7 +73,7 @@ static THD_FUNCTION(Thread1, arg)
   {
   }
 }
-*/
+
 /*
  * Application entry point.
  */
@@ -78,39 +90,46 @@ int main(void)
   halInit();
   chSysInit();
 
-  /* Configuração dos pinos */
-  // Semáforo primário: Vermelho, Verde
-  palSetPadMode(IOPORT4, 7, PAL_MODE_OUTPUT_PUSHPULL);
-  palClearPad(IOPORT4, 7);
-  palSetPadMode(IOPORT4, 6, PAL_MODE_OUTPUT_PUSHPULL);
-  palClearPad(IOPORT4, 6);
+  // Pedestre
+  palSetLineMode(PEDESTRE_VERDE, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearLine(PEDESTRE_VERDE);
+  palSetLineMode(PEDESTRE_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearLine(PEDESTRE_VERMELHO);
 
-  // Semáforo secundário: Vermelho, Verde
-  palSetPadMode(IOPORT2, 1, PAL_MODE_OUTPUT_PUSHPULL);
-  palClearPad(IOPORT2, 1);
-  palSetPadMode(IOPORT2, 0, PAL_MODE_OUTPUT_PUSHPULL);
-  palClearPad(IOPORT2, 0);
+  // Primário
+  palSetLineMode(PRIMARIO_VERDE, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearLine(PRIMARIO_VERDE);
+  palSetLineMode(PRIMARIO_AMARELO, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearLine(PRIMARIO_AMARELO);
+  palSetLineMode(PRIMARIO_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearLine(PRIMARIO_VERMELHO);
 
-  // Pedestre: Vermelho, Verde
-  palSetLineMode(PEDESTRE_LINE_GREEN, PAL_MODE_OUTPUT_PUSHPULL);
-  palSetLineMode(PEDESTRE_LINE_RED, PAL_MODE_OUTPUT_PUSHPULL);
-
-  // LED Interno:
-  palSetPadMode(IOPORT2, PORTB_LED1, PAL_MODE_OUTPUT_PUSHPULL);
-  palClearPad(IOPORT2, PORTB_LED1);
+  // Secundário
+  palSetLineMode(SECUNDARIO_VERDE, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearLine(SECUNDARIO_VERDE);
+  palSetLineMode(SECUNDARIO_AMARELO, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearLine(SECUNDARIO_AMARELO);
+  palSetLineMode(SECUNDARIO_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
+  palClearLine(SECUNDARIO_VERMELHO);
 
   /* Configuração dos botões */
 
   /*
    * Starts the LED blinker thread.
    */
-  // chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO + 1, Thread1, NULL);
+  chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, Thread1, NULL);
 
-  palSetLine(PEDESTRE_LINE_GREEN);
-  palSetLine(PEDESTRE_LINE_RED);
+  palSetLine(PEDESTRE_VERDE);
+
+  virtual_timer_t vt2;
+
+  chVTObjectInit(&vt2);
+  chVTSet(&vt2, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb2, (void *)&vt2);
 
   while (1)
   {
+    palToggleLine(SECUNDARIO_VERDE);
+    chThdSleepMicroseconds(10000);
   }
 }
 
@@ -156,5 +175,13 @@ void vt_cb(void *arg)
   chSysLockFromISR();
   palTogglePad(IOPORT2, PORTB_LED1);
   chVTSetI((virtual_timer_t *)arg, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, arg);
+  chSysUnlockFromISR();
+}
+
+void vt_cb2(void *arg)
+{
+  chSysLockFromISR();
+  palTogglePad(IOPORT2, 3);
+  chVTSetI((virtual_timer_t *)arg, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb2, arg);
   chSysUnlockFromISR();
 }

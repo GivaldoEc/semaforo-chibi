@@ -1343,19 +1343,19 @@
  545               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chdelegates.
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chdelegates.c
-     /tmp/ccFN2imD.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccFN2imD.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccFN2imD.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccFN2imD.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccFN2imD.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccFN2imD.s:13     .text.__ch_delegate_fn0:0000000000000000 __ch_delegate_fn0
-     /tmp/ccFN2imD.s:45     .text.__ch_delegate_fn1:0000000000000000 __ch_delegate_fn1
-     /tmp/ccFN2imD.s:96     .text.__ch_delegate_fn2:0000000000000000 __ch_delegate_fn2
-     /tmp/ccFN2imD.s:154    .text.__ch_delegate_fn3:0000000000000000 __ch_delegate_fn3
-     /tmp/ccFN2imD.s:217    .text.__ch_delegate_fn4:0000000000000000 __ch_delegate_fn4
-     /tmp/ccFN2imD.s:285    .text.chDelegateCallVeneer:0000000000000000 chDelegateCallVeneer
-     /tmp/ccFN2imD.s:351    .text.chDelegateDispatch:0000000000000000 chDelegateDispatch
-     /tmp/ccFN2imD.s:435    .text.chDelegateDispatchTimeout:0000000000000000 chDelegateDispatchTimeout
+     /tmp/ccbfi3W6.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccbfi3W6.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccbfi3W6.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccbfi3W6.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccbfi3W6.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccbfi3W6.s:13     .text.__ch_delegate_fn0:0000000000000000 __ch_delegate_fn0
+     /tmp/ccbfi3W6.s:45     .text.__ch_delegate_fn1:0000000000000000 __ch_delegate_fn1
+     /tmp/ccbfi3W6.s:96     .text.__ch_delegate_fn2:0000000000000000 __ch_delegate_fn2
+     /tmp/ccbfi3W6.s:154    .text.__ch_delegate_fn3:0000000000000000 __ch_delegate_fn3
+     /tmp/ccbfi3W6.s:217    .text.__ch_delegate_fn4:0000000000000000 __ch_delegate_fn4
+     /tmp/ccbfi3W6.s:285    .text.chDelegateCallVeneer:0000000000000000 chDelegateCallVeneer
+     /tmp/ccbfi3W6.s:351    .text.chDelegateDispatch:0000000000000000 chDelegateDispatch
+     /tmp/ccbfi3W6.s:435    .text.chDelegateDispatchTimeout:0000000000000000 chDelegateDispatchTimeout
 
 UNDEFINED SYMBOLS
 chMsgSend

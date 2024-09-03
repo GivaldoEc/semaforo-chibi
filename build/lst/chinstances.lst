@@ -1987,13 +1987,13 @@
  287               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chinstances.c
-     /tmp/cchyfhiI.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cchyfhiI.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cchyfhiI.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cchyfhiI.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cchyfhiI.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cchyfhiI.s:12     .text.__idle_thread:0000000000000000 __idle_thread
-     /tmp/cchyfhiI.s:33     .text.chInstanceObjectInit:0000000000000000 chInstanceObjectInit
+     /tmp/ccFhQGH0.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccFhQGH0.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccFhQGH0.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccFhQGH0.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccFhQGH0.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccFhQGH0.s:12     .text.__idle_thread:0000000000000000 __idle_thread
+     /tmp/ccFhQGH0.s:33     .text.chInstanceObjectInit:0000000000000000 chInstanceObjectInit
 
 UNDEFINED SYMBOLS
 ch_system

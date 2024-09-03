@@ -1886,23 +1886,23 @@
  781               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chschd.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chmempools.c
-     /tmp/ccv5X5xi.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccv5X5xi.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccv5X5xi.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccv5X5xi.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccv5X5xi.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccv5X5xi.s:12     .text.chPoolAllocI.part.0:0000000000000000 chPoolAllocI.part.0
-     /tmp/ccv5X5xi.s:54     .text.chPoolObjectInitAligned:0000000000000000 chPoolObjectInitAligned
-     /tmp/ccv5X5xi.s:85     .text.chPoolLoadArray:0000000000000000 chPoolLoadArray
-     /tmp/ccv5X5xi.s:175    .text.chPoolAllocI:0000000000000000 chPoolAllocI
-     /tmp/ccv5X5xi.s:213    .text.chPoolAlloc:0000000000000000 chPoolAlloc
-     /tmp/ccv5X5xi.s:307    .text.chPoolFreeI:0000000000000000 chPoolFreeI
-     /tmp/ccv5X5xi.s:336    .text.chPoolFree:0000000000000000 chPoolFree
-     /tmp/ccv5X5xi.s:397    .text.chGuardedPoolObjectInitAligned:0000000000000000 chGuardedPoolObjectInitAligned
-     /tmp/ccv5X5xi.s:435    .text.chGuardedPoolLoadArray:0000000000000000 chGuardedPoolLoadArray
-     /tmp/ccv5X5xi.s:569    .text.chGuardedPoolAllocTimeoutS:0000000000000000 chGuardedPoolAllocTimeoutS
-     /tmp/ccv5X5xi.s:650    .text.chGuardedPoolAllocTimeout:0000000000000000 chGuardedPoolAllocTimeout
-     /tmp/ccv5X5xi.s:697    .text.chGuardedPoolFree:0000000000000000 chGuardedPoolFree
+     /tmp/ccf6yMVC.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccf6yMVC.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccf6yMVC.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccf6yMVC.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccf6yMVC.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccf6yMVC.s:12     .text.chPoolAllocI.part.0:0000000000000000 chPoolAllocI.part.0
+     /tmp/ccf6yMVC.s:54     .text.chPoolObjectInitAligned:0000000000000000 chPoolObjectInitAligned
+     /tmp/ccf6yMVC.s:85     .text.chPoolLoadArray:0000000000000000 chPoolLoadArray
+     /tmp/ccf6yMVC.s:175    .text.chPoolAllocI:0000000000000000 chPoolAllocI
+     /tmp/ccf6yMVC.s:213    .text.chPoolAlloc:0000000000000000 chPoolAlloc
+     /tmp/ccf6yMVC.s:307    .text.chPoolFreeI:0000000000000000 chPoolFreeI
+     /tmp/ccf6yMVC.s:336    .text.chPoolFree:0000000000000000 chPoolFree
+     /tmp/ccf6yMVC.s:397    .text.chGuardedPoolObjectInitAligned:0000000000000000 chGuardedPoolObjectInitAligned
+     /tmp/ccf6yMVC.s:435    .text.chGuardedPoolLoadArray:0000000000000000 chGuardedPoolLoadArray
+     /tmp/ccf6yMVC.s:569    .text.chGuardedPoolAllocTimeoutS:0000000000000000 chGuardedPoolAllocTimeoutS
+     /tmp/ccf6yMVC.s:650    .text.chGuardedPoolAllocTimeout:0000000000000000 chGuardedPoolAllocTimeout
+     /tmp/ccf6yMVC.s:697    .text.chGuardedPoolFree:0000000000000000 chGuardedPoolFree
 
 UNDEFINED SYMBOLS
 chSemObjectInit

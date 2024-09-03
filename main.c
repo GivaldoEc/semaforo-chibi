@@ -31,6 +31,12 @@
 #define SECUNDARIO_AMARELO PAL_LINE(IOPORT4, 5)
 #define SECUNDARIO_VERMELHO PAL_LINE(IOPORT2, 0)
 
+// Botões
+#define AMB_PRIM
+#define AMB_SEC
+#define SEC_FLAG
+#define PEDESTRE
+
 typedef struct
 {
   uint8_t events[BUFFER_SIZE];
@@ -121,10 +127,10 @@ int main(void)
 
   palSetLine(PEDESTRE_VERDE);
 
-  virtual_timer_t vt2;
+  // virtual_timer_t vt2;
 
-  chVTObjectInit(&vt2);
-  chVTSet(&vt2, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb2, (void *)&vt2);
+  // chVTObjectInit(&vt2);
+  // chVTSet(&vt2, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb2, (void *)&vt2);
 
   while (1)
   {

@@ -10,7 +10,7 @@
   10               		.section	.text.vt_cb,"ax",@progbits
   11               	.global	vt_cb
   13               	vt_cb:
-  14               	.LFB243:
+  14               	.LFB250:
   15               		.file 1 "main.c"
    1:main.c        **** /*
    2:main.c        ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
@@ -32,9 +32,128 @@
   18:main.c        **** #include "hal.h"
   19:main.c        **** 
   20:main.c        **** #define LED_PERIODO 10000
-  21:main.c        **** 
-  22:main.c        **** void vt_cb(void *arg) {
-  16               		.loc 1 22 0
+  21:main.c        **** #define BUFFER_SIZE 8
+  22:main.c        **** 
+  23:main.c        **** typedef struct {
+  24:main.c        ****     uint8_t events[BUFFER_SIZE];
+  25:main.c        ****     uint8_t head;
+  26:main.c        ****     uint8_t tail;
+  27:main.c        ****     uint8_t size;
+  28:main.c        **** } EventBuffer;
+  29:main.c        **** 
+  30:main.c        **** EventBuffer ev_buffer;
+  31:main.c        **** 
+  32:main.c        **** void bufferInit(EventBuffer *cb);
+  33:main.c        **** bool isBufferEmpty(EventBuffer *buffer);
+  34:main.c        **** bool isBufferFull(EventBuffer *buffer);
+  35:main.c        **** void bufferPush(EventBuffer *cb, uint8_t event);
+  36:main.c        **** uint8_t bufferPop(EventBuffer *cb);
+  37:main.c        **** void vt_cb(void *arg);
+  38:main.c        **** 
+  39:main.c        **** enum {
+  40:main.c        ****   SECUNDARIO=1, PEDESTRE, AMB_PRIMARIO, AMB_SECUNDARIO
+  41:main.c        **** };
+  42:main.c        **** 
+  43:main.c        **** /*
+  44:main.c        ****  * LED blinker thread, times are in milliseconds.
+  45:main.c        ****  */
+  46:main.c        **** static THD_WORKING_AREA(waThread1, 32);
+  47:main.c        **** static THD_FUNCTION(Thread1, arg)
+  48:main.c        **** {
+  49:main.c        ****   virtual_timer_t vt;
+  50:main.c        **** 
+  51:main.c        ****   chVTObjectInit(&vt);
+  52:main.c        ****   chVTSet(&vt, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, (void *)&vt);
+  53:main.c        **** 
+  54:main.c        ****   while (1)
+  55:main.c        ****   {
+  56:main.c        ****   }
+  57:main.c        **** }
+  58:main.c        **** 
+  59:main.c        **** /*
+  60:main.c        ****  * Application entry point.
+  61:main.c        ****  */
+  62:main.c        **** int main(void)
+  63:main.c        **** {
+  64:main.c        ****   bufferInit(&ev_buffer);
+  65:main.c        ****   /*
+  66:main.c        ****    * System initializations.
+  67:main.c        ****    * - HAL initialization, this also initializes the configured device drivers
+  68:main.c        ****    *   and performs the board-specific initializations.
+  69:main.c        ****    * - Kernel initialization, the main() function becomes a thread and the
+  70:main.c        ****    *   RTOS is active.
+  71:main.c        ****    */
+  72:main.c        ****   halInit();
+  73:main.c        ****   chSysInit();
+  74:main.c        **** 
+  75:main.c        ****   /* Configuração dos pinos */
+  76:main.c        ****   // Semáforo primário: Vermelho, Verde
+  77:main.c        ****   palSetPadMode(IOPORT4, 7, PAL_MODE_OUTPUT_PUSHPULL);
+  78:main.c        ****   palClearPad(IOPORT4, 7);
+  79:main.c        ****   palSetPadMode(IOPORT4, 6, PAL_MODE_OUTPUT_PUSHPULL);
+  80:main.c        ****   palClearPad(IOPORT4, 6);
+  81:main.c        **** 
+  82:main.c        ****   // Semáforo secundário: Vermelho, Verde
+  83:main.c        ****   palSetPadMode(IOPORT2, 1, PAL_MODE_OUTPUT_PUSHPULL);
+  84:main.c        ****   palClearPad(IOPORT2, 1);
+  85:main.c        ****   palSetPadMode(IOPORT2, 0, PAL_MODE_OUTPUT_PUSHPULL);
+  86:main.c        ****   palClearPad(IOPORT2, 0);
+  87:main.c        **** 
+  88:main.c        ****   // Pedestre: Vermelho, Verde
+  89:main.c        ****   palSetPadMode(IOPORT2, 3, PAL_MODE_OUTPUT_PUSHPULL);
+  90:main.c        ****   palClearPad(IOPORT2, 3);
+  91:main.c        ****   palSetPadMode(IOPORT2, 2, PAL_MODE_OUTPUT_PUSHPULL);
+  92:main.c        ****   palClearPad(IOPORT2, 2);
+  93:main.c        **** 
+  94:main.c        ****   // LED Interno:
+  95:main.c        ****   palSetPadMode(IOPORT2, PORTB_LED1, PAL_MODE_OUTPUT_PUSHPULL);
+  96:main.c        ****   palClearPad(IOPORT2, PORTB_LED1);
+  97:main.c        **** 
+  98:main.c        ****   /* Configuração dos botões */
+  99:main.c        **** 
+ 100:main.c        ****   /*
+ 101:main.c        ****    * Starts the LED blinker thread.
+ 102:main.c        ****    */
+ 103:main.c        ****   chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO + 1, Thread1, NULL);
+ 104:main.c        **** 
+ 105:main.c        ****   while (1)
+ 106:main.c        ****   {
+ 107:main.c        ****   }
+ 108:main.c        **** }
+ 109:main.c        **** 
+ 110:main.c        **** void bufferInit(EventBuffer *buffer) {
+ 111:main.c        ****     buffer->head = 0;
+ 112:main.c        ****     buffer->tail = 0;
+ 113:main.c        ****     buffer->size = 0;
+ 114:main.c        **** }
+ 115:main.c        **** 
+ 116:main.c        **** bool isBufferEmpty(EventBuffer *buffer) {
+ 117:main.c        ****     return buffer->size == 0;
+ 118:main.c        **** }
+ 119:main.c        **** 
+ 120:main.c        **** bool isBufferFull(EventBuffer *buffer) {
+ 121:main.c        ****     return buffer->size == BUFFER_SIZE;
+ 122:main.c        **** }
+ 123:main.c        **** 
+ 124:main.c        **** void bufferPush(EventBuffer *buffer, uint8_t event) {
+ 125:main.c        ****     buffer->events[buffer->tail] = event;
+ 126:main.c        ****     buffer->tail = (buffer->tail + 1) % BUFFER_SIZE;
+ 127:main.c        ****     buffer->size++;
+ 128:main.c        **** }
+ 129:main.c        **** 
+ 130:main.c        **** uint8_t bufferPop(EventBuffer *buffer) {
+ 131:main.c        ****     if (isBufferEmpty(buffer)) {
+ 132:main.c        ****         return false; // Buffer vazio
+ 133:main.c        ****     }
+ 134:main.c        **** 
+ 135:main.c        ****     uint8_t event = buffer->events[buffer->head];
+ 136:main.c        ****     buffer->head = (buffer->head + 1) % BUFFER_SIZE;
+ 137:main.c        ****     buffer->size--;
+ 138:main.c        ****     return event;
+ 139:main.c        **** }
+ 140:main.c        **** 
+ 141:main.c        **** void vt_cb(void *arg) {
+  16               		.loc 1 141 0
   17               		.cfi_startproc
   18               	.LVL0:
   19 0000 0F93      		push r16
@@ -58,19 +177,19 @@
   37               	/* stack size = 4 */
   38               	.L__stack_usage = 4
   39 0008 EC01      		movw r28,r24
-  23:main.c        ****   chSysLockFromISR();
-  24:main.c        ****   palTogglePad(IOPORT2, PORTB_LED1);
-  40               		.loc 1 24 0
+ 142:main.c        ****   chSysLockFromISR();
+ 143:main.c        ****   palTogglePad(IOPORT2, PORTB_LED1);
+  40               		.loc 1 143 0
   41 000a 85B1      		in r24,0x5
   42               	.LVL1:
   43 000c 90E2      		ldi r25,lo8(32)
   44 000e 8927      		eor r24,r25
   45 0010 85B9      		out 0x5,r24
   46               	.LVL2:
-  47               	.LBB43:
-  48               	.LBB44:
-  49               	.LBB45:
-  50               	.LBB46:
+  47               	.LBB47:
+  48               	.LBB48:
+  49               	.LBB49:
+  50               	.LBB50:
   51               		.file 2 "../../os/rt/include/chvt.h"
    1:../../os/rt/include/chvt.h **** /*
    2:../../os/rt/include/chvt.h ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
@@ -370,8 +489,8 @@
   59 001c 0E94 0000 		call chVTDoResetI
   60               	.LVL3:
   61               	.L2:
-  62               	.LBE46:
-  63               	.LBE45:
+  62               	.LBE50:
+  63               	.LBE49:
  289:../../os/rt/include/chvt.h ****   }
  290:../../os/rt/include/chvt.h **** }
  291:../../os/rt/include/chvt.h **** 
@@ -431,12 +550,12 @@
   73 0030 0E94 0000 		call chVTDoSetI
   74               	.LVL4:
   75               	/* epilogue start */
-  76               	.LBE44:
-  77               	.LBE43:
-  25:main.c        ****   chVTSetI((virtual_timer_t*) arg, TIME_MS2I(LED_PERIODO/2), (vtfunc_t) vt_cb, arg);
-  26:main.c        ****   chSysUnlockFromISR();
-  27:main.c        **** }
-  78               		.loc 1 27 0
+  76               	.LBE48:
+  77               	.LBE47:
+ 144:main.c        ****   chVTSetI((virtual_timer_t *)arg, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, arg);
+ 145:main.c        ****   chSysUnlockFromISR();
+ 146:main.c        **** }...
+  78               		.loc 1 146 0
   79 0034 DF91      		pop r29
   80 0036 CF91      		pop r28
   81               	.LVL5:
@@ -445,17 +564,12 @@
   84               	.LVL6:
   85 003c 0895      		ret
   86               		.cfi_endproc
-  87               	.LFE243:
+  87               	.LFE250:
   89               		.section	.text.Thread1,"ax",@progbits
   91               	Thread1:
-  92               	.LFB244:
-  28:main.c        **** 
-  29:main.c        **** /*
-  30:main.c        ****  * LED blinker thread, times are in milliseconds.
-  31:main.c        ****  */
-  32:main.c        **** static THD_WORKING_AREA(waThread1, 32);
-  33:main.c        **** static THD_FUNCTION(Thread1, arg) {
-  93               		.loc 1 33 0
+  92               	.LFB243:
+  48:main.c        **** {
+  93               		.loc 1 48 0
   94               		.cfi_startproc
   95               	.LVL7:
   96 0000 CF93      		push r28
@@ -483,19 +597,19 @@
  118               	/* stack size = 18 */
  119               	.L__stack_usage = 18
  120               	.LVL8:
- 121               	.LBB62:
- 122               	.LBB63:
+ 121               	.LBB66:
+ 122               	.LBB67:
  106:../../os/rt/include/chvt.h **** }
  123               		.loc 2 106 0
  124 0014 1A82      		std Y+2,__zero_reg__
  125 0016 1982      		std Y+1,__zero_reg__
  126               	.LVL9:
- 127               	.LBE63:
- 128               	.LBE62:
- 129               	.LBB64:
- 130               	.LBB65:
- 131               	.LBB66:
- 132               	.LBB67:
+ 127               	.LBE67:
+ 128               	.LBE66:
+ 129               	.LBB68:
+ 130               	.LBB69:
+ 131               	.LBB70:
+ 132               	.LBB71:
  133               		.file 3 "../../os/common/ports/AVR/chcore.h"
    1:../../os/common/ports/AVR/chcore.h **** /*
    2:../../os/common/ports/AVR/chcore.h ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
@@ -934,13 +1048,13 @@
  138               	 ;  0 "" 2
  139               	.LVL10:
  140               	/* #NOAPP */
- 141               	.LBE67:
- 142               	.LBE66:
- 143               	.LBE65:
- 144               	.LBB68:
- 145               	.LBB69:
- 146               	.LBB70:
- 147               	.LBB71:
+ 141               	.LBE71:
+ 142               	.LBE70:
+ 143               	.LBE69:
+ 144               	.LBB72:
+ 145               	.LBB73:
+ 146               	.LBB74:
+ 147               	.LBB75:
  287:../../os/rt/include/chvt.h ****     chVTDoResetI(vtp);
  148               		.loc 2 287 0
  149 001a 8981      		ldd r24,Y+1
@@ -956,8 +1070,8 @@
  158 0028 0E94 0000 		call chVTDoResetI
  159               	.LVL12:
  160               	.L8:
- 161               	.LBE71:
- 162               	.LBE70:
+ 161               	.LBE75:
+ 162               	.LBE74:
  163               		.loc 2 335 0
  164 002c 8701      		movw r16,r14
  165 002e 20E0      		ldi r18,lo8(gs(vt_cb))
@@ -969,12 +1083,12 @@
  171 003a C701      		movw r24,r14
  172 003c 0E94 0000 		call chVTDoSetI
  173               	.LVL13:
- 174               	.LBE69:
- 175               	.LBE68:
- 176               	.LBB72:
- 177               	.LBB73:
- 178               	.LBB74:
- 179               	.LBB75:
+ 174               	.LBE73:
+ 175               	.LBE72:
+ 176               	.LBB76:
+ 177               	.LBB77:
+ 178               	.LBB78:
+ 179               	.LBB79:
  431:../../os/common/ports/AVR/chcore.h **** }
  432:../../os/common/ports/AVR/chcore.h **** 
  433:../../os/common/ports/AVR/chcore.h **** /**
@@ -999,126 +1113,372 @@
  191 0046 0196      		adiw r24,1
  192 0048 7C01      		movw r14,r24
  193 004a 00C0      		rjmp .L8
- 194               	.LBE75:
- 195               	.LBE74:
- 196               	.LBE73:
- 197               	.LBE72:
- 198               	.LBE64:
+ 194               	.LBE79:
+ 195               	.LBE78:
+ 196               	.LBE77:
+ 197               	.LBE76:
+ 198               	.LBE68:
  199               		.cfi_endproc
- 200               	.LFE244:
+ 200               	.LFE243:
  202               		.section	.text.startup.main,"ax",@progbits
  203               	.global	main
  205               	main:
- 206               	.LFB245:
-  34:main.c        ****   virtual_timer_t vt;
-  35:main.c        **** 
-  36:main.c        ****   chVTObjectInit(&vt);
-  37:main.c        ****   chVTSet(&vt, TIME_MS2I(LED_PERIODO/2), (vtfunc_t) vt_cb, (void*) &vt);
-  38:main.c        **** 
-  39:main.c        ****   while (1) {
-  40:main.c        **** 
-  41:main.c        ****   }
-  42:main.c        **** }
-  43:main.c        **** 
-  44:main.c        **** /*
-  45:main.c        ****  * Application entry point.
-  46:main.c        ****  */
-  47:main.c        **** int main(void) {
- 207               		.loc 1 47 0
+ 206               	.LFB244:
+  63:main.c        **** {
+ 207               		.loc 1 63 0
  208               		.cfi_startproc
  209               	/* prologue: function */
  210               	/* frame size = 0 */
  211               	/* stack size = 0 */
  212               	.L__stack_usage = 0
-  48:main.c        ****   /*
-  49:main.c        ****    * System initializations.
-  50:main.c        ****    * - HAL initialization, this also initializes the configured device drivers
-  51:main.c        ****    *   and performs the board-specific initializations.
-  52:main.c        ****    * - Kernel initialization, the main() function becomes a thread and the
-  53:main.c        ****    *   RTOS is active.
-  54:main.c        ****    */
-  55:main.c        ****   halInit();
- 213               		.loc 1 55 0
- 214 0000 0E94 0000 		call halInit
- 215               	.LVL15:
-  56:main.c        ****   chSysInit();
- 216               		.loc 1 56 0
- 217 0004 0E94 0000 		call chSysInit
- 218               	.LVL16:
-  57:main.c        **** 
-  58:main.c        ****   palSetPadMode(IOPORT2, PORTB_LED1, PAL_MODE_OUTPUT_PUSHPULL);
- 219               		.loc 1 58 0
- 220 0008 46E0      		ldi r20,lo8(6)
- 221 000a 60E2      		ldi r22,lo8(32)
- 222 000c 83E2      		ldi r24,lo8(35)
- 223 000e 90E0      		ldi r25,0
- 224 0010 0E94 0000 		call _pal_lld_setgroupmode
- 225               	.LVL17:
-  59:main.c        ****   palClearPad(IOPORT2, PORTB_LED1);
- 226               		.loc 1 59 0
- 227 0014 2D98      		cbi 0x5,5
-  60:main.c        **** 
-  61:main.c        ****   /*
-  62:main.c        ****    * Starts the LED blinker thread. 
-  63:main.c        ****    */
-  64:main.c        ****   chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO+1, Thread1, NULL);
- 228               		.loc 1 64 0
- 229 0016 10E0      		ldi r17,0
- 230 0018 00E0      		ldi r16,0
- 231 001a 20E0      		ldi r18,lo8(gs(Thread1))
- 232 001c 30E0      		ldi r19,hi8(gs(Thread1))
- 233 001e 41E8      		ldi r20,lo8(-127)
- 234 0020 63E8      		ldi r22,lo8(-125)
- 235 0022 70E0      		ldi r23,0
- 236 0024 80E0      		ldi r24,lo8(waThread1)
- 237 0026 90E0      		ldi r25,hi8(waThread1)
- 238 0028 0E94 0000 		call chThdCreateStatic
- 239               	.LVL18:
- 240               	.L15:
- 241 002c 00C0      		rjmp .L15
- 242               		.cfi_endproc
- 243               	.LFE245:
- 245               		.section	.bss.waThread1,"aw",@nobits
- 248               	waThread1:
- 249 0000 0000 0000 		.zero	131
- 249      0000 0000 
- 249      0000 0000 
- 249      0000 0000 
- 249      0000 0000 
- 250               		.text
- 251               	.Letext0:
- 252               		.file 4 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
- 253               		.file 5 "/usr/lib/avr/include/stdint.h"
- 254               		.file 6 "../../os/common/ports/AVR/compilers/GCC/chtypes.h"
- 255               		.file 7 "../../os/rt/include/chearly.h"
- 256               		.file 8 "../../os/rt/include/chobjects.h"
- 257               		.file 9 "../../os/rt/include/chrfcu.h"
- 258               		.file 10 "../../os/rt/include/chdebug.h"
- 259               		.file 11 "../../os/rt/include/chtime.h"
- 260               		.file 12 "../../os/rt/include/chlists.h"
- 261               		.file 13 "../../os/rt/include/chsem.h"
- 262               		.file 14 "../../os/rt/include/chmtx.h"
- 263               		.file 15 "../../os/rt/include/chsys.h"
- 264               		.file 16 "../../os/rt/include/chregistry.h"
- 265               		.file 17 "../../os/rt/include/chevents.h"
- 266               		.file 18 "../../os/oslib/include/chmemcore.h"
- 267               		.file 19 "../../os/hal/include/hal_queues.h"
- 268               		.file 20 "../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.h"
- 269               		.file 21 "../../os/hal/include/hal_serial.h"
- 270               		.file 22 "../../os/hal/ports/AVR/MEGA/LLD/USARTv1/hal_serial_lld.h"
- 271               		.file 23 "../../os/hal/include/hal.h"
- 272               		.file 24 "../../os/rt/include/chthreads.h"
+ 213               	.LVL15:
+ 214               	.LBB80:
+ 215               	.LBB81:
+ 111:main.c        ****     buffer->head = 0;
+ 216               		.loc 1 111 0
+ 217 0000 1092 0000 		sts ev_buffer+8,__zero_reg__
+ 112:main.c        ****     buffer->tail = 0;
+ 218               		.loc 1 112 0
+ 219 0004 1092 0000 		sts ev_buffer+9,__zero_reg__
+ 113:main.c        ****     buffer->size = 0;
+ 220               		.loc 1 113 0
+ 221 0008 1092 0000 		sts ev_buffer+10,__zero_reg__
+ 222               	.LVL16:
+ 223               	.LBE81:
+ 224               	.LBE80:
+  72:main.c        ****   halInit();
+ 225               		.loc 1 72 0
+ 226 000c 0E94 0000 		call halInit
+ 227               	.LVL17:
+  73:main.c        ****   chSysInit();
+ 228               		.loc 1 73 0
+ 229 0010 0E94 0000 		call chSysInit
+ 230               	.LVL18:
+  77:main.c        ****   palSetPadMode(IOPORT4, 7, PAL_MODE_OUTPUT_PUSHPULL);
+ 231               		.loc 1 77 0
+ 232 0014 46E0      		ldi r20,lo8(6)
+ 233 0016 60E8      		ldi r22,lo8(-128)
+ 234 0018 89E2      		ldi r24,lo8(41)
+ 235 001a 90E0      		ldi r25,0
+ 236 001c 0E94 0000 		call _pal_lld_setgroupmode
+ 237               	.LVL19:
+  78:main.c        ****   palClearPad(IOPORT4, 7);
+ 238               		.loc 1 78 0
+ 239 0020 5F98      		cbi 0xb,7
+  79:main.c        ****   palSetPadMode(IOPORT4, 6, PAL_MODE_OUTPUT_PUSHPULL);
+ 240               		.loc 1 79 0
+ 241 0022 46E0      		ldi r20,lo8(6)
+ 242 0024 60E4      		ldi r22,lo8(64)
+ 243 0026 89E2      		ldi r24,lo8(41)
+ 244 0028 90E0      		ldi r25,0
+ 245 002a 0E94 0000 		call _pal_lld_setgroupmode
+ 246               	.LVL20:
+  80:main.c        ****   palClearPad(IOPORT4, 6);
+ 247               		.loc 1 80 0
+ 248 002e 5E98      		cbi 0xb,6
+  83:main.c        ****   palSetPadMode(IOPORT2, 1, PAL_MODE_OUTPUT_PUSHPULL);
+ 249               		.loc 1 83 0
+ 250 0030 46E0      		ldi r20,lo8(6)
+ 251 0032 62E0      		ldi r22,lo8(2)
+ 252 0034 83E2      		ldi r24,lo8(35)
+ 253 0036 90E0      		ldi r25,0
+ 254 0038 0E94 0000 		call _pal_lld_setgroupmode
+ 255               	.LVL21:
+  84:main.c        ****   palClearPad(IOPORT2, 1);
+ 256               		.loc 1 84 0
+ 257 003c 2998      		cbi 0x5,1
+  85:main.c        ****   palSetPadMode(IOPORT2, 0, PAL_MODE_OUTPUT_PUSHPULL);
+ 258               		.loc 1 85 0
+ 259 003e 46E0      		ldi r20,lo8(6)
+ 260 0040 61E0      		ldi r22,lo8(1)
+ 261 0042 83E2      		ldi r24,lo8(35)
+ 262 0044 90E0      		ldi r25,0
+ 263 0046 0E94 0000 		call _pal_lld_setgroupmode
+ 264               	.LVL22:
+  86:main.c        ****   palClearPad(IOPORT2, 0);
+ 265               		.loc 1 86 0
+ 266 004a 2898      		cbi 0x5,0
+  89:main.c        ****   palSetPadMode(IOPORT2, 3, PAL_MODE_OUTPUT_PUSHPULL);
+ 267               		.loc 1 89 0
+ 268 004c 46E0      		ldi r20,lo8(6)
+ 269 004e 68E0      		ldi r22,lo8(8)
+ 270 0050 83E2      		ldi r24,lo8(35)
+ 271 0052 90E0      		ldi r25,0
+ 272 0054 0E94 0000 		call _pal_lld_setgroupmode
+ 273               	.LVL23:
+  90:main.c        ****   palClearPad(IOPORT2, 3);
+ 274               		.loc 1 90 0
+ 275 0058 2B98      		cbi 0x5,3
+  91:main.c        ****   palSetPadMode(IOPORT2, 2, PAL_MODE_OUTPUT_PUSHPULL);
+ 276               		.loc 1 91 0
+ 277 005a 46E0      		ldi r20,lo8(6)
+ 278 005c 64E0      		ldi r22,lo8(4)
+ 279 005e 83E2      		ldi r24,lo8(35)
+ 280 0060 90E0      		ldi r25,0
+ 281 0062 0E94 0000 		call _pal_lld_setgroupmode
+ 282               	.LVL24:
+  92:main.c        ****   palClearPad(IOPORT2, 2);
+ 283               		.loc 1 92 0
+ 284 0066 2A98      		cbi 0x5,2
+  95:main.c        ****   palSetPadMode(IOPORT2, PORTB_LED1, PAL_MODE_OUTPUT_PUSHPULL);
+ 285               		.loc 1 95 0
+ 286 0068 46E0      		ldi r20,lo8(6)
+ 287 006a 60E2      		ldi r22,lo8(32)
+ 288 006c 83E2      		ldi r24,lo8(35)
+ 289 006e 90E0      		ldi r25,0
+ 290 0070 0E94 0000 		call _pal_lld_setgroupmode
+ 291               	.LVL25:
+  96:main.c        ****   palClearPad(IOPORT2, PORTB_LED1);
+ 292               		.loc 1 96 0
+ 293 0074 2D98      		cbi 0x5,5
+ 103:main.c        ****   chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO + 1, Thread1, NULL);
+ 294               		.loc 1 103 0
+ 295 0076 10E0      		ldi r17,0
+ 296 0078 00E0      		ldi r16,0
+ 297 007a 20E0      		ldi r18,lo8(gs(Thread1))
+ 298 007c 30E0      		ldi r19,hi8(gs(Thread1))
+ 299 007e 41E8      		ldi r20,lo8(-127)
+ 300 0080 63E8      		ldi r22,lo8(-125)
+ 301 0082 70E0      		ldi r23,0
+ 302 0084 80E0      		ldi r24,lo8(waThread1)
+ 303 0086 90E0      		ldi r25,hi8(waThread1)
+ 304 0088 0E94 0000 		call chThdCreateStatic
+ 305               	.LVL26:
+ 306               	.L15:
+ 307 008c 00C0      		rjmp .L15
+ 308               		.cfi_endproc
+ 309               	.LFE244:
+ 311               		.section	.text.bufferInit,"ax",@progbits
+ 312               	.global	bufferInit
+ 314               	bufferInit:
+ 315               	.LFB245:
+ 110:main.c        **** void bufferInit(EventBuffer *buffer) {
+ 316               		.loc 1 110 0
+ 317               		.cfi_startproc
+ 318               	.LVL27:
+ 319               	/* prologue: function */
+ 320               	/* frame size = 0 */
+ 321               	/* stack size = 0 */
+ 322               	.L__stack_usage = 0
+ 323 0000 FC01      		movw r30,r24
+ 111:main.c        ****     buffer->head = 0;
+ 324               		.loc 1 111 0
+ 325 0002 1086      		std Z+8,__zero_reg__
+ 112:main.c        ****     buffer->tail = 0;
+ 326               		.loc 1 112 0
+ 327 0004 1186      		std Z+9,__zero_reg__
+ 113:main.c        ****     buffer->size = 0;
+ 328               		.loc 1 113 0
+ 329 0006 1286      		std Z+10,__zero_reg__
+ 330               	/* epilogue start */
+ 114:main.c        **** }
+ 331               		.loc 1 114 0
+ 332 0008 0895      		ret
+ 333               		.cfi_endproc
+ 334               	.LFE245:
+ 336               		.section	.text.isBufferEmpty,"ax",@progbits
+ 337               	.global	isBufferEmpty
+ 339               	isBufferEmpty:
+ 340               	.LFB246:
+ 116:main.c        **** bool isBufferEmpty(EventBuffer *buffer) {
+ 341               		.loc 1 116 0
+ 342               		.cfi_startproc
+ 343               	.LVL28:
+ 344               	/* prologue: function */
+ 345               	/* frame size = 0 */
+ 346               	/* stack size = 0 */
+ 347               	.L__stack_usage = 0
+ 117:main.c        ****     return buffer->size == 0;
+ 348               		.loc 1 117 0
+ 349 0000 21E0      		ldi r18,lo8(1)
+ 350 0002 FC01      		movw r30,r24
+ 351 0004 8285      		ldd r24,Z+10
+ 352               	.LVL29:
+ 353 0006 8111      		cpse r24,__zero_reg__
+ 354 0008 20E0      		ldi r18,0
+ 355               	.L18:
+ 118:main.c        **** }
+ 356               		.loc 1 118 0
+ 357 000a 822F      		mov r24,r18
+ 358               	/* epilogue start */
+ 359 000c 0895      		ret
+ 360               		.cfi_endproc
+ 361               	.LFE246:
+ 363               		.section	.text.isBufferFull,"ax",@progbits
+ 364               	.global	isBufferFull
+ 366               	isBufferFull:
+ 367               	.LFB247:
+ 120:main.c        **** bool isBufferFull(EventBuffer *buffer) {
+ 368               		.loc 1 120 0
+ 369               		.cfi_startproc
+ 370               	.LVL30:
+ 371               	/* prologue: function */
+ 372               	/* frame size = 0 */
+ 373               	/* stack size = 0 */
+ 374               	.L__stack_usage = 0
+ 121:main.c        ****     return buffer->size == BUFFER_SIZE;
+ 375               		.loc 1 121 0
+ 376 0000 21E0      		ldi r18,lo8(1)
+ 377 0002 FC01      		movw r30,r24
+ 378 0004 8285      		ldd r24,Z+10
+ 379               	.LVL31:
+ 380 0006 8830      		cpi r24,lo8(8)
+ 381 0008 01F0      		breq .L23
+ 382 000a 20E0      		ldi r18,0
+ 383               	.L23:
+ 122:main.c        **** }
+ 384               		.loc 1 122 0
+ 385 000c 822F      		mov r24,r18
+ 386               	/* epilogue start */
+ 387 000e 0895      		ret
+ 388               		.cfi_endproc
+ 389               	.LFE247:
+ 391               		.section	.text.bufferPush,"ax",@progbits
+ 392               	.global	bufferPush
+ 394               	bufferPush:
+ 395               	.LFB248:
+ 124:main.c        **** void bufferPush(EventBuffer *buffer, uint8_t event) {
+ 396               		.loc 1 124 0
+ 397               		.cfi_startproc
+ 398               	.LVL32:
+ 399               	/* prologue: function */
+ 400               	/* frame size = 0 */
+ 401               	/* stack size = 0 */
+ 402               	.L__stack_usage = 0
+ 403 0000 FC01      		movw r30,r24
+ 125:main.c        ****     buffer->events[buffer->tail] = event;
+ 404               		.loc 1 125 0
+ 405 0002 2185      		ldd r18,Z+9
+ 406 0004 30E0      		ldi r19,0
+ 407 0006 DC01      		movw r26,r24
+ 408 0008 A20F      		add r26,r18
+ 409 000a B31F      		adc r27,r19
+ 410 000c 6C93      		st X,r22
+ 126:main.c        ****     buffer->tail = (buffer->tail + 1) % BUFFER_SIZE;
+ 411               		.loc 1 126 0
+ 412 000e 2F5F      		subi r18,-1
+ 413 0010 3F4F      		sbci r19,-1
+ 414 0012 2770      		andi r18,7
+ 415 0014 3327      		clr r19
+ 416 0016 2187      		std Z+9,r18
+ 127:main.c        ****     buffer->size++;
+ 417               		.loc 1 127 0
+ 418 0018 8285      		ldd r24,Z+10
+ 419               	.LVL33:
+ 420 001a 8F5F      		subi r24,lo8(-(1))
+ 421 001c 8287      		std Z+10,r24
+ 422               	/* epilogue start */
+ 128:main.c        **** }
+ 423               		.loc 1 128 0
+ 424 001e 0895      		ret
+ 425               		.cfi_endproc
+ 426               	.LFE248:
+ 428               		.section	.text.bufferPop,"ax",@progbits
+ 429               	.global	bufferPop
+ 431               	bufferPop:
+ 432               	.LFB249:
+ 130:main.c        **** uint8_t bufferPop(EventBuffer *buffer) {
+ 433               		.loc 1 130 0
+ 434               		.cfi_startproc
+ 435               	.LVL34:
+ 436               	/* prologue: function */
+ 437               	/* frame size = 0 */
+ 438               	/* stack size = 0 */
+ 439               	.L__stack_usage = 0
+ 440 0000 FC01      		movw r30,r24
+ 441               	.LVL35:
+ 442               	.LBB82:
+ 443               	.LBB83:
+ 117:main.c        ****     return buffer->size == 0;
+ 444               		.loc 1 117 0
+ 445 0002 8285      		ldd r24,Z+10
+ 446               	.LVL36:
+ 447               	.LBE83:
+ 448               	.LBE82:
+ 131:main.c        ****     if (isBufferEmpty(buffer)) {
+ 449               		.loc 1 131 0
+ 450 0004 8823      		tst r24
+ 451 0006 01F0      		breq .L28
+ 135:main.c        ****     uint8_t event = buffer->events[buffer->head];
+ 452               		.loc 1 135 0
+ 453 0008 2085      		ldd r18,Z+8
+ 454 000a 30E0      		ldi r19,0
+ 455 000c DF01      		movw r26,r30
+ 456 000e A20F      		add r26,r18
+ 457 0010 B31F      		adc r27,r19
+ 458 0012 4C91      		ld r20,X
+ 459               	.LVL37:
+ 136:main.c        ****     buffer->head = (buffer->head + 1) % BUFFER_SIZE;
+ 460               		.loc 1 136 0
+ 461 0014 2F5F      		subi r18,-1
+ 462 0016 3F4F      		sbci r19,-1
+ 463 0018 2770      		andi r18,7
+ 464 001a 3327      		clr r19
+ 465 001c 2087      		std Z+8,r18
+ 137:main.c        ****     buffer->size--;
+ 466               		.loc 1 137 0
+ 467 001e 9FEF      		ldi r25,lo8(-1)
+ 468 0020 980F      		add r25,r24
+ 469 0022 9287      		std Z+10,r25
+ 138:main.c        ****     return event;
+ 470               		.loc 1 138 0
+ 471 0024 842F      		mov r24,r20
+ 472               	.LVL38:
+ 473               	.L28:
+ 474               	/* epilogue start */
+ 139:main.c        **** }
+ 475               		.loc 1 139 0
+ 476 0026 0895      		ret
+ 477               		.cfi_endproc
+ 478               	.LFE249:
+ 480               		.section	.bss.waThread1,"aw",@nobits
+ 483               	waThread1:
+ 484 0000 0000 0000 		.zero	131
+ 484      0000 0000 
+ 484      0000 0000 
+ 484      0000 0000 
+ 484      0000 0000 
+ 485               		.comm	ev_buffer,11,1
+ 486               		.text
+ 487               	.Letext0:
+ 488               		.file 4 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
+ 489               		.file 5 "/usr/lib/avr/include/stdint.h"
+ 490               		.file 6 "../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+ 491               		.file 7 "../../os/rt/include/chearly.h"
+ 492               		.file 8 "../../os/rt/include/chobjects.h"
+ 493               		.file 9 "../../os/rt/include/chrfcu.h"
+ 494               		.file 10 "../../os/rt/include/chdebug.h"
+ 495               		.file 11 "../../os/rt/include/chtime.h"
+ 496               		.file 12 "../../os/rt/include/chlists.h"
+ 497               		.file 13 "../../os/rt/include/chsem.h"
+ 498               		.file 14 "../../os/rt/include/chmtx.h"
+ 499               		.file 15 "../../os/rt/include/chsys.h"
+ 500               		.file 16 "../../os/rt/include/chregistry.h"
+ 501               		.file 17 "../../os/rt/include/chevents.h"
+ 502               		.file 18 "../../os/oslib/include/chmemcore.h"
+ 503               		.file 19 "../../os/hal/include/hal_queues.h"
+ 504               		.file 20 "../../os/hal/ports/AVR/MEGA/LLD/GPIOv1/hal_pal_lld.h"
+ 505               		.file 21 "../../os/hal/include/hal_serial.h"
+ 506               		.file 22 "../../os/hal/ports/AVR/MEGA/LLD/USARTv1/hal_serial_lld.h"
+ 507               		.file 23 "../../os/hal/include/hal.h"
+ 508               		.file 24 "../../os/rt/include/chthreads.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-     /tmp/ccuigo5o.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccuigo5o.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccuigo5o.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccuigo5o.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccuigo5o.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccuigo5o.s:13     .text.vt_cb:0000000000000000 vt_cb
-     /tmp/ccuigo5o.s:91     .text.Thread1:0000000000000000 Thread1
-     /tmp/ccuigo5o.s:205    .text.startup.main:0000000000000000 main
-     /tmp/ccuigo5o.s:248    .bss.waThread1:0000000000000000 waThread1
+     /tmp/ccqgDFdN.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccqgDFdN.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccqgDFdN.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccqgDFdN.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccqgDFdN.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccqgDFdN.s:13     .text.vt_cb:0000000000000000 vt_cb
+     /tmp/ccqgDFdN.s:91     .text.Thread1:0000000000000000 Thread1
+     /tmp/ccqgDFdN.s:205    .text.startup.main:0000000000000000 main
+                            *COM*:000000000000000b ev_buffer
+     /tmp/ccqgDFdN.s:483    .bss.waThread1:0000000000000000 waThread1
+     /tmp/ccqgDFdN.s:314    .text.bufferInit:0000000000000000 bufferInit
+     /tmp/ccqgDFdN.s:339    .text.isBufferEmpty:0000000000000000 isBufferEmpty
+     /tmp/ccqgDFdN.s:366    .text.isBufferFull:0000000000000000 isBufferFull
+     /tmp/ccqgDFdN.s:394    .text.bufferPush:0000000000000000 bufferPush
+     /tmp/ccqgDFdN.s:431    .text.bufferPop:0000000000000000 bufferPop
 
 UNDEFINED SYMBOLS
 chVTDoResetI

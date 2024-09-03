@@ -18,14 +18,27 @@
 #include "hal.h"
 
 #define LED_PERIODO 10000
+#define BUFFER_SIZE 8
 
-void vt_cb(void *arg)
-{
-  chSysLockFromISR();
-  palTogglePad(IOPORT2, PORTB_LED1);
-  chVTSetI((virtual_timer_t *)arg, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, arg);
-  chSysUnlockFromISR();
-}
+typedef struct {
+    uint8_t events[BUFFER_SIZE];
+    uint8_t head;
+    uint8_t tail;
+    uint8_t size;
+} EventBuffer;
+
+EventBuffer ev_buffer;
+
+void bufferInit(EventBuffer *cb);
+bool isBufferEmpty(EventBuffer *buffer);
+bool isBufferFull(EventBuffer *buffer);
+void bufferPush(EventBuffer *cb, uint8_t event);
+uint8_t bufferPop(EventBuffer *cb);
+void vt_cb(void *arg);
+
+enum {
+  SECUNDARIO=1, PEDESTRE, AMB_PRIMARIO, AMB_SECUNDARIO
+};
 
 /*
  * LED blinker thread, times are in milliseconds.
@@ -48,6 +61,7 @@ static THD_FUNCTION(Thread1, arg)
  */
 int main(void)
 {
+  bufferInit(&ev_buffer);
   /*
    * System initializations.
    * - HAL initialization, this also initializes the configured device drivers
@@ -91,4 +105,42 @@ int main(void)
   while (1)
   {
   }
+}
+
+void bufferInit(EventBuffer *buffer) {
+    buffer->head = 0;
+    buffer->tail = 0;
+    buffer->size = 0;
+}
+
+bool isBufferEmpty(EventBuffer *buffer) {
+    return buffer->size == 0;
+}
+
+bool isBufferFull(EventBuffer *buffer) {
+    return buffer->size == BUFFER_SIZE;
+}
+
+void bufferPush(EventBuffer *buffer, uint8_t event) {
+    buffer->events[buffer->tail] = event;
+    buffer->tail = (buffer->tail + 1) % BUFFER_SIZE;
+    buffer->size++;
+}
+
+uint8_t bufferPop(EventBuffer *buffer) {
+    if (isBufferEmpty(buffer)) {
+        return false; // Buffer vazio
+    }
+
+    uint8_t event = buffer->events[buffer->head];
+    buffer->head = (buffer->head + 1) % BUFFER_SIZE;
+    buffer->size--;
+    return event;
+}
+
+void vt_cb(void *arg) {
+  chSysLockFromISR();
+  palTogglePad(IOPORT2, PORTB_LED1);
+  chVTSetI((virtual_timer_t *)arg, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, arg);
+  chSysUnlockFromISR();
 }

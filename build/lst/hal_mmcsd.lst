@@ -31,10 +31,10 @@
   31               		.file 21 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_mmcsd.c
-     /tmp/ccA8kG7K.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccA8kG7K.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccA8kG7K.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccA8kG7K.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccA8kG7K.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccf73eHI.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccf73eHI.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccf73eHI.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccf73eHI.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccf73eHI.s:6      *ABS*:0000000000000001 __zero_reg__
 
 NO UNDEFINED SYMBOLS

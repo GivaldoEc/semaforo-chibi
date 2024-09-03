@@ -22,10 +22,10 @@ Trabalho de conclusão da disciplina "Desenvolvimento de sistemas embarcados em 
 ## Pinos:
 
 ### Botões
-- PC0 (PCINT8): Botão Pedestre (Verde)
-- PC3 (PCINT11): Botão Via Secundária (Amarelo)
-- PC1 (PCINT9): Botão Ambulância Secundária (Branco)
-- PC2 (PCINT10): Botão Ambulância Primária (Preto)
+- PC2: Botão Pedestre (Verde)
+- PC4: Botão Via Secundária (Amarelo)
+- PC5: Botão Ambulância Secundária (Branco)
+- PC3: Botão Ambulância Primária (Preto)
 
 ### Semáforos
 #### Pedestre

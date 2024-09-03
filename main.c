@@ -32,10 +32,10 @@
 #define SECUNDARIO_VERMELHO PAL_LINE(IOPORT2, 0)
 
 // Botões
-#define AMB_PRIM
-#define AMB_SEC
-#define SEC_FLAG
-#define PEDESTRE
+#define AMB_PRIM PAL_LINE(IOPORT3, 3)
+#define AMB_SEC PAL_LINE(IOPORT3, 5)
+#define SEC_FLAG PAL_LINE(IOPORT3, 4)
+#define PED_FLAG PAL_LINE(IOPORT3, 2)
 
 typedef struct
 {
@@ -47,13 +47,13 @@ typedef struct
 
 EventBuffer ev_buffer;
 
+void config_gpio();
 void bufferInit(EventBuffer *cb);
 bool isBufferEmpty(EventBuffer *buffer);
 bool isBufferFull(EventBuffer *buffer);
 void bufferPush(EventBuffer *cb, uint8_t event);
 uint8_t bufferPop(EventBuffer *cb);
 void vt_cb(void *arg);
-void vt_cb2(void *arg);
 
 enum
 {
@@ -77,6 +77,7 @@ static THD_FUNCTION(Thread1, arg)
 
   while (1)
   {
+    chThdSleepMilliseconds(100);
   }
 }
 
@@ -95,6 +96,12 @@ int main(void)
    */
   halInit();
   chSysInit();
+
+  /* Configuração dos botões */
+  palSetLineMode(PED_FLAG, PAL_MODE_INPUT_PULLUP);
+  palSetLineMode(SEC_FLAG, PAL_MODE_INPUT_PULLUP);
+  palSetLineMode(AMB_PRIM, PAL_MODE_INPUT_PULLUP);
+  palSetLineMode(AMB_SEC, PAL_MODE_INPUT_PULLUP);
 
   // Pedestre
   palSetLineMode(PEDESTRE_VERDE, PAL_MODE_OUTPUT_PUSHPULL);
@@ -118,24 +125,31 @@ int main(void)
   palSetLineMode(SECUNDARIO_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
   palClearLine(SECUNDARIO_VERMELHO);
 
-  /* Configuração dos botões */
-
   /*
    * Starts the LED blinker thread.
    */
   chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, Thread1, NULL);
 
-  palSetLine(PEDESTRE_VERDE);
-
-  // virtual_timer_t vt2;
-
-  // chVTObjectInit(&vt2);
-  // chVTSet(&vt2, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb2, (void *)&vt2);
-
   while (1)
   {
-    palToggleLine(SECUNDARIO_VERDE);
-    chThdSleepMicroseconds(10000);
+    if (palReadLine(AMB_SEC) == PAL_LOW)
+    {
+      palToggleLine(PEDESTRE_VERDE);
+    }
+    else if (palReadLine(AMB_PRIM) == PAL_LOW)
+    {
+      palToggleLine(PRIMARIO_AMARELO);
+    }
+    else if (palReadLine(SEC_FLAG) == PAL_LOW)
+    {
+      palToggleLine(PRIMARIO_VERMELHO);
+    }
+    else if (palReadLine(PED_FLAG) == PAL_LOW)
+    {
+      palToggleLine(SECUNDARIO_VERDE);
+    }
+    /* Debouncing. */
+    chThdSleepMilliseconds(200);
   }
 }
 
@@ -181,13 +195,5 @@ void vt_cb(void *arg)
   chSysLockFromISR();
   palTogglePad(IOPORT2, PORTB_LED1);
   chVTSetI((virtual_timer_t *)arg, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, arg);
-  chSysUnlockFromISR();
-}
-
-void vt_cb2(void *arg)
-{
-  chSysLockFromISR();
-  palTogglePad(IOPORT2, 3);
-  chVTSetI((virtual_timer_t *)arg, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb2, arg);
   chSysUnlockFromISR();
 }

@@ -2138,16 +2138,16 @@
  1004               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chobjcaches.
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chobjcaches.c
-     /tmp/cc3onEhm.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cc3onEhm.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cc3onEhm.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cc3onEhm.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cc3onEhm.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cc3onEhm.s:13     .text.chCacheObjectInit:0000000000000000 chCacheObjectInit
-     /tmp/cc3onEhm.s:287    .text.chCacheGetObject:0000000000000000 chCacheGetObject
-     /tmp/cc3onEhm.s:718    .text.chCacheReleaseObjectI:0000000000000000 chCacheReleaseObjectI
-     /tmp/cc3onEhm.s:892    .text.chCacheReadObject:0000000000000000 chCacheReadObject
-     /tmp/cc3onEhm.s:941    .text.chCacheWriteObject:0000000000000000 chCacheWriteObject
+     /tmp/ccv76yTi.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccv76yTi.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccv76yTi.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccv76yTi.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccv76yTi.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccv76yTi.s:13     .text.chCacheObjectInit:0000000000000000 chCacheObjectInit
+     /tmp/ccv76yTi.s:287    .text.chCacheGetObject:0000000000000000 chCacheGetObject
+     /tmp/ccv76yTi.s:718    .text.chCacheReleaseObjectI:0000000000000000 chCacheReleaseObjectI
+     /tmp/ccv76yTi.s:892    .text.chCacheReadObject:0000000000000000 chCacheReadObject
+     /tmp/ccv76yTi.s:941    .text.chCacheWriteObject:0000000000000000 chCacheWriteObject
 
 UNDEFINED SYMBOLS
 chSemObjectInit

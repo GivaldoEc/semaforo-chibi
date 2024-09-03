@@ -1948,16 +1948,16 @@
  457               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chschd.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chmsg.c
-     /tmp/ccZgaPci.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccZgaPci.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccZgaPci.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccZgaPci.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccZgaPci.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccZgaPci.s:13     .text.chMsgSend:0000000000000000 chMsgSend
-     /tmp/ccZgaPci.s:126    .text.chMsgWaitS:0000000000000000 chMsgWaitS
-     /tmp/ccZgaPci.s:215    .text.chMsgWaitTimeoutS:0000000000000000 chMsgWaitTimeoutS
-     /tmp/ccZgaPci.s:317    .text.chMsgPollS:0000000000000000 chMsgPollS
-     /tmp/ccZgaPci.s:394    .text.chMsgRelease:0000000000000000 chMsgRelease
+     /tmp/ccC9vdua.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccC9vdua.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccC9vdua.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccC9vdua.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccC9vdua.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccC9vdua.s:13     .text.chMsgSend:0000000000000000 chMsgSend
+     /tmp/ccC9vdua.s:126    .text.chMsgWaitS:0000000000000000 chMsgWaitS
+     /tmp/ccC9vdua.s:215    .text.chMsgWaitTimeoutS:0000000000000000 chMsgWaitTimeoutS
+     /tmp/ccC9vdua.s:317    .text.chMsgPollS:0000000000000000 chMsgPollS
+     /tmp/ccC9vdua.s:394    .text.chMsgRelease:0000000000000000 chMsgRelease
 
 UNDEFINED SYMBOLS
 ch0

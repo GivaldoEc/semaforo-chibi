@@ -1882,18 +1882,18 @@
  506               		.file 24 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chschd.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_serial_lld.c
-     /tmp/ccD8uqC3.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccD8uqC3.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccD8uqC3.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccD8uqC3.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccD8uqC3.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccD8uqC3.s:12     .text.notify1:0000000000000000 notify1
-     /tmp/ccD8uqC3.s:38     .text.__vector_18:0000000000000000 __vector_18
+     /tmp/ccdx5AXQ.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccdx5AXQ.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccdx5AXQ.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccdx5AXQ.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccdx5AXQ.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccdx5AXQ.s:12     .text.notify1:0000000000000000 notify1
+     /tmp/ccdx5AXQ.s:38     .text.__vector_18:0000000000000000 __vector_18
                             *COM*:0000000000000049 SD1
-     /tmp/ccD8uqC3.s:194    .text.__vector_19:0000000000000000 __vector_19
-     /tmp/ccD8uqC3.s:318    .text.sd_lld_init:0000000000000000 sd_lld_init
-     /tmp/ccD8uqC3.s:341    .text.sd_lld_start:0000000000000000 sd_lld_start
-     /tmp/ccD8uqC3.s:449    .text.sd_lld_stop:0000000000000000 sd_lld_stop
+     /tmp/ccdx5AXQ.s:194    .text.__vector_19:0000000000000000 __vector_19
+     /tmp/ccdx5AXQ.s:318    .text.sd_lld_init:0000000000000000 sd_lld_init
+     /tmp/ccdx5AXQ.s:341    .text.sd_lld_start:0000000000000000 sd_lld_start
+     /tmp/ccdx5AXQ.s:449    .text.sd_lld_stop:0000000000000000 sd_lld_stop
 
 UNDEFINED SYMBOLS
 __avr_in_isr

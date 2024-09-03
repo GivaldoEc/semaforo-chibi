@@ -24,10 +24,10 @@
   24               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 osal.c
-     /tmp/ccr4uotV.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccr4uotV.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccr4uotV.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccr4uotV.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccr4uotV.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccaYrumb.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccaYrumb.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccaYrumb.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccaYrumb.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccaYrumb.s:6      *ABS*:0000000000000001 __zero_reg__
 
 NO UNDEFINED SYMBOLS

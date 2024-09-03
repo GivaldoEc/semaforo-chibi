@@ -2063,15 +2063,15 @@
  1024               		.file 20 "<built-in>"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chpipes.c
-     /tmp/ccYrDEWR.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccYrDEWR.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccYrDEWR.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccYrDEWR.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccYrDEWR.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccYrDEWR.s:13     .text.chPipeObjectInit:0000000000000000 chPipeObjectInit
-     /tmp/ccYrDEWR.s:85     .text.chPipeReset:0000000000000000 chPipeReset
-     /tmp/ccYrDEWR.s:196    .text.chPipeWriteTimeout:0000000000000000 chPipeWriteTimeout
-     /tmp/ccYrDEWR.s:612    .text.chPipeReadTimeout:0000000000000000 chPipeReadTimeout
+     /tmp/cceuhlKR.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cceuhlKR.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cceuhlKR.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cceuhlKR.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cceuhlKR.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cceuhlKR.s:13     .text.chPipeObjectInit:0000000000000000 chPipeObjectInit
+     /tmp/cceuhlKR.s:85     .text.chPipeReset:0000000000000000 chPipeReset
+     /tmp/cceuhlKR.s:196    .text.chPipeWriteTimeout:0000000000000000 chPipeWriteTimeout
+     /tmp/cceuhlKR.s:612    .text.chPipeReadTimeout:0000000000000000 chPipeReadTimeout
 
 UNDEFINED SYMBOLS
 chMtxObjectInit

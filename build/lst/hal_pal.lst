@@ -2092,20 +2092,20 @@
  519               		.file 24 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chthreads.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_pal.c
-     /tmp/ccc6jxeA.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccc6jxeA.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccc6jxeA.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccc6jxeA.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccc6jxeA.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccc6jxeA.s:13     .text.palReadBus:0000000000000000 palReadBus
-     /tmp/ccc6jxeA.s:49     .text.palWriteBus:0000000000000000 palWriteBus
-     /tmp/ccc6jxeA.s:98     .text.palSetBusMode:0000000000000000 palSetBusMode
-     /tmp/ccc6jxeA.s:131    .text.palSetPadCallbackI:0000000000000000 palSetPadCallbackI
-     /tmp/ccc6jxeA.s:169    .text.palSetLineCallbackI:0000000000000000 palSetLineCallbackI
-     /tmp/ccc6jxeA.s:226    .text.palWaitPadTimeoutS:0000000000000000 palWaitPadTimeoutS
-     /tmp/ccc6jxeA.s:264    .text.palWaitPadTimeout:0000000000000000 palWaitPadTimeout
-     /tmp/ccc6jxeA.s:340    .text.palWaitLineTimeoutS:0000000000000000 palWaitLineTimeoutS
-     /tmp/ccc6jxeA.s:405    .text.palWaitLineTimeout:0000000000000000 palWaitLineTimeout
+     /tmp/cc9e0ooH.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc9e0ooH.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc9e0ooH.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc9e0ooH.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc9e0ooH.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc9e0ooH.s:13     .text.palReadBus:0000000000000000 palReadBus
+     /tmp/cc9e0ooH.s:49     .text.palWriteBus:0000000000000000 palWriteBus
+     /tmp/cc9e0ooH.s:98     .text.palSetBusMode:0000000000000000 palSetBusMode
+     /tmp/cc9e0ooH.s:131    .text.palSetPadCallbackI:0000000000000000 palSetPadCallbackI
+     /tmp/cc9e0ooH.s:169    .text.palSetLineCallbackI:0000000000000000 palSetLineCallbackI
+     /tmp/cc9e0ooH.s:226    .text.palWaitPadTimeoutS:0000000000000000 palWaitPadTimeoutS
+     /tmp/cc9e0ooH.s:264    .text.palWaitPadTimeout:0000000000000000 palWaitPadTimeout
+     /tmp/cc9e0ooH.s:340    .text.palWaitLineTimeoutS:0000000000000000 palWaitLineTimeoutS
+     /tmp/cc9e0ooH.s:405    .text.palWaitLineTimeout:0000000000000000 palWaitLineTimeout
 
 UNDEFINED SYMBOLS
 _pal_lld_setgroupmode

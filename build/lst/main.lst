@@ -7,10 +7,10 @@
    7               		.text
    8               	.Ltext0:
    9               		.cfi_sections	.debug_frame
-  10               		.section	.text.vt_cb2,"ax",@progbits
-  11               	.global	vt_cb2
-  13               	vt_cb2:
-  14               	.LFB251:
+  10               		.section	.text.vt_cb,"ax",@progbits
+  11               	.global	vt_cb
+  13               	vt_cb:
+  14               	.LFB250:
   15               		.file 1 "main.c"
    1:main.c        **** /*
    2:main.c        ****     ChibiOS - Copyright (C) 2006..2018 Giovanni Di Sirio
@@ -45,156 +45,168 @@
   31:main.c        **** #define SECUNDARIO_AMARELO PAL_LINE(IOPORT4, 5)
   32:main.c        **** #define SECUNDARIO_VERMELHO PAL_LINE(IOPORT2, 0)
   33:main.c        **** 
-  34:main.c        **** typedef struct
-  35:main.c        **** {
-  36:main.c        ****   uint8_t events[BUFFER_SIZE];
-  37:main.c        ****   uint8_t head;
-  38:main.c        ****   uint8_t tail;
-  39:main.c        ****   uint8_t size;
-  40:main.c        **** } EventBuffer;
-  41:main.c        **** 
-  42:main.c        **** EventBuffer ev_buffer;
-  43:main.c        **** 
-  44:main.c        **** void bufferInit(EventBuffer *cb);
-  45:main.c        **** bool isBufferEmpty(EventBuffer *buffer);
-  46:main.c        **** bool isBufferFull(EventBuffer *buffer);
-  47:main.c        **** void bufferPush(EventBuffer *cb, uint8_t event);
-  48:main.c        **** uint8_t bufferPop(EventBuffer *cb);
-  49:main.c        **** void vt_cb(void *arg);
-  50:main.c        **** void vt_cb2(void *arg);
-  51:main.c        **** 
-  52:main.c        **** enum
-  53:main.c        **** {
-  54:main.c        ****   SECUNDARIO = 1,
-  55:main.c        ****   PEDESTRE,
-  56:main.c        ****   AMB_PRIMARIO,
-  57:main.c        ****   AMB_SECUNDARIO
-  58:main.c        **** };
-  59:main.c        **** 
-  60:main.c        **** /*
-  61:main.c        ****  * LED blinker thread, times are in milliseconds.
-  62:main.c        ****  */
-  63:main.c        **** 
-  64:main.c        **** static THD_WORKING_AREA(waThread1, 32);
-  65:main.c        **** static THD_FUNCTION(Thread1, arg)
-  66:main.c        **** {
-  67:main.c        ****   virtual_timer_t vt;
-  68:main.c        **** 
-  69:main.c        ****   chVTObjectInit(&vt);
-  70:main.c        ****   chVTSet(&vt, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, (void *)&vt);
-  71:main.c        **** 
-  72:main.c        ****   while (1)
-  73:main.c        ****   {
-  74:main.c        ****   }
-  75:main.c        **** }
-  76:main.c        **** 
-  77:main.c        **** /*
-  78:main.c        ****  * Application entry point.
-  79:main.c        ****  */
-  80:main.c        **** int main(void)
-  81:main.c        **** {
-  82:main.c        ****   bufferInit(&ev_buffer);
-  83:main.c        ****   /*
-  84:main.c        ****    * System initializations.
-  85:main.c        ****    * - HAL initialization, this also initializes the configured device drivers
-  86:main.c        ****    *   and performs the board-specific initializations.
-  87:main.c        ****    * - Kernel initialization, the main() function becomes a thread and the
-  88:main.c        ****    *   RTOS is active.
-  89:main.c        ****    */
-  90:main.c        ****   halInit();
-  91:main.c        ****   chSysInit();
-  92:main.c        **** 
-  93:main.c        ****   // Pedestre
-  94:main.c        ****   palSetLineMode(PEDESTRE_VERDE, PAL_MODE_OUTPUT_PUSHPULL);
-  95:main.c        ****   palClearLine(PEDESTRE_VERDE);
-  96:main.c        ****   palSetLineMode(PEDESTRE_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
-  97:main.c        ****   palClearLine(PEDESTRE_VERMELHO);
-  98:main.c        **** 
-  99:main.c        ****   // Primário
- 100:main.c        ****   palSetLineMode(PRIMARIO_VERDE, PAL_MODE_OUTPUT_PUSHPULL);
- 101:main.c        ****   palClearLine(PRIMARIO_VERDE);
- 102:main.c        ****   palSetLineMode(PRIMARIO_AMARELO, PAL_MODE_OUTPUT_PUSHPULL);
- 103:main.c        ****   palClearLine(PRIMARIO_AMARELO);
- 104:main.c        ****   palSetLineMode(PRIMARIO_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
- 105:main.c        ****   palClearLine(PRIMARIO_VERMELHO);
- 106:main.c        **** 
- 107:main.c        ****   // Secundário
- 108:main.c        ****   palSetLineMode(SECUNDARIO_VERDE, PAL_MODE_OUTPUT_PUSHPULL);
- 109:main.c        ****   palClearLine(SECUNDARIO_VERDE);
- 110:main.c        ****   palSetLineMode(SECUNDARIO_AMARELO, PAL_MODE_OUTPUT_PUSHPULL);
- 111:main.c        ****   palClearLine(SECUNDARIO_AMARELO);
- 112:main.c        ****   palSetLineMode(SECUNDARIO_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
- 113:main.c        ****   palClearLine(SECUNDARIO_VERMELHO);
- 114:main.c        **** 
- 115:main.c        ****   /* Configuração dos botões */
- 116:main.c        **** 
- 117:main.c        ****   /*
- 118:main.c        ****    * Starts the LED blinker thread.
- 119:main.c        ****    */
- 120:main.c        ****   chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, Thread1, NULL);
- 121:main.c        **** 
- 122:main.c        ****   palSetLine(PEDESTRE_VERDE);
- 123:main.c        **** 
- 124:main.c        ****   virtual_timer_t vt2;
- 125:main.c        **** 
- 126:main.c        ****   chVTObjectInit(&vt2);
- 127:main.c        ****   chVTSet(&vt2, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb2, (void *)&vt2);
- 128:main.c        **** 
- 129:main.c        ****   while (1)
- 130:main.c        ****   {
- 131:main.c        ****     palToggleLine(SECUNDARIO_VERDE);
- 132:main.c        ****     chThdSleepMicroseconds(10000);
- 133:main.c        ****   }
- 134:main.c        **** }
- 135:main.c        **** 
- 136:main.c        **** void bufferInit(EventBuffer *buffer)
- 137:main.c        **** {
- 138:main.c        ****   buffer->head = 0;
- 139:main.c        ****   buffer->tail = 0;
- 140:main.c        ****   buffer->size = 0;
- 141:main.c        **** }
- 142:main.c        **** 
- 143:main.c        **** bool isBufferEmpty(EventBuffer *buffer)
- 144:main.c        **** {
- 145:main.c        ****   return buffer->size == 0;
- 146:main.c        **** }
- 147:main.c        **** 
- 148:main.c        **** bool isBufferFull(EventBuffer *buffer)
- 149:main.c        **** {
- 150:main.c        ****   return buffer->size == BUFFER_SIZE;
- 151:main.c        **** }
- 152:main.c        **** 
- 153:main.c        **** void bufferPush(EventBuffer *buffer, uint8_t event)
- 154:main.c        **** {
- 155:main.c        ****   buffer->events[buffer->tail] = event;
- 156:main.c        ****   buffer->tail = (buffer->tail + 1) % BUFFER_SIZE;
- 157:main.c        ****   buffer->size++;
- 158:main.c        **** }
- 159:main.c        **** 
- 160:main.c        **** uint8_t bufferPop(EventBuffer *buffer)
- 161:main.c        **** {
- 162:main.c        ****   if (isBufferEmpty(buffer))
- 163:main.c        ****   {
- 164:main.c        ****     return false; // Buffer vazio
- 165:main.c        ****   }
- 166:main.c        **** 
- 167:main.c        ****   uint8_t event = buffer->events[buffer->head];
- 168:main.c        ****   buffer->head = (buffer->head + 1) % BUFFER_SIZE;
- 169:main.c        ****   buffer->size--;
- 170:main.c        ****   return event;
+  34:main.c        **** // Botões
+  35:main.c        **** #define AMB_PRIM PAL_LINE(IOPORT3, 3)
+  36:main.c        **** #define AMB_SEC PAL_LINE(IOPORT3, 5)
+  37:main.c        **** #define SEC_FLAG PAL_LINE(IOPORT3, 4)
+  38:main.c        **** #define PED_FLAG PAL_LINE(IOPORT3, 2)
+  39:main.c        **** 
+  40:main.c        **** typedef struct
+  41:main.c        **** {
+  42:main.c        ****   uint8_t events[BUFFER_SIZE];
+  43:main.c        ****   uint8_t head;
+  44:main.c        ****   uint8_t tail;
+  45:main.c        ****   uint8_t size;
+  46:main.c        **** } EventBuffer;
+  47:main.c        **** 
+  48:main.c        **** EventBuffer ev_buffer;
+  49:main.c        **** 
+  50:main.c        **** void config_gpio();
+  51:main.c        **** void bufferInit(EventBuffer *cb);
+  52:main.c        **** bool isBufferEmpty(EventBuffer *buffer);
+  53:main.c        **** bool isBufferFull(EventBuffer *buffer);
+  54:main.c        **** void bufferPush(EventBuffer *cb, uint8_t event);
+  55:main.c        **** uint8_t bufferPop(EventBuffer *cb);
+  56:main.c        **** void vt_cb(void *arg);
+  57:main.c        **** 
+  58:main.c        **** enum
+  59:main.c        **** {
+  60:main.c        ****   SECUNDARIO = 1,
+  61:main.c        ****   PEDESTRE,
+  62:main.c        ****   AMB_PRIMARIO,
+  63:main.c        ****   AMB_SECUNDARIO
+  64:main.c        **** };
+  65:main.c        **** 
+  66:main.c        **** /*
+  67:main.c        ****  * LED blinker thread, times are in milliseconds.
+  68:main.c        ****  */
+  69:main.c        **** 
+  70:main.c        **** static THD_WORKING_AREA(waThread1, 32);
+  71:main.c        **** static THD_FUNCTION(Thread1, arg)
+  72:main.c        **** {
+  73:main.c        ****   virtual_timer_t vt;
+  74:main.c        **** 
+  75:main.c        ****   chVTObjectInit(&vt);
+  76:main.c        ****   chVTSet(&vt, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, (void *)&vt);
+  77:main.c        **** 
+  78:main.c        ****   while (1)
+  79:main.c        ****   {
+  80:main.c        ****     chThdSleepMilliseconds(100);
+  81:main.c        ****   }
+  82:main.c        **** }
+  83:main.c        **** 
+  84:main.c        **** /*
+  85:main.c        ****  * Application entry point.
+  86:main.c        ****  */
+  87:main.c        **** int main(void)
+  88:main.c        **** {
+  89:main.c        ****   bufferInit(&ev_buffer);
+  90:main.c        ****   /*
+  91:main.c        ****    * System initializations.
+  92:main.c        ****    * - HAL initialization, this also initializes the configured device drivers
+  93:main.c        ****    *   and performs the board-specific initializations.
+  94:main.c        ****    * - Kernel initialization, the main() function becomes a thread and the
+  95:main.c        ****    *   RTOS is active.
+  96:main.c        ****    */
+  97:main.c        ****   halInit();
+  98:main.c        ****   chSysInit();
+  99:main.c        **** 
+ 100:main.c        ****   /* Configuração dos botões */
+ 101:main.c        ****   palSetLineMode(PED_FLAG, PAL_MODE_INPUT_PULLUP);
+ 102:main.c        ****   palSetLineMode(SEC_FLAG, PAL_MODE_INPUT_PULLUP);
+ 103:main.c        ****   palSetLineMode(AMB_PRIM, PAL_MODE_INPUT_PULLUP);
+ 104:main.c        ****   palSetLineMode(AMB_SEC, PAL_MODE_INPUT_PULLUP);
+ 105:main.c        **** 
+ 106:main.c        ****   // Pedestre
+ 107:main.c        ****   palSetLineMode(PEDESTRE_VERDE, PAL_MODE_OUTPUT_PUSHPULL);
+ 108:main.c        ****   palClearLine(PEDESTRE_VERDE);
+ 109:main.c        ****   palSetLineMode(PEDESTRE_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
+ 110:main.c        ****   palClearLine(PEDESTRE_VERMELHO);
+ 111:main.c        **** 
+ 112:main.c        ****   // Primário
+ 113:main.c        ****   palSetLineMode(PRIMARIO_VERDE, PAL_MODE_OUTPUT_PUSHPULL);
+ 114:main.c        ****   palClearLine(PRIMARIO_VERDE);
+ 115:main.c        ****   palSetLineMode(PRIMARIO_AMARELO, PAL_MODE_OUTPUT_PUSHPULL);
+ 116:main.c        ****   palClearLine(PRIMARIO_AMARELO);
+ 117:main.c        ****   palSetLineMode(PRIMARIO_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
+ 118:main.c        ****   palClearLine(PRIMARIO_VERMELHO);
+ 119:main.c        **** 
+ 120:main.c        ****   // Secundário
+ 121:main.c        ****   palSetLineMode(SECUNDARIO_VERDE, PAL_MODE_OUTPUT_PUSHPULL);
+ 122:main.c        ****   palClearLine(SECUNDARIO_VERDE);
+ 123:main.c        ****   palSetLineMode(SECUNDARIO_AMARELO, PAL_MODE_OUTPUT_PUSHPULL);
+ 124:main.c        ****   palClearLine(SECUNDARIO_AMARELO);
+ 125:main.c        ****   palSetLineMode(SECUNDARIO_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
+ 126:main.c        ****   palClearLine(SECUNDARIO_VERMELHO);
+ 127:main.c        **** 
+ 128:main.c        ****   /*
+ 129:main.c        ****    * Starts the LED blinker thread.
+ 130:main.c        ****    */
+ 131:main.c        ****   chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, Thread1, NULL);
+ 132:main.c        **** 
+ 133:main.c        ****   while (1)
+ 134:main.c        ****   {
+ 135:main.c        ****     if (palReadLine(AMB_SEC) == PAL_LOW)
+ 136:main.c        ****     {
+ 137:main.c        ****       palToggleLine(PEDESTRE_VERDE);
+ 138:main.c        ****     }
+ 139:main.c        ****     else if (palReadLine(AMB_PRIM) == PAL_LOW)
+ 140:main.c        ****     {
+ 141:main.c        ****       palToggleLine(PRIMARIO_AMARELO);
+ 142:main.c        ****     }
+ 143:main.c        ****     else if (palReadLine(SEC_FLAG) == PAL_LOW)
+ 144:main.c        ****     {
+ 145:main.c        ****       palToggleLine(PRIMARIO_VERMELHO);
+ 146:main.c        ****     }
+ 147:main.c        ****     else if (palReadLine(PED_FLAG) == PAL_LOW)
+ 148:main.c        ****     {
+ 149:main.c        ****       palToggleLine(SECUNDARIO_VERDE);
+ 150:main.c        ****     }
+ 151:main.c        ****     /* Debouncing. */
+ 152:main.c        ****     chThdSleepMilliseconds(200);
+ 153:main.c        ****   }
+ 154:main.c        **** }
+ 155:main.c        **** 
+ 156:main.c        **** void bufferInit(EventBuffer *buffer)
+ 157:main.c        **** {
+ 158:main.c        ****   buffer->head = 0;
+ 159:main.c        ****   buffer->tail = 0;
+ 160:main.c        ****   buffer->size = 0;
+ 161:main.c        **** }
+ 162:main.c        **** 
+ 163:main.c        **** bool isBufferEmpty(EventBuffer *buffer)
+ 164:main.c        **** {
+ 165:main.c        ****   return buffer->size == 0;
+ 166:main.c        **** }
+ 167:main.c        **** 
+ 168:main.c        **** bool isBufferFull(EventBuffer *buffer)
+ 169:main.c        **** {
+ 170:main.c        ****   return buffer->size == BUFFER_SIZE;
  171:main.c        **** }
  172:main.c        **** 
- 173:main.c        **** void vt_cb(void *arg)
+ 173:main.c        **** void bufferPush(EventBuffer *buffer, uint8_t event)
  174:main.c        **** {
- 175:main.c        ****   chSysLockFromISR();
- 176:main.c        ****   palTogglePad(IOPORT2, PORTB_LED1);
- 177:main.c        ****   chVTSetI((virtual_timer_t *)arg, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, arg);
- 178:main.c        ****   chSysUnlockFromISR();
- 179:main.c        **** }
- 180:main.c        **** 
- 181:main.c        **** void vt_cb2(void *arg)
- 182:main.c        **** {
-  16               		.loc 1 182 0
+ 175:main.c        ****   buffer->events[buffer->tail] = event;
+ 176:main.c        ****   buffer->tail = (buffer->tail + 1) % BUFFER_SIZE;
+ 177:main.c        ****   buffer->size++;
+ 178:main.c        **** }
+ 179:main.c        **** 
+ 180:main.c        **** uint8_t bufferPop(EventBuffer *buffer)
+ 181:main.c        **** {
+ 182:main.c        ****   if (isBufferEmpty(buffer))
+ 183:main.c        ****   {
+ 184:main.c        ****     return false; // Buffer vazio
+ 185:main.c        ****   }
+ 186:main.c        **** 
+ 187:main.c        ****   uint8_t event = buffer->events[buffer->head];
+ 188:main.c        ****   buffer->head = (buffer->head + 1) % BUFFER_SIZE;
+ 189:main.c        ****   buffer->size--;
+ 190:main.c        ****   return event;
+ 191:main.c        **** }
+ 192:main.c        **** 
+ 193:main.c        **** void vt_cb(void *arg)
+ 194:main.c        **** {
+  16               		.loc 1 194 0
   17               		.cfi_startproc
   18               	.LVL0:
   19 0000 0F93      		push r16
@@ -218,19 +230,19 @@
   37               	/* stack size = 4 */
   38               	.L__stack_usage = 4
   39 0008 EC01      		movw r28,r24
- 183:main.c        ****   chSysLockFromISR();
- 184:main.c        ****   palTogglePad(IOPORT2, 3);
-  40               		.loc 1 184 0
+ 195:main.c        ****   chSysLockFromISR();
+ 196:main.c        ****   palTogglePad(IOPORT2, PORTB_LED1);
+  40               		.loc 1 196 0
   41 000a 85B1      		in r24,0x5
   42               	.LVL1:
-  43 000c 98E0      		ldi r25,lo8(8)
+  43 000c 90E2      		ldi r25,lo8(32)
   44 000e 8927      		eor r24,r25
   45 0010 85B9      		out 0x5,r24
   46               	.LVL2:
-  47               	.LBB62:
-  48               	.LBB63:
-  49               	.LBB64:
-  50               	.LBB65:
+  47               	.LBB47:
+  48               	.LBB48:
+  49               	.LBB49:
+  50               	.LBB50:
   51               		.file 2 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h"
    1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h **** /*
    2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
@@ -530,8 +542,8 @@
   59 001c 0E94 0000 		call chVTDoResetI
   60               	.LVL3:
   61               	.L2:
-  62               	.LBE65:
-  63               	.LBE64:
+  62               	.LBE50:
+  63               	.LBE49:
  289:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h ****   }
  290:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h **** }
  291:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h **** 
@@ -581,8 +593,8 @@
  335:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h ****   chVTDoSetI(vtp, delay, vtfunc, par);
   64               		.loc 2 335 0
   65 0020 8E01      		movw r16,r28
-  66 0022 20E0      		ldi r18,lo8(gs(vt_cb2))
-  67 0024 30E0      		ldi r19,hi8(gs(vt_cb2))
+  66 0022 20E0      		ldi r18,lo8(gs(vt_cb))
+  67 0024 30E0      		ldi r19,hi8(gs(vt_cb))
   68 0026 48E2      		ldi r20,lo8(40)
   69 0028 51E3      		ldi r21,lo8(49)
   70 002a 61E0      		ldi r22,lo8(1)
@@ -591,12 +603,12 @@
   73 0030 0E94 0000 		call chVTDoSetI
   74               	.LVL4:
   75               	/* epilogue start */
-  76               	.LBE63:
-  77               	.LBE62:
- 185:main.c        ****   chVTSetI((virtual_timer_t *)arg, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb2, arg);
- 186:main.c        ****   chSysUnlockFromISR();
- 187:main.c        **** }...
-  78               		.loc 1 187 0
+  76               	.LBE48:
+  77               	.LBE47:
+ 197:main.c        ****   chVTSetI((virtual_timer_t *)arg, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, arg);
+ 198:main.c        ****   chSysUnlockFromISR();
+ 199:main.c        **** }
+  78               		.loc 1 199 0
   79 0034 DF91      		pop r29
   80 0036 CF91      		pop r28
   81               	.LVL5:
@@ -605,133 +617,53 @@
   84               	.LVL6:
   85 003c 0895      		ret
   86               		.cfi_endproc
-  87               	.LFE251:
-  89               		.section	.text.vt_cb,"ax",@progbits
-  90               	.global	vt_cb
-  92               	vt_cb:
-  93               	.LFB250:
- 174:main.c        **** {
-  94               		.loc 1 174 0
-  95               		.cfi_startproc
-  96               	.LVL7:
-  97 0000 0F93      		push r16
-  98               	.LCFI4:
-  99               		.cfi_def_cfa_offset 3
- 100               		.cfi_offset 16, -2
- 101 0002 1F93      		push r17
- 102               	.LCFI5:
- 103               		.cfi_def_cfa_offset 4
- 104               		.cfi_offset 17, -3
- 105 0004 CF93      		push r28
+  87               	.LFE250:
+  89               		.section	.text.Thread1,"ax",@progbits
+  91               	Thread1:
+  92               	.LFB243:
+  72:main.c        ****   virtual_timer_t vt;
+  93               		.loc 1 72 0
+  94               		.cfi_startproc
+  95               	.LVL7:
+  96 0000 CF93      		push r28
+  97               	.LCFI4:
+  98               		.cfi_def_cfa_offset 3
+  99               		.cfi_offset 28, -2
+ 100 0002 DF93      		push r29
+ 101               	.LCFI5:
+ 102               		.cfi_def_cfa_offset 4
+ 103               		.cfi_offset 29, -3
+ 104 0004 CDB7      		in r28,__SP_L__
+ 105 0006 DEB7      		in r29,__SP_H__
  106               	.LCFI6:
- 107               		.cfi_def_cfa_offset 5
- 108               		.cfi_offset 28, -4
- 109 0006 DF93      		push r29
- 110               	.LCFI7:
- 111               		.cfi_def_cfa_offset 6
- 112               		.cfi_offset 29, -5
- 113               	/* prologue: function */
- 114               	/* frame size = 0 */
- 115               	/* stack size = 4 */
- 116               	.L__stack_usage = 4
- 117 0008 EC01      		movw r28,r24
- 176:main.c        ****   palTogglePad(IOPORT2, PORTB_LED1);
- 118               		.loc 1 176 0
- 119 000a 85B1      		in r24,0x5
+ 107               		.cfi_def_cfa_register 28
+ 108 0008 6097      		sbiw r28,16
+ 109               	.LCFI7:
+ 110               		.cfi_def_cfa_offset 20
+ 111 000a 0FB6      		in __tmp_reg__,__SREG__
+ 112 000c F894      		cli
+ 113 000e DEBF      		out __SP_H__,r29
+ 114 0010 0FBE      		out __SREG__,__tmp_reg__
+ 115 0012 CDBF      		out __SP_L__,r28
+ 116               	/* prologue: function */
+ 117               	/* frame size = 16 */
+ 118               	/* stack size = 18 */
+ 119               	.L__stack_usage = 18
  120               	.LVL8:
- 121 000c 90E2      		ldi r25,lo8(32)
- 122 000e 8927      		eor r24,r25
- 123 0010 85B9      		out 0x5,r24
- 124               	.LVL9:
- 125               	.LBB70:
- 126               	.LBB71:
- 127               	.LBB72:
- 128               	.LBB73:
- 287:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h ****     chVTDoResetI(vtp);
- 129               		.loc 2 287 0
- 130 0012 8881      		ld r24,Y
- 131 0014 9981      		ldd r25,Y+1
- 132 0016 892B      		or r24,r25
- 133 0018 01F0      		breq .L8
- 288:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h ****   }
- 134               		.loc 2 288 0
- 135 001a CE01      		movw r24,r28
- 136 001c 0E94 0000 		call chVTDoResetI
- 137               	.LVL10:
- 138               	.L8:
- 139               	.LBE73:
- 140               	.LBE72:
- 141               		.loc 2 335 0
- 142 0020 8E01      		movw r16,r28
- 143 0022 20E0      		ldi r18,lo8(gs(vt_cb))
- 144 0024 30E0      		ldi r19,hi8(gs(vt_cb))
- 145 0026 48E2      		ldi r20,lo8(40)
- 146 0028 51E3      		ldi r21,lo8(49)
- 147 002a 61E0      		ldi r22,lo8(1)
- 148 002c 70E0      		ldi r23,0
- 149 002e CE01      		movw r24,r28
- 150 0030 0E94 0000 		call chVTDoSetI
- 151               	.LVL11:
- 152               	/* epilogue start */
- 153               	.LBE71:
- 154               	.LBE70:
- 179:main.c        **** }
- 155               		.loc 1 179 0
- 156 0034 DF91      		pop r29
- 157 0036 CF91      		pop r28
- 158               	.LVL12:
- 159 0038 1F91      		pop r17
- 160 003a 0F91      		pop r16
- 161               	.LVL13:
- 162 003c 0895      		ret
- 163               		.cfi_endproc
- 164               	.LFE250:
- 166               		.section	.text.Thread1,"ax",@progbits
- 168               	Thread1:
- 169               	.LFB243:
-  66:main.c        **** {
- 170               		.loc 1 66 0
- 171               		.cfi_startproc
- 172               	.LVL14:
- 173 0000 CF93      		push r28
- 174               	.LCFI8:
- 175               		.cfi_def_cfa_offset 3
- 176               		.cfi_offset 28, -2
- 177 0002 DF93      		push r29
- 178               	.LCFI9:
- 179               		.cfi_def_cfa_offset 4
- 180               		.cfi_offset 29, -3
- 181 0004 CDB7      		in r28,__SP_L__
- 182 0006 DEB7      		in r29,__SP_H__
- 183               	.LCFI10:
- 184               		.cfi_def_cfa_register 28
- 185 0008 6097      		sbiw r28,16
- 186               	.LCFI11:
- 187               		.cfi_def_cfa_offset 20
- 188 000a 0FB6      		in __tmp_reg__,__SREG__
- 189 000c F894      		cli
- 190 000e DEBF      		out __SP_H__,r29
- 191 0010 0FBE      		out __SREG__,__tmp_reg__
- 192 0012 CDBF      		out __SP_L__,r28
- 193               	/* prologue: function */
- 194               	/* frame size = 16 */
- 195               	/* stack size = 18 */
- 196               	.L__stack_usage = 18
- 197               	.LVL15:
- 198               	.LBB89:
- 199               	.LBB90:
+ 121               	.LBB66:
+ 122               	.LBB67:
  106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h **** }
- 200               		.loc 2 106 0
- 201 0014 1A82      		std Y+2,__zero_reg__
- 202 0016 1982      		std Y+1,__zero_reg__
- 203               	.LVL16:
- 204               	.LBE90:
- 205               	.LBE89:
- 206               	.LBB91:
- 207               	.LBB92:
- 208               	.LBB93:
- 209               	.LBB94:
- 210               		.file 3 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
+ 123               		.loc 2 106 0
+ 124 0014 1A82      		std Y+2,__zero_reg__
+ 125 0016 1982      		std Y+1,__zero_reg__
+ 126               	.LVL9:
+ 127               	.LBE67:
+ 128               	.LBE66:
+ 129               	.LBB68:
+ 130               	.LBB69:
+ 131               	.LBB70:
+ 132               	.LBB71:
+ 133               		.file 3 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h"
    1:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /*
    2:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****     ChibiOS - Copyright (C) 2006,2007,2008,2009,2010,2011,2012,2013,2014,
    3:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****               2015,2016,2017,2018,2019,2020,2021 Giovanni Di Sirio.
@@ -1162,54 +1094,54 @@
  428:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** static inline void port_lock(void) {
  429:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
  430:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   asm volatile ("cli" : : : "memory");
- 211               		.loc 3 430 0
- 212               	/* #APP */
- 213               	 ;  430 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
- 214 0018 F894      		cli
- 215               	 ;  0 "" 2
- 216               	.LVL17:
- 217               	/* #NOAPP */
- 218               	.LBE94:
- 219               	.LBE93:
- 220               	.LBE92:
- 221               	.LBB95:
- 222               	.LBB96:
- 223               	.LBB97:
- 224               	.LBB98:
+ 134               		.loc 3 430 0
+ 135               	/* #APP */
+ 136               	 ;  430 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
+ 137 0018 F894      		cli
+ 138               	 ;  0 "" 2
+ 139               	.LVL10:
+ 140               	/* #NOAPP */
+ 141               	.LBE71:
+ 142               	.LBE70:
+ 143               	.LBE69:
+ 144               	.LBB72:
+ 145               	.LBB73:
+ 146               	.LBB74:
+ 147               	.LBB75:
  287:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h ****     chVTDoResetI(vtp);
- 225               		.loc 2 287 0
- 226 001a 8981      		ldd r24,Y+1
- 227 001c 9A81      		ldd r25,Y+2
- 228               	.LVL18:
- 229 001e 892B      		or r24,r25
- 230 0020 01F0      		breq .L18
+ 148               		.loc 2 287 0
+ 149 001a 8981      		ldd r24,Y+1
+ 150 001c 9A81      		ldd r25,Y+2
+ 151               	.LVL11:
+ 152 001e 892B      		or r24,r25
+ 153 0020 01F0      		breq .L13
  288:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h ****   }
- 231               		.loc 2 288 0
- 232 0022 CE01      		movw r24,r28
- 233 0024 0196      		adiw r24,1
- 234 0026 7C01      		movw r14,r24
- 235 0028 0E94 0000 		call chVTDoResetI
- 236               	.LVL19:
- 237               	.L13:
- 238               	.LBE98:
- 239               	.LBE97:
- 240               		.loc 2 335 0
- 241 002c 8701      		movw r16,r14
- 242 002e 20E0      		ldi r18,lo8(gs(vt_cb))
- 243 0030 30E0      		ldi r19,hi8(gs(vt_cb))
- 244 0032 48E2      		ldi r20,lo8(40)
- 245 0034 51E3      		ldi r21,lo8(49)
- 246 0036 61E0      		ldi r22,lo8(1)
- 247 0038 70E0      		ldi r23,0
- 248 003a C701      		movw r24,r14
- 249 003c 0E94 0000 		call chVTDoSetI
- 250               	.LVL20:
- 251               	.LBE96:
- 252               	.LBE95:
- 253               	.LBB99:
- 254               	.LBB100:
- 255               	.LBB101:
- 256               	.LBB102:
+ 154               		.loc 2 288 0
+ 155 0022 CE01      		movw r24,r28
+ 156 0024 0196      		adiw r24,1
+ 157 0026 7C01      		movw r14,r24
+ 158 0028 0E94 0000 		call chVTDoResetI
+ 159               	.LVL12:
+ 160               	.L8:
+ 161               	.LBE75:
+ 162               	.LBE74:
+ 163               		.loc 2 335 0
+ 164 002c 8701      		movw r16,r14
+ 165 002e 20E0      		ldi r18,lo8(gs(vt_cb))
+ 166 0030 30E0      		ldi r19,hi8(gs(vt_cb))
+ 167 0032 48E2      		ldi r20,lo8(40)
+ 168 0034 51E3      		ldi r21,lo8(49)
+ 169 0036 61E0      		ldi r22,lo8(1)
+ 170 0038 70E0      		ldi r23,0
+ 171 003a C701      		movw r24,r14
+ 172 003c 0E94 0000 		call chVTDoSetI
+ 173               	.LVL13:
+ 174               	.LBE73:
+ 175               	.LBE72:
+ 176               	.LBB76:
+ 177               	.LBB77:
+ 178               	.LBB78:
+ 179               	.LBB79:
  431:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
  432:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
  433:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** /**
@@ -1220,958 +1152,1142 @@
  438:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** static inline void port_unlock(void) {
  439:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** 
  440:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h ****   asm volatile ("sei" : : : "memory");
- 257               		.loc 3 440 0
- 258               	/* #APP */
- 259               	 ;  440 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
- 260 0040 7894      		sei
- 261               	 ;  0 "" 2
- 262               	/* #NOAPP */
- 263               	.L14:
- 264 0042 00C0      		rjmp .L14
- 265               	.LVL21:
- 266               	.L18:
- 267 0044 CE01      		movw r24,r28
- 268 0046 0196      		adiw r24,1
- 269 0048 7C01      		movw r14,r24
- 270 004a 00C0      		rjmp .L13
- 271               	.LBE102:
- 272               	.LBE101:
- 273               	.LBE100:
- 274               	.LBE99:
- 275               	.LBE91:
- 276               		.cfi_endproc
- 277               	.LFE243:
- 279               		.section	.text.startup.main,"ax",@progbits
- 280               	.global	main
- 282               	main:
- 283               	.LFB244:
-  81:main.c        **** {
- 284               		.loc 1 81 0
- 285               		.cfi_startproc
- 286 0000 CF93      		push r28
- 287               	.LCFI12:
- 288               		.cfi_def_cfa_offset 3
- 289               		.cfi_offset 28, -2
- 290 0002 DF93      		push r29
- 291               	.LCFI13:
- 292               		.cfi_def_cfa_offset 4
- 293               		.cfi_offset 29, -3
- 294 0004 CDB7      		in r28,__SP_L__
- 295 0006 DEB7      		in r29,__SP_H__
- 296               	.LCFI14:
- 297               		.cfi_def_cfa_register 28
- 298 0008 6097      		sbiw r28,16
- 299               	.LCFI15:
- 300               		.cfi_def_cfa_offset 20
- 301 000a 0FB6      		in __tmp_reg__,__SREG__
- 302 000c F894      		cli
- 303 000e DEBF      		out __SP_H__,r29
- 304 0010 0FBE      		out __SREG__,__tmp_reg__
- 305 0012 CDBF      		out __SP_L__,r28
- 306               	/* prologue: function */
- 307               	/* frame size = 16 */
- 308               	/* stack size = 18 */
- 309               	.L__stack_usage = 18
- 310               	.LVL22:
- 311               	.LBB120:
- 312               	.LBB121:
- 138:main.c        ****   buffer->head = 0;
- 313               		.loc 1 138 0
- 314 0014 1092 0000 		sts ev_buffer+8,__zero_reg__
- 139:main.c        ****   buffer->tail = 0;
- 315               		.loc 1 139 0
- 316 0018 1092 0000 		sts ev_buffer+9,__zero_reg__
- 140:main.c        ****   buffer->size = 0;
- 317               		.loc 1 140 0
- 318 001c 1092 0000 		sts ev_buffer+10,__zero_reg__
- 319               	.LVL23:
- 320               	.LBE121:
- 321               	.LBE120:
-  90:main.c        ****   halInit();
- 322               		.loc 1 90 0
- 323 0020 0E94 0000 		call halInit
- 324               	.LVL24:
-  91:main.c        ****   chSysInit();
- 325               		.loc 1 91 0
- 326 0024 0E94 0000 		call chSysInit
- 327               	.LVL25:
-  94:main.c        ****   palSetLineMode(PEDESTRE_VERDE, PAL_MODE_OUTPUT_PUSHPULL);
- 328               		.loc 1 94 0
- 329 0028 63E0      		ldi r22,lo8(3)
- 330 002a 83E2      		ldi r24,lo8(35)
- 331 002c 90E0      		ldi r25,0
- 332 002e 0E94 0000 		call _pal_lld_setlineid
- 333               	.LVL26:
- 334 0032 0E94 0000 		call _pal_lld_getpadfromline
- 335               	.LVL27:
- 336 0036 182F      		mov r17,r24
- 337 0038 63E0      		ldi r22,lo8(3)
- 338 003a 83E2      		ldi r24,lo8(35)
- 339 003c 90E0      		ldi r25,0
- 340 003e 0E94 0000 		call _pal_lld_setlineid
- 341               	.LVL28:
- 342 0042 0E94 0000 		call _pal_lld_getportfromline
- 343               	.LVL29:
- 344 0046 EE24      		clr r14
- 345 0048 E394      		inc r14
- 346 004a F12C      		mov r15,__zero_reg__
- 347 004c B701      		movw r22,r14
- 348 004e 00C0      		rjmp 2f
- 349               		1:
- 350 0050 660F      		lsl r22
- 351               		2:
- 352 0052 1A95      		dec r17
- 353 0054 02F4      		brpl 1b
- 354 0056 46E0      		ldi r20,lo8(6)
- 355 0058 0E94 0000 		call _pal_lld_setgroupmode
- 356               	.LVL30:
-  95:main.c        ****   palClearLine(PEDESTRE_VERDE);
- 357               		.loc 1 95 0
- 358 005c 63E0      		ldi r22,lo8(3)
- 359 005e 83E2      		ldi r24,lo8(35)
- 360 0060 90E0      		ldi r25,0
- 361 0062 0E94 0000 		call _pal_lld_setlineid
- 362               	.LVL31:
- 363 0066 0E94 0000 		call _pal_lld_getpadfromline
- 364               	.LVL32:
- 365 006a 182F      		mov r17,r24
- 366 006c 63E0      		ldi r22,lo8(3)
- 367 006e 83E2      		ldi r24,lo8(35)
- 368 0070 90E0      		ldi r25,0
- 369 0072 0E94 0000 		call _pal_lld_setlineid
- 370               	.LVL33:
- 371 0076 0E94 0000 		call _pal_lld_getportfromline
- 372               	.LVL34:
- 373 007a FC01      		movw r30,r24
- 374 007c 9281      		ldd r25,Z+2
- 375 007e 9701      		movw r18,r14
- 376 0080 00C0      		rjmp 2f
- 377               		1:
- 378 0082 220F      		lsl r18
- 379 0084 331F      		rol r19
- 380               		2:
- 381 0086 1A95      		dec r17
- 382 0088 02F4      		brpl 1b
- 383 008a 2095      		com r18
- 384 008c 3095      		com r19
- 385 008e 9223      		and r25,r18
- 386 0090 9283      		std Z+2,r25
-  96:main.c        ****   palSetLineMode(PEDESTRE_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
- 387               		.loc 1 96 0
- 388 0092 62E0      		ldi r22,lo8(2)
- 389 0094 83E2      		ldi r24,lo8(35)
- 390 0096 90E0      		ldi r25,0
- 391 0098 0E94 0000 		call _pal_lld_setlineid
- 392               	.LVL35:
- 393 009c 0E94 0000 		call _pal_lld_getpadfromline
- 394               	.LVL36:
- 395 00a0 182F      		mov r17,r24
- 396 00a2 62E0      		ldi r22,lo8(2)
- 397 00a4 83E2      		ldi r24,lo8(35)
- 398 00a6 90E0      		ldi r25,0
- 399 00a8 0E94 0000 		call _pal_lld_setlineid
- 400               	.LVL37:
- 401 00ac 0E94 0000 		call _pal_lld_getportfromline
- 402               	.LVL38:
- 403 00b0 B701      		movw r22,r14
- 404 00b2 00C0      		rjmp 2f
- 405               		1:
- 406 00b4 660F      		lsl r22
- 407               		2:
- 408 00b6 1A95      		dec r17
- 409 00b8 02F4      		brpl 1b
- 410 00ba 46E0      		ldi r20,lo8(6)
- 411 00bc 0E94 0000 		call _pal_lld_setgroupmode
- 412               	.LVL39:
-  97:main.c        ****   palClearLine(PEDESTRE_VERMELHO);
- 413               		.loc 1 97 0
- 414 00c0 62E0      		ldi r22,lo8(2)
- 415 00c2 83E2      		ldi r24,lo8(35)
- 416 00c4 90E0      		ldi r25,0
- 417 00c6 0E94 0000 		call _pal_lld_setlineid
- 418               	.LVL40:
- 419 00ca 0E94 0000 		call _pal_lld_getpadfromline
- 420               	.LVL41:
- 421 00ce 182F      		mov r17,r24
- 422 00d0 62E0      		ldi r22,lo8(2)
- 423 00d2 83E2      		ldi r24,lo8(35)
- 424 00d4 90E0      		ldi r25,0
- 425 00d6 0E94 0000 		call _pal_lld_setlineid
- 426               	.LVL42:
- 427 00da 0E94 0000 		call _pal_lld_getportfromline
- 428               	.LVL43:
- 429 00de FC01      		movw r30,r24
- 430 00e0 9281      		ldd r25,Z+2
- 431 00e2 9701      		movw r18,r14
- 432 00e4 00C0      		rjmp 2f
- 433               		1:
- 434 00e6 220F      		lsl r18
- 435 00e8 331F      		rol r19
- 436               		2:
- 437 00ea 1A95      		dec r17
- 438 00ec 02F4      		brpl 1b
- 439 00ee 2095      		com r18
- 440 00f0 3095      		com r19
- 441 00f2 9223      		and r25,r18
- 442 00f4 9283      		std Z+2,r25
- 100:main.c        ****   palSetLineMode(PRIMARIO_VERDE, PAL_MODE_OUTPUT_PUSHPULL);
- 443               		.loc 1 100 0
- 444 00f6 67E0      		ldi r22,lo8(7)
- 445 00f8 89E2      		ldi r24,lo8(41)
- 446 00fa 90E0      		ldi r25,0
- 447 00fc 0E94 0000 		call _pal_lld_setlineid
- 448               	.LVL44:
- 449 0100 0E94 0000 		call _pal_lld_getpadfromline
- 450               	.LVL45:
- 451 0104 182F      		mov r17,r24
- 452 0106 67E0      		ldi r22,lo8(7)
- 453 0108 89E2      		ldi r24,lo8(41)
- 454 010a 90E0      		ldi r25,0
- 455 010c 0E94 0000 		call _pal_lld_setlineid
- 456               	.LVL46:
- 457 0110 0E94 0000 		call _pal_lld_getportfromline
- 458               	.LVL47:
- 459 0114 B701      		movw r22,r14
- 460 0116 00C0      		rjmp 2f
- 461               		1:
- 462 0118 660F      		lsl r22
- 463               		2:
- 464 011a 1A95      		dec r17
- 465 011c 02F4      		brpl 1b
- 466 011e 46E0      		ldi r20,lo8(6)
- 467 0120 0E94 0000 		call _pal_lld_setgroupmode
- 468               	.LVL48:
- 101:main.c        ****   palClearLine(PRIMARIO_VERDE);
- 469               		.loc 1 101 0
- 470 0124 67E0      		ldi r22,lo8(7)
- 471 0126 89E2      		ldi r24,lo8(41)
- 472 0128 90E0      		ldi r25,0
- 473 012a 0E94 0000 		call _pal_lld_setlineid
- 474               	.LVL49:
- 475 012e 0E94 0000 		call _pal_lld_getpadfromline
- 476               	.LVL50:
- 477 0132 182F      		mov r17,r24
- 478 0134 67E0      		ldi r22,lo8(7)
- 479 0136 89E2      		ldi r24,lo8(41)
- 480 0138 90E0      		ldi r25,0
- 481 013a 0E94 0000 		call _pal_lld_setlineid
- 482               	.LVL51:
- 483 013e 0E94 0000 		call _pal_lld_getportfromline
- 484               	.LVL52:
- 485 0142 FC01      		movw r30,r24
- 486 0144 9281      		ldd r25,Z+2
- 487 0146 9701      		movw r18,r14
- 488 0148 00C0      		rjmp 2f
- 489               		1:
- 490 014a 220F      		lsl r18
- 491 014c 331F      		rol r19
- 492               		2:
- 493 014e 1A95      		dec r17
- 494 0150 02F4      		brpl 1b
- 495 0152 2095      		com r18
- 496 0154 3095      		com r19
- 497 0156 9223      		and r25,r18
- 498 0158 9283      		std Z+2,r25
- 102:main.c        ****   palSetLineMode(PRIMARIO_AMARELO, PAL_MODE_OUTPUT_PUSHPULL);
- 499               		.loc 1 102 0
- 500 015a 64E0      		ldi r22,lo8(4)
- 501 015c 89E2      		ldi r24,lo8(41)
- 502 015e 90E0      		ldi r25,0
- 503 0160 0E94 0000 		call _pal_lld_setlineid
- 504               	.LVL53:
- 505 0164 0E94 0000 		call _pal_lld_getpadfromline
- 506               	.LVL54:
- 507 0168 182F      		mov r17,r24
- 508 016a 64E0      		ldi r22,lo8(4)
- 509 016c 89E2      		ldi r24,lo8(41)
- 510 016e 90E0      		ldi r25,0
- 511 0170 0E94 0000 		call _pal_lld_setlineid
- 512               	.LVL55:
- 513 0174 0E94 0000 		call _pal_lld_getportfromline
- 514               	.LVL56:
- 515 0178 B701      		movw r22,r14
- 516 017a 00C0      		rjmp 2f
- 517               		1:
- 518 017c 660F      		lsl r22
- 519               		2:
- 520 017e 1A95      		dec r17
- 521 0180 02F4      		brpl 1b
- 522 0182 46E0      		ldi r20,lo8(6)
- 523 0184 0E94 0000 		call _pal_lld_setgroupmode
- 524               	.LVL57:
- 103:main.c        ****   palClearLine(PRIMARIO_AMARELO);
- 525               		.loc 1 103 0
- 526 0188 64E0      		ldi r22,lo8(4)
- 527 018a 89E2      		ldi r24,lo8(41)
- 528 018c 90E0      		ldi r25,0
- 529 018e 0E94 0000 		call _pal_lld_setlineid
- 530               	.LVL58:
- 531 0192 0E94 0000 		call _pal_lld_getpadfromline
- 532               	.LVL59:
- 533 0196 182F      		mov r17,r24
- 534 0198 64E0      		ldi r22,lo8(4)
- 535 019a 89E2      		ldi r24,lo8(41)
- 536 019c 90E0      		ldi r25,0
- 537 019e 0E94 0000 		call _pal_lld_setlineid
- 538               	.LVL60:
- 539 01a2 0E94 0000 		call _pal_lld_getportfromline
- 540               	.LVL61:
- 541 01a6 FC01      		movw r30,r24
- 542 01a8 9281      		ldd r25,Z+2
- 543 01aa 9701      		movw r18,r14
- 544 01ac 00C0      		rjmp 2f
- 545               		1:
- 546 01ae 220F      		lsl r18
- 547 01b0 331F      		rol r19
- 548               		2:
- 549 01b2 1A95      		dec r17
- 550 01b4 02F4      		brpl 1b
- 551 01b6 2095      		com r18
- 552 01b8 3095      		com r19
- 553 01ba 9223      		and r25,r18
- 554 01bc 9283      		std Z+2,r25
- 104:main.c        ****   palSetLineMode(PRIMARIO_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
- 555               		.loc 1 104 0
- 556 01be 66E0      		ldi r22,lo8(6)
- 557 01c0 89E2      		ldi r24,lo8(41)
- 558 01c2 90E0      		ldi r25,0
- 559 01c4 0E94 0000 		call _pal_lld_setlineid
- 560               	.LVL62:
- 561 01c8 0E94 0000 		call _pal_lld_getpadfromline
- 562               	.LVL63:
- 563 01cc 182F      		mov r17,r24
- 564 01ce 66E0      		ldi r22,lo8(6)
- 565 01d0 89E2      		ldi r24,lo8(41)
- 566 01d2 90E0      		ldi r25,0
- 567 01d4 0E94 0000 		call _pal_lld_setlineid
- 568               	.LVL64:
- 569 01d8 0E94 0000 		call _pal_lld_getportfromline
- 570               	.LVL65:
- 571 01dc B701      		movw r22,r14
- 572 01de 00C0      		rjmp 2f
- 573               		1:
- 574 01e0 660F      		lsl r22
- 575               		2:
- 576 01e2 1A95      		dec r17
- 577 01e4 02F4      		brpl 1b
- 578 01e6 46E0      		ldi r20,lo8(6)
- 579 01e8 0E94 0000 		call _pal_lld_setgroupmode
- 580               	.LVL66:
- 105:main.c        ****   palClearLine(PRIMARIO_VERMELHO);
- 581               		.loc 1 105 0
- 582 01ec 66E0      		ldi r22,lo8(6)
- 583 01ee 89E2      		ldi r24,lo8(41)
- 584 01f0 90E0      		ldi r25,0
- 585 01f2 0E94 0000 		call _pal_lld_setlineid
- 586               	.LVL67:
- 587 01f6 0E94 0000 		call _pal_lld_getpadfromline
- 588               	.LVL68:
- 589 01fa 182F      		mov r17,r24
- 590 01fc 66E0      		ldi r22,lo8(6)
- 591 01fe 89E2      		ldi r24,lo8(41)
- 592 0200 90E0      		ldi r25,0
- 593 0202 0E94 0000 		call _pal_lld_setlineid
- 594               	.LVL69:
- 595 0206 0E94 0000 		call _pal_lld_getportfromline
- 596               	.LVL70:
- 597 020a FC01      		movw r30,r24
- 598 020c 9281      		ldd r25,Z+2
- 599 020e 9701      		movw r18,r14
- 600 0210 00C0      		rjmp 2f
- 601               		1:
- 602 0212 220F      		lsl r18
- 603 0214 331F      		rol r19
- 604               		2:
- 605 0216 1A95      		dec r17
- 606 0218 02F4      		brpl 1b
- 607 021a 2095      		com r18
- 608 021c 3095      		com r19
- 609 021e 9223      		and r25,r18
- 610 0220 9283      		std Z+2,r25
- 108:main.c        ****   palSetLineMode(SECUNDARIO_VERDE, PAL_MODE_OUTPUT_PUSHPULL);
- 611               		.loc 1 108 0
- 612 0222 61E0      		ldi r22,lo8(1)
- 613 0224 83E2      		ldi r24,lo8(35)
- 614 0226 90E0      		ldi r25,0
- 615 0228 0E94 0000 		call _pal_lld_setlineid
- 616               	.LVL71:
- 617 022c 0E94 0000 		call _pal_lld_getpadfromline
- 618               	.LVL72:
- 619 0230 182F      		mov r17,r24
- 620 0232 61E0      		ldi r22,lo8(1)
- 621 0234 83E2      		ldi r24,lo8(35)
- 622 0236 90E0      		ldi r25,0
- 623 0238 0E94 0000 		call _pal_lld_setlineid
- 624               	.LVL73:
- 625 023c 0E94 0000 		call _pal_lld_getportfromline
- 626               	.LVL74:
- 627 0240 B701      		movw r22,r14
- 628 0242 00C0      		rjmp 2f
- 629               		1:
- 630 0244 660F      		lsl r22
- 631               		2:
- 632 0246 1A95      		dec r17
- 633 0248 02F4      		brpl 1b
- 634 024a 46E0      		ldi r20,lo8(6)
- 635 024c 0E94 0000 		call _pal_lld_setgroupmode
- 636               	.LVL75:
- 109:main.c        ****   palClearLine(SECUNDARIO_VERDE);
- 637               		.loc 1 109 0
- 638 0250 61E0      		ldi r22,lo8(1)
- 639 0252 83E2      		ldi r24,lo8(35)
- 640 0254 90E0      		ldi r25,0
- 641 0256 0E94 0000 		call _pal_lld_setlineid
- 642               	.LVL76:
- 643 025a 0E94 0000 		call _pal_lld_getpadfromline
- 644               	.LVL77:
- 645 025e 182F      		mov r17,r24
- 646 0260 61E0      		ldi r22,lo8(1)
- 647 0262 83E2      		ldi r24,lo8(35)
- 648 0264 90E0      		ldi r25,0
- 649 0266 0E94 0000 		call _pal_lld_setlineid
- 650               	.LVL78:
- 651 026a 0E94 0000 		call _pal_lld_getportfromline
- 652               	.LVL79:
- 653 026e FC01      		movw r30,r24
- 654 0270 9281      		ldd r25,Z+2
- 655 0272 9701      		movw r18,r14
- 656 0274 00C0      		rjmp 2f
- 657               		1:
- 658 0276 220F      		lsl r18
- 659 0278 331F      		rol r19
- 660               		2:
- 661 027a 1A95      		dec r17
- 662 027c 02F4      		brpl 1b
- 663 027e 2095      		com r18
- 664 0280 3095      		com r19
- 665 0282 9223      		and r25,r18
- 666 0284 9283      		std Z+2,r25
- 110:main.c        ****   palSetLineMode(SECUNDARIO_AMARELO, PAL_MODE_OUTPUT_PUSHPULL);
- 667               		.loc 1 110 0
- 668 0286 65E0      		ldi r22,lo8(5)
- 669 0288 89E2      		ldi r24,lo8(41)
- 670 028a 90E0      		ldi r25,0
- 671 028c 0E94 0000 		call _pal_lld_setlineid
- 672               	.LVL80:
- 673 0290 0E94 0000 		call _pal_lld_getpadfromline
- 674               	.LVL81:
- 675 0294 182F      		mov r17,r24
- 676 0296 65E0      		ldi r22,lo8(5)
- 677 0298 89E2      		ldi r24,lo8(41)
- 678 029a 90E0      		ldi r25,0
- 679 029c 0E94 0000 		call _pal_lld_setlineid
- 680               	.LVL82:
- 681 02a0 0E94 0000 		call _pal_lld_getportfromline
- 682               	.LVL83:
- 683 02a4 B701      		movw r22,r14
- 684 02a6 00C0      		rjmp 2f
- 685               		1:
- 686 02a8 660F      		lsl r22
- 687               		2:
- 688 02aa 1A95      		dec r17
- 689 02ac 02F4      		brpl 1b
- 690 02ae 46E0      		ldi r20,lo8(6)
- 691 02b0 0E94 0000 		call _pal_lld_setgroupmode
- 692               	.LVL84:
- 111:main.c        ****   palClearLine(SECUNDARIO_AMARELO);
- 693               		.loc 1 111 0
- 694 02b4 65E0      		ldi r22,lo8(5)
- 695 02b6 89E2      		ldi r24,lo8(41)
- 696 02b8 90E0      		ldi r25,0
- 697 02ba 0E94 0000 		call _pal_lld_setlineid
- 698               	.LVL85:
- 699 02be 0E94 0000 		call _pal_lld_getpadfromline
- 700               	.LVL86:
- 701 02c2 182F      		mov r17,r24
- 702 02c4 65E0      		ldi r22,lo8(5)
- 703 02c6 89E2      		ldi r24,lo8(41)
- 704 02c8 90E0      		ldi r25,0
- 705 02ca 0E94 0000 		call _pal_lld_setlineid
- 706               	.LVL87:
- 707 02ce 0E94 0000 		call _pal_lld_getportfromline
- 708               	.LVL88:
- 709 02d2 FC01      		movw r30,r24
- 710 02d4 9281      		ldd r25,Z+2
- 711 02d6 9701      		movw r18,r14
- 712 02d8 00C0      		rjmp 2f
- 713               		1:
- 714 02da 220F      		lsl r18
- 715 02dc 331F      		rol r19
- 716               		2:
- 717 02de 1A95      		dec r17
- 718 02e0 02F4      		brpl 1b
- 719 02e2 2095      		com r18
- 720 02e4 3095      		com r19
- 721 02e6 9223      		and r25,r18
- 722 02e8 9283      		std Z+2,r25
- 112:main.c        ****   palSetLineMode(SECUNDARIO_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
- 723               		.loc 1 112 0
- 724 02ea 60E0      		ldi r22,0
- 725 02ec 83E2      		ldi r24,lo8(35)
- 726 02ee 90E0      		ldi r25,0
- 727 02f0 0E94 0000 		call _pal_lld_setlineid
- 728               	.LVL89:
- 729 02f4 0E94 0000 		call _pal_lld_getpadfromline
- 730               	.LVL90:
- 731 02f8 182F      		mov r17,r24
- 732 02fa 60E0      		ldi r22,0
- 733 02fc 83E2      		ldi r24,lo8(35)
- 734 02fe 90E0      		ldi r25,0
- 735 0300 0E94 0000 		call _pal_lld_setlineid
- 736               	.LVL91:
- 737 0304 0E94 0000 		call _pal_lld_getportfromline
- 738               	.LVL92:
- 739 0308 B701      		movw r22,r14
- 740 030a 00C0      		rjmp 2f
- 741               		1:
- 742 030c 660F      		lsl r22
- 743               		2:
- 744 030e 1A95      		dec r17
- 745 0310 02F4      		brpl 1b
- 746 0312 46E0      		ldi r20,lo8(6)
- 747 0314 0E94 0000 		call _pal_lld_setgroupmode
- 748               	.LVL93:
- 113:main.c        ****   palClearLine(SECUNDARIO_VERMELHO);
- 749               		.loc 1 113 0
- 750 0318 60E0      		ldi r22,0
- 751 031a 83E2      		ldi r24,lo8(35)
- 752 031c 90E0      		ldi r25,0
- 753 031e 0E94 0000 		call _pal_lld_setlineid
- 754               	.LVL94:
- 755 0322 0E94 0000 		call _pal_lld_getpadfromline
- 756               	.LVL95:
- 757 0326 182F      		mov r17,r24
- 758 0328 60E0      		ldi r22,0
- 759 032a 83E2      		ldi r24,lo8(35)
- 760 032c 90E0      		ldi r25,0
- 761 032e 0E94 0000 		call _pal_lld_setlineid
- 762               	.LVL96:
- 763 0332 0E94 0000 		call _pal_lld_getportfromline
- 764               	.LVL97:
- 765 0336 FC01      		movw r30,r24
- 766 0338 9281      		ldd r25,Z+2
- 767 033a 9701      		movw r18,r14
- 768 033c 00C0      		rjmp 2f
- 769               		1:
- 770 033e 220F      		lsl r18
- 771 0340 331F      		rol r19
- 772               		2:
- 773 0342 1A95      		dec r17
- 774 0344 02F4      		brpl 1b
- 775 0346 2095      		com r18
- 776 0348 3095      		com r19
- 777 034a 9223      		and r25,r18
- 778 034c 9283      		std Z+2,r25
- 120:main.c        ****   chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, Thread1, NULL);
- 779               		.loc 1 120 0
- 780 034e 10E0      		ldi r17,0
- 781 0350 00E0      		ldi r16,0
- 782 0352 20E0      		ldi r18,lo8(gs(Thread1))
- 783 0354 30E0      		ldi r19,hi8(gs(Thread1))
- 784 0356 40E8      		ldi r20,lo8(-128)
- 785 0358 63E8      		ldi r22,lo8(-125)
- 786 035a 70E0      		ldi r23,0
- 787 035c 80E0      		ldi r24,lo8(waThread1)
- 788 035e 90E0      		ldi r25,hi8(waThread1)
- 789 0360 0E94 0000 		call chThdCreateStatic
- 790               	.LVL98:
- 122:main.c        ****   palSetLine(PEDESTRE_VERDE);
- 791               		.loc 1 122 0
- 792 0364 63E0      		ldi r22,lo8(3)
- 793 0366 83E2      		ldi r24,lo8(35)
- 794 0368 90E0      		ldi r25,0
- 795 036a 0E94 0000 		call _pal_lld_setlineid
- 796               	.LVL99:
- 797 036e 0E94 0000 		call _pal_lld_getpadfromline
- 798               	.LVL100:
- 799 0372 182F      		mov r17,r24
- 800 0374 63E0      		ldi r22,lo8(3)
- 801 0376 83E2      		ldi r24,lo8(35)
- 802 0378 90E0      		ldi r25,0
- 803 037a 0E94 0000 		call _pal_lld_setlineid
- 804               	.LVL101:
- 805 037e 0E94 0000 		call _pal_lld_getportfromline
- 806               	.LVL102:
- 807 0382 FC01      		movw r30,r24
- 808 0384 9281      		ldd r25,Z+2
- 809 0386 00C0      		rjmp 2f
- 810               		1:
- 811 0388 EE0C      		lsl r14
- 812               		2:
- 813 038a 1A95      		dec r17
- 814 038c 02F4      		brpl 1b
- 815 038e E92A      		or r14,r25
- 816 0390 E282      		std Z+2,r14
- 817               	.LVL103:
- 818               	.LBB122:
- 819               	.LBB123:
- 106:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h **** }
- 820               		.loc 2 106 0
- 821 0392 1A82      		std Y+2,__zero_reg__
- 822 0394 1982      		std Y+1,__zero_reg__
- 823               	.LVL104:
- 824               	.LBE123:
- 825               	.LBE122:
- 826               	.LBB124:
- 827               	.LBB125:
- 828               	.LBB126:
- 829               	.LBB127:
- 430:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h **** }
- 830               		.loc 3 430 0
- 831               	/* #APP */
- 832               	 ;  430 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
- 833 0396 F894      		cli
- 834               	 ;  0 "" 2
- 835               	.LVL105:
- 836               	/* #NOAPP */
- 837               	.LBE127:
- 838               	.LBE126:
- 839               	.LBE125:
- 840               	.LBB128:
- 841               	.LBB129:
- 842               	.LBB130:
- 843               	.LBB131:
- 287:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h ****     chVTDoResetI(vtp);
- 844               		.loc 2 287 0
- 845 0398 8981      		ldd r24,Y+1
- 846 039a 9A81      		ldd r25,Y+2
- 847 039c 892B      		or r24,r25
- 848 039e 01F0      		breq .L25
- 288:/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chvt.h ****   }
- 849               		.loc 2 288 0
- 850 03a0 FE01      		movw r30,r28
- 851 03a2 3196      		adiw r30,1
- 852 03a4 7F01      		movw r14,r30
- 853 03a6 CF01      		movw r24,r30
- 854 03a8 0E94 0000 		call chVTDoResetI
- 855               	.LVL106:
- 856               	.L20:
- 857               	.LBE131:
- 858               	.LBE130:
- 859               		.loc 2 335 0
- 860 03ac 8701      		movw r16,r14
- 861 03ae 20E0      		ldi r18,lo8(gs(vt_cb2))
- 862 03b0 30E0      		ldi r19,hi8(gs(vt_cb2))
- 863 03b2 48E2      		ldi r20,lo8(40)
- 864 03b4 51E3      		ldi r21,lo8(49)
- 865 03b6 61E0      		ldi r22,lo8(1)
- 866 03b8 70E0      		ldi r23,0
- 867 03ba C701      		movw r24,r14
- 868 03bc 0E94 0000 		call chVTDoSetI
- 869               	.LVL107:
- 870               	.LBE129:
- 871               	.LBE128:
- 872               	.LBB132:
- 873               	.LBB133:
- 874               	.LBB134:
- 875               	.LBB135:
- 876               		.loc 3 440 0
- 877               	/* #APP */
- 878               	 ;  440 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
- 879 03c0 7894      		sei
- 880               	 ;  0 "" 2
- 881               	/* #NOAPP */
- 882               	.LBE135:
- 883               	.LBE134:
- 884               	.LBE133:
- 885               	.LBE132:
- 886               	.LBE124:
- 131:main.c        ****     palToggleLine(SECUNDARIO_VERDE);
- 887               		.loc 1 131 0
- 888 03c2 EE24      		clr r14
- 889 03c4 E394      		inc r14
- 890 03c6 F12C      		mov r15,__zero_reg__
- 891               	.L21:
- 131:main.c        ****     palToggleLine(SECUNDARIO_VERDE);
- 892               		.loc 1 131 0 is_stmt 0 discriminator 1
- 893 03c8 61E0      		ldi r22,lo8(1)
- 894 03ca 83E2      		ldi r24,lo8(35)
- 895 03cc 90E0      		ldi r25,0
- 896 03ce 0E94 0000 		call _pal_lld_setlineid
- 897               	.LVL108:
- 898 03d2 0E94 0000 		call _pal_lld_getportfromline
- 899               	.LVL109:
- 900 03d6 FC01      		movw r30,r24
- 901 03d8 1281      		ldd r17,Z+2
- 902 03da 61E0      		ldi r22,lo8(1)
- 903 03dc 83E2      		ldi r24,lo8(35)
- 904 03de 90E0      		ldi r25,0
- 905 03e0 0E94 0000 		call _pal_lld_setlineid
- 906               	.LVL110:
- 907 03e4 0E94 0000 		call _pal_lld_getpadfromline
- 908               	.LVL111:
- 909 03e8 082F      		mov r16,r24
- 910 03ea 61E0      		ldi r22,lo8(1)
- 911 03ec 83E2      		ldi r24,lo8(35)
- 912 03ee 90E0      		ldi r25,0
- 913 03f0 0E94 0000 		call _pal_lld_setlineid
- 914               	.LVL112:
- 915 03f4 0E94 0000 		call _pal_lld_getportfromline
- 916               	.LVL113:
- 917 03f8 9701      		movw r18,r14
- 918 03fa 00C0      		rjmp 2f
- 919               		1:
- 920 03fc 220F      		lsl r18
- 921               		2:
- 922 03fe 0A95      		dec r16
- 923 0400 02F4      		brpl 1b
- 924 0402 1227      		eor r17,r18
- 925 0404 FC01      		movw r30,r24
- 926 0406 1283      		std Z+2,r17
- 132:main.c        ****     chThdSleepMicroseconds(10000);
- 927               		.loc 1 132 0 is_stmt 1 discriminator 1
- 928 0408 6DE9      		ldi r22,lo8(-99)
- 929 040a 70E0      		ldi r23,0
- 930 040c 80E0      		ldi r24,0
- 931 040e 90E0      		ldi r25,0
- 932 0410 0E94 0000 		call chThdSleep
- 933               	.LVL114:
- 934 0414 00C0      		rjmp .L21
- 935               	.LVL115:
- 936               	.L25:
- 937 0416 CE01      		movw r24,r28
- 938 0418 0196      		adiw r24,1
- 939 041a 7C01      		movw r14,r24
- 940 041c 00C0      		rjmp .L20
- 941               		.cfi_endproc
- 942               	.LFE244:
- 944               		.section	.text.bufferInit,"ax",@progbits
- 945               	.global	bufferInit
- 947               	bufferInit:
- 948               	.LFB245:
- 137:main.c        **** {
- 949               		.loc 1 137 0
- 950               		.cfi_startproc
- 951               	.LVL116:
- 952               	/* prologue: function */
- 953               	/* frame size = 0 */
- 954               	/* stack size = 0 */
- 955               	.L__stack_usage = 0
- 956 0000 FC01      		movw r30,r24
- 138:main.c        ****   buffer->head = 0;
- 957               		.loc 1 138 0
- 958 0002 1086      		std Z+8,__zero_reg__
- 139:main.c        ****   buffer->tail = 0;
- 959               		.loc 1 139 0
- 960 0004 1186      		std Z+9,__zero_reg__
- 140:main.c        ****   buffer->size = 0;
- 961               		.loc 1 140 0
- 962 0006 1286      		std Z+10,__zero_reg__
- 963               	/* epilogue start */
- 141:main.c        **** }
- 964               		.loc 1 141 0
- 965 0008 0895      		ret
- 966               		.cfi_endproc
- 967               	.LFE245:
- 969               		.section	.text.isBufferEmpty,"ax",@progbits
- 970               	.global	isBufferEmpty
- 972               	isBufferEmpty:
- 973               	.LFB246:
- 144:main.c        **** {
- 974               		.loc 1 144 0
- 975               		.cfi_startproc
- 976               	.LVL117:
- 977               	/* prologue: function */
- 978               	/* frame size = 0 */
- 979               	/* stack size = 0 */
- 980               	.L__stack_usage = 0
- 145:main.c        ****   return buffer->size == 0;
- 981               		.loc 1 145 0
- 982 0000 21E0      		ldi r18,lo8(1)
- 983 0002 FC01      		movw r30,r24
- 984 0004 8285      		ldd r24,Z+10
- 985               	.LVL118:
- 986 0006 8111      		cpse r24,__zero_reg__
- 987 0008 20E0      		ldi r18,0
- 988               	.L28:
- 146:main.c        **** }
- 989               		.loc 1 146 0
- 990 000a 822F      		mov r24,r18
- 991               	/* epilogue start */
- 992 000c 0895      		ret
- 993               		.cfi_endproc
- 994               	.LFE246:
- 996               		.section	.text.isBufferFull,"ax",@progbits
- 997               	.global	isBufferFull
- 999               	isBufferFull:
- 1000               	.LFB247:
- 149:main.c        **** {
- 1001               		.loc 1 149 0
- 1002               		.cfi_startproc
- 1003               	.LVL119:
- 1004               	/* prologue: function */
- 1005               	/* frame size = 0 */
- 1006               	/* stack size = 0 */
- 1007               	.L__stack_usage = 0
- 150:main.c        ****   return buffer->size == BUFFER_SIZE;
- 1008               		.loc 1 150 0
- 1009 0000 21E0      		ldi r18,lo8(1)
- 1010 0002 FC01      		movw r30,r24
- 1011 0004 8285      		ldd r24,Z+10
- 1012               	.LVL120:
- 1013 0006 8830      		cpi r24,lo8(8)
- 1014 0008 01F0      		breq .L33
- 1015 000a 20E0      		ldi r18,0
- 1016               	.L33:
- 151:main.c        **** }
- 1017               		.loc 1 151 0
- 1018 000c 822F      		mov r24,r18
- 1019               	/* epilogue start */
- 1020 000e 0895      		ret
- 1021               		.cfi_endproc
- 1022               	.LFE247:
- 1024               		.section	.text.bufferPush,"ax",@progbits
- 1025               	.global	bufferPush
- 1027               	bufferPush:
- 1028               	.LFB248:
- 154:main.c        **** {
- 1029               		.loc 1 154 0
- 1030               		.cfi_startproc
- 1031               	.LVL121:
- 1032               	/* prologue: function */
- 1033               	/* frame size = 0 */
- 1034               	/* stack size = 0 */
- 1035               	.L__stack_usage = 0
- 1036 0000 FC01      		movw r30,r24
- 155:main.c        ****   buffer->events[buffer->tail] = event;
- 1037               		.loc 1 155 0
- 1038 0002 2185      		ldd r18,Z+9
- 1039 0004 30E0      		ldi r19,0
- 1040 0006 DC01      		movw r26,r24
- 1041 0008 A20F      		add r26,r18
- 1042 000a B31F      		adc r27,r19
- 1043 000c 6C93      		st X,r22
- 156:main.c        ****   buffer->tail = (buffer->tail + 1) % BUFFER_SIZE;
- 1044               		.loc 1 156 0
- 1045 000e 2F5F      		subi r18,-1
- 1046 0010 3F4F      		sbci r19,-1
- 1047 0012 2770      		andi r18,7
- 1048 0014 3327      		clr r19
- 1049 0016 2187      		std Z+9,r18
- 157:main.c        ****   buffer->size++;
- 1050               		.loc 1 157 0
- 1051 0018 8285      		ldd r24,Z+10
- 1052               	.LVL122:
- 1053 001a 8F5F      		subi r24,lo8(-(1))
- 1054 001c 8287      		std Z+10,r24
- 1055               	/* epilogue start */
- 158:main.c        **** }
- 1056               		.loc 1 158 0
- 1057 001e 0895      		ret
- 1058               		.cfi_endproc
- 1059               	.LFE248:
- 1061               		.section	.text.bufferPop,"ax",@progbits
- 1062               	.global	bufferPop
- 1064               	bufferPop:
- 1065               	.LFB249:
- 161:main.c        **** {
- 1066               		.loc 1 161 0
- 1067               		.cfi_startproc
- 1068               	.LVL123:
- 1069               	/* prologue: function */
- 1070               	/* frame size = 0 */
- 1071               	/* stack size = 0 */
- 1072               	.L__stack_usage = 0
- 1073 0000 FC01      		movw r30,r24
- 1074               	.LVL124:
- 1075               	.LBB136:
- 1076               	.LBB137:
- 145:main.c        ****   return buffer->size == 0;
- 1077               		.loc 1 145 0
- 1078 0002 8285      		ldd r24,Z+10
- 1079               	.LVL125:
- 1080               	.LBE137:
- 1081               	.LBE136:
- 162:main.c        ****   if (isBufferEmpty(buffer))
- 1082               		.loc 1 162 0
- 1083 0004 8823      		tst r24
- 1084 0006 01F0      		breq .L38
- 167:main.c        ****   uint8_t event = buffer->events[buffer->head];
- 1085               		.loc 1 167 0
- 1086 0008 2085      		ldd r18,Z+8
- 1087 000a 30E0      		ldi r19,0
- 1088 000c DF01      		movw r26,r30
- 1089 000e A20F      		add r26,r18
- 1090 0010 B31F      		adc r27,r19
- 1091 0012 4C91      		ld r20,X
- 1092               	.LVL126:
- 168:main.c        ****   buffer->head = (buffer->head + 1) % BUFFER_SIZE;
- 1093               		.loc 1 168 0
- 1094 0014 2F5F      		subi r18,-1
- 1095 0016 3F4F      		sbci r19,-1
- 1096 0018 2770      		andi r18,7
- 1097 001a 3327      		clr r19
- 1098 001c 2087      		std Z+8,r18
- 169:main.c        ****   buffer->size--;
- 1099               		.loc 1 169 0
- 1100 001e 9FEF      		ldi r25,lo8(-1)
- 1101 0020 980F      		add r25,r24
- 1102 0022 9287      		std Z+10,r25
- 170:main.c        ****   return event;
+ 180               		.loc 3 440 0
+ 181               	/* #APP */
+ 182               	 ;  440 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/chcore.h" 1
+ 183 0040 7894      		sei
+ 184               	 ;  0 "" 2
+ 185               	/* #NOAPP */
+ 186               	.L9:
+ 187               	.LBE79:
+ 188               	.LBE78:
+ 189               	.LBE77:
+ 190               	.LBE76:
+ 191               	.LBE68:
+  80:main.c        ****   }
+ 192               		.loc 1 80 0 discriminator 1
+ 193 0042 6BE1      		ldi r22,lo8(27)
+ 194 0044 76E0      		ldi r23,lo8(6)
+ 195 0046 80E0      		ldi r24,0
+ 196 0048 90E0      		ldi r25,0
+ 197 004a 0E94 0000 		call chThdSleep
+ 198               	.LVL14:
+ 199 004e 00C0      		rjmp .L9
+ 200               	.LVL15:
+ 201               	.L13:
+ 202 0050 CE01      		movw r24,r28
+ 203 0052 0196      		adiw r24,1
+ 204 0054 7C01      		movw r14,r24
+ 205 0056 00C0      		rjmp .L8
+ 206               		.cfi_endproc
+ 207               	.LFE243:
+ 209               		.section	.text.startup.main,"ax",@progbits
+ 210               	.global	main
+ 212               	main:
+ 213               	.LFB244:
+  88:main.c        ****   bufferInit(&ev_buffer);
+ 214               		.loc 1 88 0
+ 215               		.cfi_startproc
+ 216               	/* prologue: function */
+ 217               	/* frame size = 0 */
+ 218               	/* stack size = 0 */
+ 219               	.L__stack_usage = 0
+ 220               	.LVL16:
+ 221               	.LBB80:
+ 222               	.LBB81:
+ 158:main.c        ****   buffer->tail = 0;
+ 223               		.loc 1 158 0
+ 224 0000 1092 0000 		sts ev_buffer+8,__zero_reg__
+ 159:main.c        ****   buffer->size = 0;
+ 225               		.loc 1 159 0
+ 226 0004 1092 0000 		sts ev_buffer+9,__zero_reg__
+ 160:main.c        **** }
+ 227               		.loc 1 160 0
+ 228 0008 1092 0000 		sts ev_buffer+10,__zero_reg__
+ 229               	.LVL17:
+ 230               	.LBE81:
+ 231               	.LBE80:
+  97:main.c        ****   chSysInit();
+ 232               		.loc 1 97 0
+ 233 000c 0E94 0000 		call halInit
+ 234               	.LVL18:
+  98:main.c        **** 
+ 235               		.loc 1 98 0
+ 236 0010 0E94 0000 		call chSysInit
+ 237               	.LVL19:
+ 101:main.c        ****   palSetLineMode(SEC_FLAG, PAL_MODE_INPUT_PULLUP);
+ 238               		.loc 1 101 0
+ 239 0014 62E0      		ldi r22,lo8(2)
+ 240 0016 86E2      		ldi r24,lo8(38)
+ 241 0018 90E0      		ldi r25,0
+ 242 001a 0E94 0000 		call _pal_lld_setlineid
+ 243               	.LVL20:
+ 244 001e 0E94 0000 		call _pal_lld_getpadfromline
+ 245               	.LVL21:
+ 246 0022 182F      		mov r17,r24
+ 247 0024 62E0      		ldi r22,lo8(2)
+ 248 0026 86E2      		ldi r24,lo8(38)
+ 249 0028 90E0      		ldi r25,0
+ 250 002a 0E94 0000 		call _pal_lld_setlineid
+ 251               	.LVL22:
+ 252 002e 0E94 0000 		call _pal_lld_getportfromline
+ 253               	.LVL23:
+ 254 0032 C1E0      		ldi r28,lo8(1)
+ 255 0034 D0E0      		ldi r29,0
+ 256 0036 BE01      		movw r22,r28
+ 257 0038 00C0      		rjmp 2f
+ 258               		1:
+ 259 003a 660F      		lsl r22
+ 260               		2:
+ 261 003c 1A95      		dec r17
+ 262 003e 02F4      		brpl 1b
+ 263 0040 43E0      		ldi r20,lo8(3)
+ 264 0042 0E94 0000 		call _pal_lld_setgroupmode
+ 265               	.LVL24:
+ 102:main.c        ****   palSetLineMode(AMB_PRIM, PAL_MODE_INPUT_PULLUP);
+ 266               		.loc 1 102 0
+ 267 0046 64E0      		ldi r22,lo8(4)
+ 268 0048 86E2      		ldi r24,lo8(38)
+ 269 004a 90E0      		ldi r25,0
+ 270 004c 0E94 0000 		call _pal_lld_setlineid
+ 271               	.LVL25:
+ 272 0050 0E94 0000 		call _pal_lld_getpadfromline
+ 273               	.LVL26:
+ 274 0054 182F      		mov r17,r24
+ 275 0056 64E0      		ldi r22,lo8(4)
+ 276 0058 86E2      		ldi r24,lo8(38)
+ 277 005a 90E0      		ldi r25,0
+ 278 005c 0E94 0000 		call _pal_lld_setlineid
+ 279               	.LVL27:
+ 280 0060 0E94 0000 		call _pal_lld_getportfromline
+ 281               	.LVL28:
+ 282 0064 BE01      		movw r22,r28
+ 283 0066 00C0      		rjmp 2f
+ 284               		1:
+ 285 0068 660F      		lsl r22
+ 286               		2:
+ 287 006a 1A95      		dec r17
+ 288 006c 02F4      		brpl 1b
+ 289 006e 43E0      		ldi r20,lo8(3)
+ 290 0070 0E94 0000 		call _pal_lld_setgroupmode
+ 291               	.LVL29:
+ 103:main.c        ****   palSetLineMode(AMB_SEC, PAL_MODE_INPUT_PULLUP);
+ 292               		.loc 1 103 0
+ 293 0074 63E0      		ldi r22,lo8(3)
+ 294 0076 86E2      		ldi r24,lo8(38)
+ 295 0078 90E0      		ldi r25,0
+ 296 007a 0E94 0000 		call _pal_lld_setlineid
+ 297               	.LVL30:
+ 298 007e 0E94 0000 		call _pal_lld_getpadfromline
+ 299               	.LVL31:
+ 300 0082 182F      		mov r17,r24
+ 301 0084 63E0      		ldi r22,lo8(3)
+ 302 0086 86E2      		ldi r24,lo8(38)
+ 303 0088 90E0      		ldi r25,0
+ 304 008a 0E94 0000 		call _pal_lld_setlineid
+ 305               	.LVL32:
+ 306 008e 0E94 0000 		call _pal_lld_getportfromline
+ 307               	.LVL33:
+ 308 0092 BE01      		movw r22,r28
+ 309 0094 00C0      		rjmp 2f
+ 310               		1:
+ 311 0096 660F      		lsl r22
+ 312               		2:
+ 313 0098 1A95      		dec r17
+ 314 009a 02F4      		brpl 1b
+ 315 009c 43E0      		ldi r20,lo8(3)
+ 316 009e 0E94 0000 		call _pal_lld_setgroupmode
+ 317               	.LVL34:
+ 104:main.c        **** 
+ 318               		.loc 1 104 0
+ 319 00a2 65E0      		ldi r22,lo8(5)
+ 320 00a4 86E2      		ldi r24,lo8(38)
+ 321 00a6 90E0      		ldi r25,0
+ 322 00a8 0E94 0000 		call _pal_lld_setlineid
+ 323               	.LVL35:
+ 324 00ac 0E94 0000 		call _pal_lld_getpadfromline
+ 325               	.LVL36:
+ 326 00b0 182F      		mov r17,r24
+ 327 00b2 65E0      		ldi r22,lo8(5)
+ 328 00b4 86E2      		ldi r24,lo8(38)
+ 329 00b6 90E0      		ldi r25,0
+ 330 00b8 0E94 0000 		call _pal_lld_setlineid
+ 331               	.LVL37:
+ 332 00bc 0E94 0000 		call _pal_lld_getportfromline
+ 333               	.LVL38:
+ 334 00c0 BE01      		movw r22,r28
+ 335 00c2 00C0      		rjmp 2f
+ 336               		1:
+ 337 00c4 660F      		lsl r22
+ 338               		2:
+ 339 00c6 1A95      		dec r17
+ 340 00c8 02F4      		brpl 1b
+ 341 00ca 43E0      		ldi r20,lo8(3)
+ 342 00cc 0E94 0000 		call _pal_lld_setgroupmode
+ 343               	.LVL39:
+ 107:main.c        ****   palClearLine(PEDESTRE_VERDE);
+ 344               		.loc 1 107 0
+ 345 00d0 63E0      		ldi r22,lo8(3)
+ 346 00d2 83E2      		ldi r24,lo8(35)
+ 347 00d4 90E0      		ldi r25,0
+ 348 00d6 0E94 0000 		call _pal_lld_setlineid
+ 349               	.LVL40:
+ 350 00da 0E94 0000 		call _pal_lld_getpadfromline
+ 351               	.LVL41:
+ 352 00de 182F      		mov r17,r24
+ 353 00e0 63E0      		ldi r22,lo8(3)
+ 354 00e2 83E2      		ldi r24,lo8(35)
+ 355 00e4 90E0      		ldi r25,0
+ 356 00e6 0E94 0000 		call _pal_lld_setlineid
+ 357               	.LVL42:
+ 358 00ea 0E94 0000 		call _pal_lld_getportfromline
+ 359               	.LVL43:
+ 360 00ee BE01      		movw r22,r28
+ 361 00f0 00C0      		rjmp 2f
+ 362               		1:
+ 363 00f2 660F      		lsl r22
+ 364               		2:
+ 365 00f4 1A95      		dec r17
+ 366 00f6 02F4      		brpl 1b
+ 367 00f8 46E0      		ldi r20,lo8(6)
+ 368 00fa 0E94 0000 		call _pal_lld_setgroupmode
+ 369               	.LVL44:
+ 108:main.c        ****   palSetLineMode(PEDESTRE_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
+ 370               		.loc 1 108 0
+ 371 00fe 63E0      		ldi r22,lo8(3)
+ 372 0100 83E2      		ldi r24,lo8(35)
+ 373 0102 90E0      		ldi r25,0
+ 374 0104 0E94 0000 		call _pal_lld_setlineid
+ 375               	.LVL45:
+ 376 0108 0E94 0000 		call _pal_lld_getpadfromline
+ 377               	.LVL46:
+ 378 010c 182F      		mov r17,r24
+ 379 010e 63E0      		ldi r22,lo8(3)
+ 380 0110 83E2      		ldi r24,lo8(35)
+ 381 0112 90E0      		ldi r25,0
+ 382 0114 0E94 0000 		call _pal_lld_setlineid
+ 383               	.LVL47:
+ 384 0118 0E94 0000 		call _pal_lld_getportfromline
+ 385               	.LVL48:
+ 386 011c FC01      		movw r30,r24
+ 387 011e 9281      		ldd r25,Z+2
+ 388 0120 9E01      		movw r18,r28
+ 389 0122 00C0      		rjmp 2f
+ 390               		1:
+ 391 0124 220F      		lsl r18
+ 392 0126 331F      		rol r19
+ 393               		2:
+ 394 0128 1A95      		dec r17
+ 395 012a 02F4      		brpl 1b
+ 396 012c 2095      		com r18
+ 397 012e 3095      		com r19
+ 398 0130 9223      		and r25,r18
+ 399 0132 9283      		std Z+2,r25
+ 109:main.c        ****   palClearLine(PEDESTRE_VERMELHO);
+ 400               		.loc 1 109 0
+ 401 0134 62E0      		ldi r22,lo8(2)
+ 402 0136 83E2      		ldi r24,lo8(35)
+ 403 0138 90E0      		ldi r25,0
+ 404 013a 0E94 0000 		call _pal_lld_setlineid
+ 405               	.LVL49:
+ 406 013e 0E94 0000 		call _pal_lld_getpadfromline
+ 407               	.LVL50:
+ 408 0142 182F      		mov r17,r24
+ 409 0144 62E0      		ldi r22,lo8(2)
+ 410 0146 83E2      		ldi r24,lo8(35)
+ 411 0148 90E0      		ldi r25,0
+ 412 014a 0E94 0000 		call _pal_lld_setlineid
+ 413               	.LVL51:
+ 414 014e 0E94 0000 		call _pal_lld_getportfromline
+ 415               	.LVL52:
+ 416 0152 BE01      		movw r22,r28
+ 417 0154 00C0      		rjmp 2f
+ 418               		1:
+ 419 0156 660F      		lsl r22
+ 420               		2:
+ 421 0158 1A95      		dec r17
+ 422 015a 02F4      		brpl 1b
+ 423 015c 46E0      		ldi r20,lo8(6)
+ 424 015e 0E94 0000 		call _pal_lld_setgroupmode
+ 425               	.LVL53:
+ 110:main.c        **** 
+ 426               		.loc 1 110 0
+ 427 0162 62E0      		ldi r22,lo8(2)
+ 428 0164 83E2      		ldi r24,lo8(35)
+ 429 0166 90E0      		ldi r25,0
+ 430 0168 0E94 0000 		call _pal_lld_setlineid
+ 431               	.LVL54:
+ 432 016c 0E94 0000 		call _pal_lld_getpadfromline
+ 433               	.LVL55:
+ 434 0170 182F      		mov r17,r24
+ 435 0172 62E0      		ldi r22,lo8(2)
+ 436 0174 83E2      		ldi r24,lo8(35)
+ 437 0176 90E0      		ldi r25,0
+ 438 0178 0E94 0000 		call _pal_lld_setlineid
+ 439               	.LVL56:
+ 440 017c 0E94 0000 		call _pal_lld_getportfromline
+ 441               	.LVL57:
+ 442 0180 FC01      		movw r30,r24
+ 443 0182 9281      		ldd r25,Z+2
+ 444 0184 9E01      		movw r18,r28
+ 445 0186 00C0      		rjmp 2f
+ 446               		1:
+ 447 0188 220F      		lsl r18
+ 448 018a 331F      		rol r19
+ 449               		2:
+ 450 018c 1A95      		dec r17
+ 451 018e 02F4      		brpl 1b
+ 452 0190 2095      		com r18
+ 453 0192 3095      		com r19
+ 454 0194 9223      		and r25,r18
+ 455 0196 9283      		std Z+2,r25
+ 113:main.c        ****   palClearLine(PRIMARIO_VERDE);
+ 456               		.loc 1 113 0
+ 457 0198 67E0      		ldi r22,lo8(7)
+ 458 019a 89E2      		ldi r24,lo8(41)
+ 459 019c 90E0      		ldi r25,0
+ 460 019e 0E94 0000 		call _pal_lld_setlineid
+ 461               	.LVL58:
+ 462 01a2 0E94 0000 		call _pal_lld_getpadfromline
+ 463               	.LVL59:
+ 464 01a6 182F      		mov r17,r24
+ 465 01a8 67E0      		ldi r22,lo8(7)
+ 466 01aa 89E2      		ldi r24,lo8(41)
+ 467 01ac 90E0      		ldi r25,0
+ 468 01ae 0E94 0000 		call _pal_lld_setlineid
+ 469               	.LVL60:
+ 470 01b2 0E94 0000 		call _pal_lld_getportfromline
+ 471               	.LVL61:
+ 472 01b6 BE01      		movw r22,r28
+ 473 01b8 00C0      		rjmp 2f
+ 474               		1:
+ 475 01ba 660F      		lsl r22
+ 476               		2:
+ 477 01bc 1A95      		dec r17
+ 478 01be 02F4      		brpl 1b
+ 479 01c0 46E0      		ldi r20,lo8(6)
+ 480 01c2 0E94 0000 		call _pal_lld_setgroupmode
+ 481               	.LVL62:
+ 114:main.c        ****   palSetLineMode(PRIMARIO_AMARELO, PAL_MODE_OUTPUT_PUSHPULL);
+ 482               		.loc 1 114 0
+ 483 01c6 67E0      		ldi r22,lo8(7)
+ 484 01c8 89E2      		ldi r24,lo8(41)
+ 485 01ca 90E0      		ldi r25,0
+ 486 01cc 0E94 0000 		call _pal_lld_setlineid
+ 487               	.LVL63:
+ 488 01d0 0E94 0000 		call _pal_lld_getpadfromline
+ 489               	.LVL64:
+ 490 01d4 182F      		mov r17,r24
+ 491 01d6 67E0      		ldi r22,lo8(7)
+ 492 01d8 89E2      		ldi r24,lo8(41)
+ 493 01da 90E0      		ldi r25,0
+ 494 01dc 0E94 0000 		call _pal_lld_setlineid
+ 495               	.LVL65:
+ 496 01e0 0E94 0000 		call _pal_lld_getportfromline
+ 497               	.LVL66:
+ 498 01e4 FC01      		movw r30,r24
+ 499 01e6 9281      		ldd r25,Z+2
+ 500 01e8 9E01      		movw r18,r28
+ 501 01ea 00C0      		rjmp 2f
+ 502               		1:
+ 503 01ec 220F      		lsl r18
+ 504 01ee 331F      		rol r19
+ 505               		2:
+ 506 01f0 1A95      		dec r17
+ 507 01f2 02F4      		brpl 1b
+ 508 01f4 2095      		com r18
+ 509 01f6 3095      		com r19
+ 510 01f8 9223      		and r25,r18
+ 511 01fa 9283      		std Z+2,r25
+ 115:main.c        ****   palClearLine(PRIMARIO_AMARELO);
+ 512               		.loc 1 115 0
+ 513 01fc 64E0      		ldi r22,lo8(4)
+ 514 01fe 89E2      		ldi r24,lo8(41)
+ 515 0200 90E0      		ldi r25,0
+ 516 0202 0E94 0000 		call _pal_lld_setlineid
+ 517               	.LVL67:
+ 518 0206 0E94 0000 		call _pal_lld_getpadfromline
+ 519               	.LVL68:
+ 520 020a 182F      		mov r17,r24
+ 521 020c 64E0      		ldi r22,lo8(4)
+ 522 020e 89E2      		ldi r24,lo8(41)
+ 523 0210 90E0      		ldi r25,0
+ 524 0212 0E94 0000 		call _pal_lld_setlineid
+ 525               	.LVL69:
+ 526 0216 0E94 0000 		call _pal_lld_getportfromline
+ 527               	.LVL70:
+ 528 021a BE01      		movw r22,r28
+ 529 021c 00C0      		rjmp 2f
+ 530               		1:
+ 531 021e 660F      		lsl r22
+ 532               		2:
+ 533 0220 1A95      		dec r17
+ 534 0222 02F4      		brpl 1b
+ 535 0224 46E0      		ldi r20,lo8(6)
+ 536 0226 0E94 0000 		call _pal_lld_setgroupmode
+ 537               	.LVL71:
+ 116:main.c        ****   palSetLineMode(PRIMARIO_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
+ 538               		.loc 1 116 0
+ 539 022a 64E0      		ldi r22,lo8(4)
+ 540 022c 89E2      		ldi r24,lo8(41)
+ 541 022e 90E0      		ldi r25,0
+ 542 0230 0E94 0000 		call _pal_lld_setlineid
+ 543               	.LVL72:
+ 544 0234 0E94 0000 		call _pal_lld_getpadfromline
+ 545               	.LVL73:
+ 546 0238 182F      		mov r17,r24
+ 547 023a 64E0      		ldi r22,lo8(4)
+ 548 023c 89E2      		ldi r24,lo8(41)
+ 549 023e 90E0      		ldi r25,0
+ 550 0240 0E94 0000 		call _pal_lld_setlineid
+ 551               	.LVL74:
+ 552 0244 0E94 0000 		call _pal_lld_getportfromline
+ 553               	.LVL75:
+ 554 0248 FC01      		movw r30,r24
+ 555 024a 9281      		ldd r25,Z+2
+ 556 024c 9E01      		movw r18,r28
+ 557 024e 00C0      		rjmp 2f
+ 558               		1:
+ 559 0250 220F      		lsl r18
+ 560 0252 331F      		rol r19
+ 561               		2:
+ 562 0254 1A95      		dec r17
+ 563 0256 02F4      		brpl 1b
+ 564 0258 2095      		com r18
+ 565 025a 3095      		com r19
+ 566 025c 9223      		and r25,r18
+ 567 025e 9283      		std Z+2,r25
+ 117:main.c        ****   palClearLine(PRIMARIO_VERMELHO);
+ 568               		.loc 1 117 0
+ 569 0260 66E0      		ldi r22,lo8(6)
+ 570 0262 89E2      		ldi r24,lo8(41)
+ 571 0264 90E0      		ldi r25,0
+ 572 0266 0E94 0000 		call _pal_lld_setlineid
+ 573               	.LVL76:
+ 574 026a 0E94 0000 		call _pal_lld_getpadfromline
+ 575               	.LVL77:
+ 576 026e 182F      		mov r17,r24
+ 577 0270 66E0      		ldi r22,lo8(6)
+ 578 0272 89E2      		ldi r24,lo8(41)
+ 579 0274 90E0      		ldi r25,0
+ 580 0276 0E94 0000 		call _pal_lld_setlineid
+ 581               	.LVL78:
+ 582 027a 0E94 0000 		call _pal_lld_getportfromline
+ 583               	.LVL79:
+ 584 027e BE01      		movw r22,r28
+ 585 0280 00C0      		rjmp 2f
+ 586               		1:
+ 587 0282 660F      		lsl r22
+ 588               		2:
+ 589 0284 1A95      		dec r17
+ 590 0286 02F4      		brpl 1b
+ 591 0288 46E0      		ldi r20,lo8(6)
+ 592 028a 0E94 0000 		call _pal_lld_setgroupmode
+ 593               	.LVL80:
+ 118:main.c        **** 
+ 594               		.loc 1 118 0
+ 595 028e 66E0      		ldi r22,lo8(6)
+ 596 0290 89E2      		ldi r24,lo8(41)
+ 597 0292 90E0      		ldi r25,0
+ 598 0294 0E94 0000 		call _pal_lld_setlineid
+ 599               	.LVL81:
+ 600 0298 0E94 0000 		call _pal_lld_getpadfromline
+ 601               	.LVL82:
+ 602 029c 182F      		mov r17,r24
+ 603 029e 66E0      		ldi r22,lo8(6)
+ 604 02a0 89E2      		ldi r24,lo8(41)
+ 605 02a2 90E0      		ldi r25,0
+ 606 02a4 0E94 0000 		call _pal_lld_setlineid
+ 607               	.LVL83:
+ 608 02a8 0E94 0000 		call _pal_lld_getportfromline
+ 609               	.LVL84:
+ 610 02ac FC01      		movw r30,r24
+ 611 02ae 9281      		ldd r25,Z+2
+ 612 02b0 9E01      		movw r18,r28
+ 613 02b2 00C0      		rjmp 2f
+ 614               		1:
+ 615 02b4 220F      		lsl r18
+ 616 02b6 331F      		rol r19
+ 617               		2:
+ 618 02b8 1A95      		dec r17
+ 619 02ba 02F4      		brpl 1b
+ 620 02bc 2095      		com r18
+ 621 02be 3095      		com r19
+ 622 02c0 9223      		and r25,r18
+ 623 02c2 9283      		std Z+2,r25
+ 121:main.c        ****   palClearLine(SECUNDARIO_VERDE);
+ 624               		.loc 1 121 0
+ 625 02c4 61E0      		ldi r22,lo8(1)
+ 626 02c6 83E2      		ldi r24,lo8(35)
+ 627 02c8 90E0      		ldi r25,0
+ 628 02ca 0E94 0000 		call _pal_lld_setlineid
+ 629               	.LVL85:
+ 630 02ce 0E94 0000 		call _pal_lld_getpadfromline
+ 631               	.LVL86:
+ 632 02d2 182F      		mov r17,r24
+ 633 02d4 61E0      		ldi r22,lo8(1)
+ 634 02d6 83E2      		ldi r24,lo8(35)
+ 635 02d8 90E0      		ldi r25,0
+ 636 02da 0E94 0000 		call _pal_lld_setlineid
+ 637               	.LVL87:
+ 638 02de 0E94 0000 		call _pal_lld_getportfromline
+ 639               	.LVL88:
+ 640 02e2 BE01      		movw r22,r28
+ 641 02e4 00C0      		rjmp 2f
+ 642               		1:
+ 643 02e6 660F      		lsl r22
+ 644               		2:
+ 645 02e8 1A95      		dec r17
+ 646 02ea 02F4      		brpl 1b
+ 647 02ec 46E0      		ldi r20,lo8(6)
+ 648 02ee 0E94 0000 		call _pal_lld_setgroupmode
+ 649               	.LVL89:
+ 122:main.c        ****   palSetLineMode(SECUNDARIO_AMARELO, PAL_MODE_OUTPUT_PUSHPULL);
+ 650               		.loc 1 122 0
+ 651 02f2 61E0      		ldi r22,lo8(1)
+ 652 02f4 83E2      		ldi r24,lo8(35)
+ 653 02f6 90E0      		ldi r25,0
+ 654 02f8 0E94 0000 		call _pal_lld_setlineid
+ 655               	.LVL90:
+ 656 02fc 0E94 0000 		call _pal_lld_getpadfromline
+ 657               	.LVL91:
+ 658 0300 182F      		mov r17,r24
+ 659 0302 61E0      		ldi r22,lo8(1)
+ 660 0304 83E2      		ldi r24,lo8(35)
+ 661 0306 90E0      		ldi r25,0
+ 662 0308 0E94 0000 		call _pal_lld_setlineid
+ 663               	.LVL92:
+ 664 030c 0E94 0000 		call _pal_lld_getportfromline
+ 665               	.LVL93:
+ 666 0310 FC01      		movw r30,r24
+ 667 0312 9281      		ldd r25,Z+2
+ 668 0314 9E01      		movw r18,r28
+ 669 0316 00C0      		rjmp 2f
+ 670               		1:
+ 671 0318 220F      		lsl r18
+ 672 031a 331F      		rol r19
+ 673               		2:
+ 674 031c 1A95      		dec r17
+ 675 031e 02F4      		brpl 1b
+ 676 0320 2095      		com r18
+ 677 0322 3095      		com r19
+ 678 0324 9223      		and r25,r18
+ 679 0326 9283      		std Z+2,r25
+ 123:main.c        ****   palClearLine(SECUNDARIO_AMARELO);
+ 680               		.loc 1 123 0
+ 681 0328 65E0      		ldi r22,lo8(5)
+ 682 032a 89E2      		ldi r24,lo8(41)
+ 683 032c 90E0      		ldi r25,0
+ 684 032e 0E94 0000 		call _pal_lld_setlineid
+ 685               	.LVL94:
+ 686 0332 0E94 0000 		call _pal_lld_getpadfromline
+ 687               	.LVL95:
+ 688 0336 182F      		mov r17,r24
+ 689 0338 65E0      		ldi r22,lo8(5)
+ 690 033a 89E2      		ldi r24,lo8(41)
+ 691 033c 90E0      		ldi r25,0
+ 692 033e 0E94 0000 		call _pal_lld_setlineid
+ 693               	.LVL96:
+ 694 0342 0E94 0000 		call _pal_lld_getportfromline
+ 695               	.LVL97:
+ 696 0346 BE01      		movw r22,r28
+ 697 0348 00C0      		rjmp 2f
+ 698               		1:
+ 699 034a 660F      		lsl r22
+ 700               		2:
+ 701 034c 1A95      		dec r17
+ 702 034e 02F4      		brpl 1b
+ 703 0350 46E0      		ldi r20,lo8(6)
+ 704 0352 0E94 0000 		call _pal_lld_setgroupmode
+ 705               	.LVL98:
+ 124:main.c        ****   palSetLineMode(SECUNDARIO_VERMELHO, PAL_MODE_OUTPUT_PUSHPULL);
+ 706               		.loc 1 124 0
+ 707 0356 65E0      		ldi r22,lo8(5)
+ 708 0358 89E2      		ldi r24,lo8(41)
+ 709 035a 90E0      		ldi r25,0
+ 710 035c 0E94 0000 		call _pal_lld_setlineid
+ 711               	.LVL99:
+ 712 0360 0E94 0000 		call _pal_lld_getpadfromline
+ 713               	.LVL100:
+ 714 0364 182F      		mov r17,r24
+ 715 0366 65E0      		ldi r22,lo8(5)
+ 716 0368 89E2      		ldi r24,lo8(41)
+ 717 036a 90E0      		ldi r25,0
+ 718 036c 0E94 0000 		call _pal_lld_setlineid
+ 719               	.LVL101:
+ 720 0370 0E94 0000 		call _pal_lld_getportfromline
+ 721               	.LVL102:
+ 722 0374 FC01      		movw r30,r24
+ 723 0376 9281      		ldd r25,Z+2
+ 724 0378 9E01      		movw r18,r28
+ 725 037a 00C0      		rjmp 2f
+ 726               		1:
+ 727 037c 220F      		lsl r18
+ 728 037e 331F      		rol r19
+ 729               		2:
+ 730 0380 1A95      		dec r17
+ 731 0382 02F4      		brpl 1b
+ 732 0384 2095      		com r18
+ 733 0386 3095      		com r19
+ 734 0388 9223      		and r25,r18
+ 735 038a 9283      		std Z+2,r25
+ 125:main.c        ****   palClearLine(SECUNDARIO_VERMELHO);
+ 736               		.loc 1 125 0
+ 737 038c 60E0      		ldi r22,0
+ 738 038e 83E2      		ldi r24,lo8(35)
+ 739 0390 90E0      		ldi r25,0
+ 740 0392 0E94 0000 		call _pal_lld_setlineid
+ 741               	.LVL103:
+ 742 0396 0E94 0000 		call _pal_lld_getpadfromline
+ 743               	.LVL104:
+ 744 039a 182F      		mov r17,r24
+ 745 039c 60E0      		ldi r22,0
+ 746 039e 83E2      		ldi r24,lo8(35)
+ 747 03a0 90E0      		ldi r25,0
+ 748 03a2 0E94 0000 		call _pal_lld_setlineid
+ 749               	.LVL105:
+ 750 03a6 0E94 0000 		call _pal_lld_getportfromline
+ 751               	.LVL106:
+ 752 03aa BE01      		movw r22,r28
+ 753 03ac 00C0      		rjmp 2f
+ 754               		1:
+ 755 03ae 660F      		lsl r22
+ 756               		2:
+ 757 03b0 1A95      		dec r17
+ 758 03b2 02F4      		brpl 1b
+ 759 03b4 46E0      		ldi r20,lo8(6)
+ 760 03b6 0E94 0000 		call _pal_lld_setgroupmode
+ 761               	.LVL107:
+ 126:main.c        **** 
+ 762               		.loc 1 126 0
+ 763 03ba 60E0      		ldi r22,0
+ 764 03bc 83E2      		ldi r24,lo8(35)
+ 765 03be 90E0      		ldi r25,0
+ 766 03c0 0E94 0000 		call _pal_lld_setlineid
+ 767               	.LVL108:
+ 768 03c4 0E94 0000 		call _pal_lld_getpadfromline
+ 769               	.LVL109:
+ 770 03c8 182F      		mov r17,r24
+ 771 03ca 60E0      		ldi r22,0
+ 772 03cc 83E2      		ldi r24,lo8(35)
+ 773 03ce 90E0      		ldi r25,0
+ 774 03d0 0E94 0000 		call _pal_lld_setlineid
+ 775               	.LVL110:
+ 776 03d4 0E94 0000 		call _pal_lld_getportfromline
+ 777               	.LVL111:
+ 778 03d8 FC01      		movw r30,r24
+ 779 03da 9281      		ldd r25,Z+2
+ 780 03dc 9E01      		movw r18,r28
+ 781 03de 00C0      		rjmp 2f
+ 782               		1:
+ 783 03e0 220F      		lsl r18
+ 784 03e2 331F      		rol r19
+ 785               		2:
+ 786 03e4 1A95      		dec r17
+ 787 03e6 02F4      		brpl 1b
+ 788 03e8 2095      		com r18
+ 789 03ea 3095      		com r19
+ 790 03ec 2923      		and r18,r25
+ 791 03ee 2283      		std Z+2,r18
+ 131:main.c        **** 
+ 792               		.loc 1 131 0
+ 793 03f0 10E0      		ldi r17,0
+ 794 03f2 00E0      		ldi r16,0
+ 795 03f4 20E0      		ldi r18,lo8(gs(Thread1))
+ 796 03f6 30E0      		ldi r19,hi8(gs(Thread1))
+ 797 03f8 40E8      		ldi r20,lo8(-128)
+ 798 03fa 63E8      		ldi r22,lo8(-125)
+ 799 03fc 70E0      		ldi r23,0
+ 800 03fe 80E0      		ldi r24,lo8(waThread1)
+ 801 0400 90E0      		ldi r25,hi8(waThread1)
+ 802 0402 0E94 0000 		call chThdCreateStatic
+ 803               	.LVL112:
+ 149:main.c        ****     }
+ 804               		.loc 1 149 0
+ 805 0406 01E0      		ldi r16,lo8(1)
+ 806 0408 10E0      		ldi r17,0
+ 807 040a 00C0      		rjmp .L19
+ 808               	.L22:
+ 137:main.c        ****     }
+ 809               		.loc 1 137 0
+ 810 040c 83E2      		ldi r24,lo8(35)
+ 811 040e 90E0      		ldi r25,0
+ 812 0410 0E94 0000 		call _pal_lld_setlineid
+ 813               	.LVL113:
+ 814 0414 0E94 0000 		call _pal_lld_getportfromline
+ 815               	.LVL114:
+ 816 0418 FC01      		movw r30,r24
+ 817 041a C281      		ldd r28,Z+2
+ 818 041c 63E0      		ldi r22,lo8(3)
+ 819 041e 83E2      		ldi r24,lo8(35)
+ 820 0420 90E0      		ldi r25,0
+ 821 0422 0E94 0000 		call _pal_lld_setlineid
+ 822               	.LVL115:
+ 823 0426 0E94 0000 		call _pal_lld_getpadfromline
+ 824               	.LVL116:
+ 825 042a D82F      		mov r29,r24
+ 826 042c 63E0      		ldi r22,lo8(3)
+ 827               	.L20:
+ 149:main.c        ****     }
+ 828               		.loc 1 149 0
+ 829 042e 83E2      		ldi r24,lo8(35)
+ 830 0430 90E0      		ldi r25,0
+ 831               	.L21:
+ 832 0432 0E94 0000 		call _pal_lld_setlineid
+ 833               	.LVL117:
+ 834 0436 0E94 0000 		call _pal_lld_getportfromline
+ 835               	.LVL118:
+ 836 043a 9801      		movw r18,r16
+ 837 043c 00C0      		rjmp 2f
+ 838               		1:
+ 839 043e 220F      		lsl r18
+ 840               		2:
+ 841 0440 DA95      		dec r29
+ 842 0442 02F4      		brpl 1b
+ 843 0444 C227      		eor r28,r18
+ 844 0446 FC01      		movw r30,r24
+ 845 0448 C283      		std Z+2,r28
+ 846               	.L16:
+ 152:main.c        ****   }
+ 847               		.loc 1 152 0
+ 848 044a 65E3      		ldi r22,lo8(53)
+ 849 044c 7CE0      		ldi r23,lo8(12)
+ 850 044e 80E0      		ldi r24,0
+ 851 0450 90E0      		ldi r25,0
+ 852 0452 0E94 0000 		call chThdSleep
+ 853               	.LVL119:
+ 854               	.L19:
+ 135:main.c        ****     {
+ 855               		.loc 1 135 0
+ 856 0456 65E0      		ldi r22,lo8(5)
+ 857 0458 86E2      		ldi r24,lo8(38)
+ 858 045a 90E0      		ldi r25,0
+ 859 045c 0E94 0000 		call _pal_lld_setlineid
+ 860               	.LVL120:
+ 861 0460 0E94 0000 		call _pal_lld_getportfromline
+ 862               	.LVL121:
+ 863 0464 FC01      		movw r30,r24
+ 864 0466 C081      		ld r28,Z
+ 865 0468 65E0      		ldi r22,lo8(5)
+ 866 046a 86E2      		ldi r24,lo8(38)
+ 867 046c 90E0      		ldi r25,0
+ 868 046e 0E94 0000 		call _pal_lld_setlineid
+ 869               	.LVL122:
+ 870 0472 0E94 0000 		call _pal_lld_getpadfromline
+ 871               	.LVL123:
+ 872 0476 2C2F      		mov r18,r28
+ 873 0478 30E0      		ldi r19,0
+ 874 047a 00C0      		rjmp 2f
+ 875               		1:
+ 876 047c 3595      		asr r19
+ 877 047e 2795      		ror r18
+ 878               		2:
+ 879 0480 8A95      		dec r24
+ 880 0482 02F4      		brpl 1b
+ 137:main.c        ****     }
+ 881               		.loc 1 137 0
+ 882 0484 63E0      		ldi r22,lo8(3)
+ 135:main.c        ****     {
+ 883               		.loc 1 135 0
+ 884 0486 20FF      		sbrs r18,0
+ 885 0488 00C0      		rjmp .L22
+ 139:main.c        ****     {
+ 886               		.loc 1 139 0
+ 887 048a 86E2      		ldi r24,lo8(38)
+ 888 048c 90E0      		ldi r25,0
+ 889 048e 0E94 0000 		call _pal_lld_setlineid
+ 890               	.LVL124:
+ 891 0492 0E94 0000 		call _pal_lld_getportfromline
+ 892               	.LVL125:
+ 893 0496 FC01      		movw r30,r24
+ 894 0498 C081      		ld r28,Z
+ 895 049a 63E0      		ldi r22,lo8(3)
+ 896 049c 86E2      		ldi r24,lo8(38)
+ 897 049e 90E0      		ldi r25,0
+ 898 04a0 0E94 0000 		call _pal_lld_setlineid
+ 899               	.LVL126:
+ 900 04a4 0E94 0000 		call _pal_lld_getpadfromline
+ 901               	.LVL127:
+ 902 04a8 2C2F      		mov r18,r28
+ 903 04aa 30E0      		ldi r19,0
+ 904 04ac 00C0      		rjmp 2f
+ 905               		1:
+ 906 04ae 3595      		asr r19
+ 907 04b0 2795      		ror r18
+ 908               		2:
+ 909 04b2 8A95      		dec r24
+ 910 04b4 02F4      		brpl 1b
+ 141:main.c        ****     }
+ 911               		.loc 1 141 0
+ 912 04b6 64E0      		ldi r22,lo8(4)
+ 139:main.c        ****     {
+ 913               		.loc 1 139 0
+ 914 04b8 20FD      		sbrc r18,0
+ 915 04ba 00C0      		rjmp .L17
+ 141:main.c        ****     }
+ 916               		.loc 1 141 0
+ 917 04bc 89E2      		ldi r24,lo8(41)
+ 918 04be 90E0      		ldi r25,0
+ 919 04c0 0E94 0000 		call _pal_lld_setlineid
+ 920               	.LVL128:
+ 921 04c4 0E94 0000 		call _pal_lld_getportfromline
+ 922               	.LVL129:
+ 923 04c8 FC01      		movw r30,r24
+ 924 04ca C281      		ldd r28,Z+2
+ 925 04cc 64E0      		ldi r22,lo8(4)
+ 926 04ce 89E2      		ldi r24,lo8(41)
+ 927 04d0 90E0      		ldi r25,0
+ 928 04d2 0E94 0000 		call _pal_lld_setlineid
+ 929               	.LVL130:
+ 930 04d6 0E94 0000 		call _pal_lld_getpadfromline
+ 931               	.LVL131:
+ 932 04da D82F      		mov r29,r24
+ 933 04dc 64E0      		ldi r22,lo8(4)
+ 934 04de 89E2      		ldi r24,lo8(41)
+ 935 04e0 90E0      		ldi r25,0
+ 936 04e2 00C0      		rjmp .L21
+ 937               	.L17:
+ 143:main.c        ****     {
+ 938               		.loc 1 143 0
+ 939 04e4 86E2      		ldi r24,lo8(38)
+ 940 04e6 90E0      		ldi r25,0
+ 941 04e8 0E94 0000 		call _pal_lld_setlineid
+ 942               	.LVL132:
+ 943 04ec 0E94 0000 		call _pal_lld_getportfromline
+ 944               	.LVL133:
+ 945 04f0 FC01      		movw r30,r24
+ 946 04f2 C081      		ld r28,Z
+ 947 04f4 64E0      		ldi r22,lo8(4)
+ 948 04f6 86E2      		ldi r24,lo8(38)
+ 949 04f8 90E0      		ldi r25,0
+ 950 04fa 0E94 0000 		call _pal_lld_setlineid
+ 951               	.LVL134:
+ 952 04fe 0E94 0000 		call _pal_lld_getpadfromline
+ 953               	.LVL135:
+ 954 0502 2C2F      		mov r18,r28
+ 955 0504 30E0      		ldi r19,0
+ 956 0506 00C0      		rjmp 2f
+ 957               		1:
+ 958 0508 3595      		asr r19
+ 959 050a 2795      		ror r18
+ 960               		2:
+ 961 050c 8A95      		dec r24
+ 962 050e 02F4      		brpl 1b
+ 963 0510 20FD      		sbrc r18,0
+ 964 0512 00C0      		rjmp .L18
+ 145:main.c        ****     }
+ 965               		.loc 1 145 0
+ 966 0514 66E0      		ldi r22,lo8(6)
+ 967 0516 89E2      		ldi r24,lo8(41)
+ 968 0518 90E0      		ldi r25,0
+ 969 051a 0E94 0000 		call _pal_lld_setlineid
+ 970               	.LVL136:
+ 971 051e 0E94 0000 		call _pal_lld_getportfromline
+ 972               	.LVL137:
+ 973 0522 FC01      		movw r30,r24
+ 974 0524 C281      		ldd r28,Z+2
+ 975 0526 66E0      		ldi r22,lo8(6)
+ 976 0528 89E2      		ldi r24,lo8(41)
+ 977 052a 90E0      		ldi r25,0
+ 978 052c 0E94 0000 		call _pal_lld_setlineid
+ 979               	.LVL138:
+ 980 0530 0E94 0000 		call _pal_lld_getpadfromline
+ 981               	.LVL139:
+ 982 0534 D82F      		mov r29,r24
+ 983 0536 66E0      		ldi r22,lo8(6)
+ 984 0538 89E2      		ldi r24,lo8(41)
+ 985 053a 90E0      		ldi r25,0
+ 986 053c 00C0      		rjmp .L21
+ 987               	.L18:
+ 147:main.c        ****     {
+ 988               		.loc 1 147 0
+ 989 053e 62E0      		ldi r22,lo8(2)
+ 990 0540 86E2      		ldi r24,lo8(38)
+ 991 0542 90E0      		ldi r25,0
+ 992 0544 0E94 0000 		call _pal_lld_setlineid
+ 993               	.LVL140:
+ 994 0548 0E94 0000 		call _pal_lld_getportfromline
+ 995               	.LVL141:
+ 996 054c FC01      		movw r30,r24
+ 997 054e C081      		ld r28,Z
+ 998 0550 62E0      		ldi r22,lo8(2)
+ 999 0552 86E2      		ldi r24,lo8(38)
+ 1000 0554 90E0      		ldi r25,0
+ 1001 0556 0E94 0000 		call _pal_lld_setlineid
+ 1002               	.LVL142:
+ 1003 055a 0E94 0000 		call _pal_lld_getpadfromline
+ 1004               	.LVL143:
+ 1005 055e 2C2F      		mov r18,r28
+ 1006 0560 30E0      		ldi r19,0
+ 1007 0562 00C0      		rjmp 2f
+ 1008               		1:
+ 1009 0564 3595      		asr r19
+ 1010 0566 2795      		ror r18
+ 1011               		2:
+ 1012 0568 8A95      		dec r24
+ 1013 056a 02F4      		brpl 1b
+ 1014 056c 20FD      		sbrc r18,0
+ 1015 056e 00C0      		rjmp .L16
+ 149:main.c        ****     }
+ 1016               		.loc 1 149 0
+ 1017 0570 61E0      		ldi r22,lo8(1)
+ 1018 0572 83E2      		ldi r24,lo8(35)
+ 1019 0574 90E0      		ldi r25,0
+ 1020 0576 0E94 0000 		call _pal_lld_setlineid
+ 1021               	.LVL144:
+ 1022 057a 0E94 0000 		call _pal_lld_getportfromline
+ 1023               	.LVL145:
+ 1024 057e FC01      		movw r30,r24
+ 1025 0580 C281      		ldd r28,Z+2
+ 1026 0582 61E0      		ldi r22,lo8(1)
+ 1027 0584 83E2      		ldi r24,lo8(35)
+ 1028 0586 90E0      		ldi r25,0
+ 1029 0588 0E94 0000 		call _pal_lld_setlineid
+ 1030               	.LVL146:
+ 1031 058c 0E94 0000 		call _pal_lld_getpadfromline
+ 1032               	.LVL147:
+ 1033 0590 D82F      		mov r29,r24
+ 1034 0592 61E0      		ldi r22,lo8(1)
+ 1035 0594 00C0      		rjmp .L20
+ 1036               		.cfi_endproc
+ 1037               	.LFE244:
+ 1039               		.section	.text.bufferInit,"ax",@progbits
+ 1040               	.global	bufferInit
+ 1042               	bufferInit:
+ 1043               	.LFB245:
+ 157:main.c        ****   buffer->head = 0;
+ 1044               		.loc 1 157 0
+ 1045               		.cfi_startproc
+ 1046               	.LVL148:
+ 1047               	/* prologue: function */
+ 1048               	/* frame size = 0 */
+ 1049               	/* stack size = 0 */
+ 1050               	.L__stack_usage = 0
+ 1051 0000 FC01      		movw r30,r24
+ 158:main.c        ****   buffer->tail = 0;
+ 1052               		.loc 1 158 0
+ 1053 0002 1086      		std Z+8,__zero_reg__
+ 159:main.c        ****   buffer->size = 0;
+ 1054               		.loc 1 159 0
+ 1055 0004 1186      		std Z+9,__zero_reg__
+ 160:main.c        **** }
+ 1056               		.loc 1 160 0
+ 1057 0006 1286      		std Z+10,__zero_reg__
+ 1058               	/* epilogue start */
+ 161:main.c        **** 
+ 1059               		.loc 1 161 0
+ 1060 0008 0895      		ret
+ 1061               		.cfi_endproc
+ 1062               	.LFE245:
+ 1064               		.section	.text.isBufferEmpty,"ax",@progbits
+ 1065               	.global	isBufferEmpty
+ 1067               	isBufferEmpty:
+ 1068               	.LFB246:
+ 164:main.c        ****   return buffer->size == 0;
+ 1069               		.loc 1 164 0
+ 1070               		.cfi_startproc
+ 1071               	.LVL149:
+ 1072               	/* prologue: function */
+ 1073               	/* frame size = 0 */
+ 1074               	/* stack size = 0 */
+ 1075               	.L__stack_usage = 0
+ 165:main.c        **** }
+ 1076               		.loc 1 165 0
+ 1077 0000 21E0      		ldi r18,lo8(1)
+ 1078 0002 FC01      		movw r30,r24
+ 1079 0004 8285      		ldd r24,Z+10
+ 1080               	.LVL150:
+ 1081 0006 8111      		cpse r24,__zero_reg__
+ 1082 0008 20E0      		ldi r18,0
+ 1083               	.L25:
+ 166:main.c        **** 
+ 1084               		.loc 1 166 0
+ 1085 000a 822F      		mov r24,r18
+ 1086               	/* epilogue start */
+ 1087 000c 0895      		ret
+ 1088               		.cfi_endproc
+ 1089               	.LFE246:
+ 1091               		.section	.text.isBufferFull,"ax",@progbits
+ 1092               	.global	isBufferFull
+ 1094               	isBufferFull:
+ 1095               	.LFB247:
+ 169:main.c        ****   return buffer->size == BUFFER_SIZE;
+ 1096               		.loc 1 169 0
+ 1097               		.cfi_startproc
+ 1098               	.LVL151:
+ 1099               	/* prologue: function */
+ 1100               	/* frame size = 0 */
+ 1101               	/* stack size = 0 */
+ 1102               	.L__stack_usage = 0
+ 170:main.c        **** }
  1103               		.loc 1 170 0
- 1104 0024 842F      		mov r24,r20
- 1105               	.LVL127:
- 1106               	.L38:
- 1107               	/* epilogue start */
- 171:main.c        **** }
- 1108               		.loc 1 171 0
- 1109 0026 0895      		ret
- 1110               		.cfi_endproc
- 1111               	.LFE249:
- 1113               		.section	.bss.waThread1,"aw",@nobits
- 1116               	waThread1:
- 1117 0000 0000 0000 		.zero	131
- 1117      0000 0000 
- 1117      0000 0000 
- 1117      0000 0000 
- 1117      0000 0000 
- 1118               		.comm	ev_buffer,11,1
- 1119               		.text
- 1120               	.Letext0:
- 1121               		.file 4 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
- 1122               		.file 5 "/usr/lib/avr/include/stdint.h"
- 1123               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
- 1124               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
- 1125               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
- 1126               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
- 1127               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
- 1128               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
- 1129               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
- 1130               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
- 1131               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
- 1132               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
- 1133               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
- 1134               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chevents.h"
- 1135               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
- 1136               		.file 19 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_queues.h"
- 1137               		.file 20 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_pal.h"
- 1138               		.file 21 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPI
- 1139               		.file 22 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_serial.h"
- 1140               		.file 23 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
- 1141               		.file 24 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal.h"
- 1142               		.file 25 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chthreads.h"
+ 1104 0000 21E0      		ldi r18,lo8(1)
+ 1105 0002 FC01      		movw r30,r24
+ 1106 0004 8285      		ldd r24,Z+10
+ 1107               	.LVL152:
+ 1108 0006 8830      		cpi r24,lo8(8)
+ 1109 0008 01F0      		breq .L30
+ 1110 000a 20E0      		ldi r18,0
+ 1111               	.L30:
+ 171:main.c        **** 
+ 1112               		.loc 1 171 0
+ 1113 000c 822F      		mov r24,r18
+ 1114               	/* epilogue start */
+ 1115 000e 0895      		ret
+ 1116               		.cfi_endproc
+ 1117               	.LFE247:
+ 1119               		.section	.text.bufferPush,"ax",@progbits
+ 1120               	.global	bufferPush
+ 1122               	bufferPush:
+ 1123               	.LFB248:
+ 174:main.c        ****   buffer->events[buffer->tail] = event;
+ 1124               		.loc 1 174 0
+ 1125               		.cfi_startproc
+ 1126               	.LVL153:
+ 1127               	/* prologue: function */
+ 1128               	/* frame size = 0 */
+ 1129               	/* stack size = 0 */
+ 1130               	.L__stack_usage = 0
+ 1131 0000 FC01      		movw r30,r24
+ 175:main.c        ****   buffer->tail = (buffer->tail + 1) % BUFFER_SIZE;
+ 1132               		.loc 1 175 0
+ 1133 0002 2185      		ldd r18,Z+9
+ 1134 0004 30E0      		ldi r19,0
+ 1135 0006 DC01      		movw r26,r24
+ 1136 0008 A20F      		add r26,r18
+ 1137 000a B31F      		adc r27,r19
+ 1138 000c 6C93      		st X,r22
+ 176:main.c        ****   buffer->size++;
+ 1139               		.loc 1 176 0
+ 1140 000e 2F5F      		subi r18,-1
+ 1141 0010 3F4F      		sbci r19,-1
+ 1142 0012 2770      		andi r18,7
+ 1143 0014 3327      		clr r19
+ 1144 0016 2187      		std Z+9,r18
+ 177:main.c        **** }
+ 1145               		.loc 1 177 0
+ 1146 0018 8285      		ldd r24,Z+10
+ 1147               	.LVL154:
+ 1148 001a 8F5F      		subi r24,lo8(-(1))
+ 1149 001c 8287      		std Z+10,r24
+ 1150               	/* epilogue start */
+ 178:main.c        **** 
+ 1151               		.loc 1 178 0
+ 1152 001e 0895      		ret
+ 1153               		.cfi_endproc
+ 1154               	.LFE248:
+ 1156               		.section	.text.bufferPop,"ax",@progbits
+ 1157               	.global	bufferPop
+ 1159               	bufferPop:
+ 1160               	.LFB249:
+ 181:main.c        ****   if (isBufferEmpty(buffer))
+ 1161               		.loc 1 181 0
+ 1162               		.cfi_startproc
+ 1163               	.LVL155:
+ 1164               	/* prologue: function */
+ 1165               	/* frame size = 0 */
+ 1166               	/* stack size = 0 */
+ 1167               	.L__stack_usage = 0
+ 1168 0000 FC01      		movw r30,r24
+ 1169               	.LVL156:
+ 1170               	.LBB82:
+ 1171               	.LBB83:
+ 165:main.c        **** }
+ 1172               		.loc 1 165 0
+ 1173 0002 8285      		ldd r24,Z+10
+ 1174               	.LVL157:
+ 1175               	.LBE83:
+ 1176               	.LBE82:
+ 182:main.c        ****   {
+ 1177               		.loc 1 182 0
+ 1178 0004 8823      		tst r24
+ 1179 0006 01F0      		breq .L35
+ 187:main.c        ****   buffer->head = (buffer->head + 1) % BUFFER_SIZE;
+ 1180               		.loc 1 187 0
+ 1181 0008 2085      		ldd r18,Z+8
+ 1182 000a 30E0      		ldi r19,0
+ 1183 000c DF01      		movw r26,r30
+ 1184 000e A20F      		add r26,r18
+ 1185 0010 B31F      		adc r27,r19
+ 1186 0012 4C91      		ld r20,X
+ 1187               	.LVL158:
+ 188:main.c        ****   buffer->size--;
+ 1188               		.loc 1 188 0
+ 1189 0014 2F5F      		subi r18,-1
+ 1190 0016 3F4F      		sbci r19,-1
+ 1191 0018 2770      		andi r18,7
+ 1192 001a 3327      		clr r19
+ 1193 001c 2087      		std Z+8,r18
+ 189:main.c        ****   return event;
+ 1194               		.loc 1 189 0
+ 1195 001e 9FEF      		ldi r25,lo8(-1)
+ 1196 0020 980F      		add r25,r24
+ 1197 0022 9287      		std Z+10,r25
+ 190:main.c        **** }
+ 1198               		.loc 1 190 0
+ 1199 0024 842F      		mov r24,r20
+ 1200               	.LVL159:
+ 1201               	.L35:
+ 1202               	/* epilogue start */
+ 191:main.c        **** 
+ 1203               		.loc 1 191 0
+ 1204 0026 0895      		ret
+ 1205               		.cfi_endproc
+ 1206               	.LFE249:
+ 1208               		.section	.bss.waThread1,"aw",@nobits
+ 1211               	waThread1:
+ 1212 0000 0000 0000 		.zero	131
+ 1212      0000 0000 
+ 1212      0000 0000 
+ 1212      0000 0000 
+ 1212      0000 0000 
+ 1213               		.comm	ev_buffer,11,1
+ 1214               		.text
+ 1215               	.Letext0:
+ 1216               		.file 4 "/usr/lib/gcc/avr/7.3.0/include/stddef.h"
+ 1217               		.file 5 "/usr/lib/avr/include/stdint.h"
+ 1218               		.file 6 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/common/ports/AVR/compilers/
+ 1219               		.file 7 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chearly.h"
+ 1220               		.file 8 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chobjects.h"
+ 1221               		.file 9 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chrfcu.h"
+ 1222               		.file 10 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chdebug.h"
+ 1223               		.file 11 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chtime.h"
+ 1224               		.file 12 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chlists.h"
+ 1225               		.file 13 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsem.h"
+ 1226               		.file 14 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chmtx.h"
+ 1227               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chsys.h"
+ 1228               		.file 16 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chregistry.h"
+ 1229               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chevents.h"
+ 1230               		.file 18 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
+ 1231               		.file 19 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_queues.h"
+ 1232               		.file 20 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_pal.h"
+ 1233               		.file 21 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/GPI
+ 1234               		.file 22 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal_serial.h"
+ 1235               		.file 23 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
+ 1236               		.file 24 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/include/hal.h"
+ 1237               		.file 25 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chthreads.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-     /tmp/ccxB5nex.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccxB5nex.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccxB5nex.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccxB5nex.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccxB5nex.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccxB5nex.s:13     .text.vt_cb2:0000000000000000 vt_cb2
-     /tmp/ccxB5nex.s:92     .text.vt_cb:0000000000000000 vt_cb
-     /tmp/ccxB5nex.s:168    .text.Thread1:0000000000000000 Thread1
-     /tmp/ccxB5nex.s:282    .text.startup.main:0000000000000000 main
+     /tmp/cckuVSXv.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cckuVSXv.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cckuVSXv.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cckuVSXv.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cckuVSXv.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cckuVSXv.s:13     .text.vt_cb:0000000000000000 vt_cb
+     /tmp/cckuVSXv.s:91     .text.Thread1:0000000000000000 Thread1
+     /tmp/cckuVSXv.s:212    .text.startup.main:0000000000000000 main
                             *COM*:000000000000000b ev_buffer
-     /tmp/ccxB5nex.s:1116   .bss.waThread1:0000000000000000 waThread1
-     /tmp/ccxB5nex.s:947    .text.bufferInit:0000000000000000 bufferInit
-     /tmp/ccxB5nex.s:972    .text.isBufferEmpty:0000000000000000 isBufferEmpty
-     /tmp/ccxB5nex.s:999    .text.isBufferFull:0000000000000000 isBufferFull
-     /tmp/ccxB5nex.s:1027   .text.bufferPush:0000000000000000 bufferPush
-     /tmp/ccxB5nex.s:1064   .text.bufferPop:0000000000000000 bufferPop
+     /tmp/cckuVSXv.s:1211   .bss.waThread1:0000000000000000 waThread1
+     /tmp/cckuVSXv.s:1042   .text.bufferInit:0000000000000000 bufferInit
+     /tmp/cckuVSXv.s:1067   .text.isBufferEmpty:0000000000000000 isBufferEmpty
+     /tmp/cckuVSXv.s:1094   .text.isBufferFull:0000000000000000 isBufferFull
+     /tmp/cckuVSXv.s:1122   .text.bufferPush:0000000000000000 bufferPush
+     /tmp/cckuVSXv.s:1159   .text.bufferPop:0000000000000000 bufferPop
 
 UNDEFINED SYMBOLS
 chVTDoResetI
 chVTDoSetI
+chThdSleep
 halInit
 chSysInit
 _pal_lld_setlineid
@@ -2179,5 +2295,4 @@ _pal_lld_getpadfromline
 _pal_lld_getportfromline
 _pal_lld_setgroupmode
 chThdCreateStatic
-chThdSleep
 __do_clear_bss

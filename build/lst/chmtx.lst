@@ -3078,20 +3078,20 @@
  1209               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chmtx.c
-     /tmp/ccfazD5c.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccfazD5c.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccfazD5c.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccfazD5c.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccfazD5c.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccfazD5c.s:13     .text.chMtxObjectInit:0000000000000000 chMtxObjectInit
-     /tmp/ccfazD5c.s:49     .text.chMtxLockS:0000000000000000 chMtxLockS
-     /tmp/ccfazD5c.s:455    .text.chMtxLock:0000000000000000 chMtxLock
-     /tmp/ccfazD5c.s:503    .text.chMtxTryLock:0000000000000000 chMtxTryLock
-     /tmp/ccfazD5c.s:611    .text.chMtxTryLockS:0000000000000000 chMtxTryLockS
-     /tmp/ccfazD5c.s:668    .text.chMtxUnlock:0000000000000000 chMtxUnlock
-     /tmp/ccfazD5c.s:856    .text.chMtxUnlockS:0000000000000000 chMtxUnlockS
-     /tmp/ccfazD5c.s:1003   .text.chMtxUnlockAllS:0000000000000000 chMtxUnlockAllS
-     /tmp/ccfazD5c.s:1153   .text.chMtxUnlockAll:0000000000000000 chMtxUnlockAll
+     /tmp/ccoinVD1.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccoinVD1.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccoinVD1.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccoinVD1.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccoinVD1.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccoinVD1.s:13     .text.chMtxObjectInit:0000000000000000 chMtxObjectInit
+     /tmp/ccoinVD1.s:49     .text.chMtxLockS:0000000000000000 chMtxLockS
+     /tmp/ccoinVD1.s:455    .text.chMtxLock:0000000000000000 chMtxLock
+     /tmp/ccoinVD1.s:503    .text.chMtxTryLock:0000000000000000 chMtxTryLock
+     /tmp/ccoinVD1.s:611    .text.chMtxTryLockS:0000000000000000 chMtxTryLockS
+     /tmp/ccoinVD1.s:668    .text.chMtxUnlock:0000000000000000 chMtxUnlock
+     /tmp/ccoinVD1.s:856    .text.chMtxUnlockS:0000000000000000 chMtxUnlockS
+     /tmp/ccoinVD1.s:1003   .text.chMtxUnlockAllS:0000000000000000 chMtxUnlockAllS
+     /tmp/ccoinVD1.s:1153   .text.chMtxUnlockAll:0000000000000000 chMtxUnlockAll
 
 UNDEFINED SYMBOLS
 ch0

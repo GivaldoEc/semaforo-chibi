@@ -2780,22 +2780,22 @@
  1235               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chschd.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chsem.c
-     /tmp/ccAPkEd1.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccAPkEd1.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccAPkEd1.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccAPkEd1.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccAPkEd1.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccAPkEd1.s:13     .text.chSemObjectInit:0000000000000000 chSemObjectInit
-     /tmp/ccAPkEd1.s:48     .text.chSemResetWithMessage:0000000000000000 chSemResetWithMessage
-     /tmp/ccAPkEd1.s:169    .text.chSemResetWithMessageI:0000000000000000 chSemResetWithMessageI
-     /tmp/ccAPkEd1.s:254    .text.chSemWait:0000000000000000 chSemWait
-     /tmp/ccAPkEd1.s:395    .text.chSemWaitS:0000000000000000 chSemWaitS
-     /tmp/ccAPkEd1.s:486    .text.chSemWaitTimeout:0000000000000000 chSemWaitTimeout
-     /tmp/ccAPkEd1.s:652    .text.chSemWaitTimeoutS:0000000000000000 chSemWaitTimeoutS
-     /tmp/ccAPkEd1.s:768    .text.chSemSignal:0000000000000000 chSemSignal
-     /tmp/ccAPkEd1.s:875    .text.chSemSignalI:0000000000000000 chSemSignalI
-     /tmp/ccAPkEd1.s:946    .text.chSemAddCounterI:0000000000000000 chSemAddCounterI
-     /tmp/ccAPkEd1.s:1035   .text.chSemSignalWait:0000000000000000 chSemSignalWait
+     /tmp/ccfqqtMS.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccfqqtMS.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccfqqtMS.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccfqqtMS.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccfqqtMS.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccfqqtMS.s:13     .text.chSemObjectInit:0000000000000000 chSemObjectInit
+     /tmp/ccfqqtMS.s:48     .text.chSemResetWithMessage:0000000000000000 chSemResetWithMessage
+     /tmp/ccfqqtMS.s:169    .text.chSemResetWithMessageI:0000000000000000 chSemResetWithMessageI
+     /tmp/ccfqqtMS.s:254    .text.chSemWait:0000000000000000 chSemWait
+     /tmp/ccfqqtMS.s:395    .text.chSemWaitS:0000000000000000 chSemWaitS
+     /tmp/ccfqqtMS.s:486    .text.chSemWaitTimeout:0000000000000000 chSemWaitTimeout
+     /tmp/ccfqqtMS.s:652    .text.chSemWaitTimeoutS:0000000000000000 chSemWaitTimeoutS
+     /tmp/ccfqqtMS.s:768    .text.chSemSignal:0000000000000000 chSemSignal
+     /tmp/ccfqqtMS.s:875    .text.chSemSignalI:0000000000000000 chSemSignalI
+     /tmp/ccfqqtMS.s:946    .text.chSemAddCounterI:0000000000000000 chSemAddCounterI
+     /tmp/ccfqqtMS.s:1035   .text.chSemSignalWait:0000000000000000 chSemSignalWait
 
 UNDEFINED SYMBOLS
 chSchReadyI

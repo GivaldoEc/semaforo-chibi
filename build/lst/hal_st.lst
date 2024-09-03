@@ -531,18 +531,18 @@
  206               		.file 23 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/hal/ports/AVR/MEGA/LLD/USA
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_st.c
-     /tmp/ccyA70vk.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccyA70vk.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccyA70vk.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccyA70vk.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccyA70vk.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccyA70vk.s:13     .text.stInit:0000000000000000 stInit
-     /tmp/ccyA70vk.s:31     .text.stGetCounter:0000000000000000 stGetCounter
-     /tmp/ccyA70vk.s:56     .text.stStartAlarm:0000000000000000 stStartAlarm
-     /tmp/ccyA70vk.s:89     .text.stStopAlarm:0000000000000000 stStopAlarm
-     /tmp/ccyA70vk.s:112    .text.stSetAlarm:0000000000000000 stSetAlarm
-     /tmp/ccyA70vk.s:138    .text.stGetAlarm:0000000000000000 stGetAlarm
-     /tmp/ccyA70vk.s:162    .text.stIsAlarmActive:0000000000000000 stIsAlarmActive
+     /tmp/cc4ShdSq.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc4ShdSq.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc4ShdSq.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc4ShdSq.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc4ShdSq.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc4ShdSq.s:13     .text.stInit:0000000000000000 stInit
+     /tmp/cc4ShdSq.s:31     .text.stGetCounter:0000000000000000 stGetCounter
+     /tmp/cc4ShdSq.s:56     .text.stStartAlarm:0000000000000000 stStartAlarm
+     /tmp/cc4ShdSq.s:89     .text.stStopAlarm:0000000000000000 stStopAlarm
+     /tmp/cc4ShdSq.s:112    .text.stSetAlarm:0000000000000000 stSetAlarm
+     /tmp/cc4ShdSq.s:138    .text.stGetAlarm:0000000000000000 stGetAlarm
+     /tmp/cc4ShdSq.s:162    .text.stIsAlarmActive:0000000000000000 stIsAlarmActive
 
 UNDEFINED SYMBOLS
 st_lld_init

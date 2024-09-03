@@ -1304,17 +1304,17 @@
  880               		.file 17 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemheaps.h
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chmemheaps.c
-     /tmp/ccJ3VBaV.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccJ3VBaV.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccJ3VBaV.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccJ3VBaV.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccJ3VBaV.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccJ3VBaV.s:13     .text.__heap_init:0000000000000000 __heap_init
-     /tmp/ccJ3VBaV.s:861    .bss.default_heap:0000000000000000 default_heap
-     /tmp/ccJ3VBaV.s:46     .text.chHeapObjectInit:0000000000000000 chHeapObjectInit
-     /tmp/ccJ3VBaV.s:107    .text.chHeapAllocAligned:0000000000000000 chHeapAllocAligned
-     /tmp/ccJ3VBaV.s:515    .text.chHeapFree:0000000000000000 chHeapFree
-     /tmp/ccJ3VBaV.s:701    .text.chHeapStatus:0000000000000000 chHeapStatus
+     /tmp/ccYfCffD.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccYfCffD.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccYfCffD.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccYfCffD.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccYfCffD.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccYfCffD.s:13     .text.__heap_init:0000000000000000 __heap_init
+     /tmp/ccYfCffD.s:861    .bss.default_heap:0000000000000000 default_heap
+     /tmp/ccYfCffD.s:46     .text.chHeapObjectInit:0000000000000000 chHeapObjectInit
+     /tmp/ccYfCffD.s:107    .text.chHeapAllocAligned:0000000000000000 chHeapAllocAligned
+     /tmp/ccYfCffD.s:515    .text.chHeapFree:0000000000000000 chHeapFree
+     /tmp/ccYfCffD.s:701    .text.chHeapStatus:0000000000000000 chHeapStatus
 
 UNDEFINED SYMBOLS
 chCoreAllocFromTop

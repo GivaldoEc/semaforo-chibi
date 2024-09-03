@@ -1745,23 +1745,23 @@
  559               		.file 21 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chinstances.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chsys.c
-     /tmp/cccD8qge.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cccD8qge.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cccD8qge.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cccD8qge.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cccD8qge.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cccD8qge.s:13     .text.chSysWaitSystemState:0000000000000000 chSysWaitSystemState
+     /tmp/cc83IzZo.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc83IzZo.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc83IzZo.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc83IzZo.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc83IzZo.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc83IzZo.s:13     .text.chSysWaitSystemState:0000000000000000 chSysWaitSystemState
                             *COM*:0000000000000003 ch_system
-     /tmp/cccD8qge.s:38     .text.chSysInit:0000000000000000 chSysInit
-     /tmp/cccD8qge.s:529    .rodata.ch_core0_cfg:0000000000000000 ch_core0_cfg
+     /tmp/cc83IzZo.s:38     .text.chSysInit:0000000000000000 chSysInit
+     /tmp/cc83IzZo.s:529    .rodata.ch_core0_cfg:0000000000000000 ch_core0_cfg
                             *COM*:0000000000000045 ch0
-     /tmp/cccD8qge.s:111    .text.chSysHalt:0000000000000000 chSysHalt
-     /tmp/cccD8qge.s:145    .text.chSysGetIdleThreadX:0000000000000000 chSysGetIdleThreadX
-     /tmp/cccD8qge.s:165    .text.chSysIntegrityCheckI:0000000000000000 chSysIntegrityCheckI
-     /tmp/cccD8qge.s:413    .text.chSysTimerHandlerI:0000000000000000 chSysTimerHandlerI
-     /tmp/cccD8qge.s:430    .text.chSysGetStatusAndLockX:0000000000000000 chSysGetStatusAndLockX
-     /tmp/cccD8qge.s:476    .text.chSysRestoreStatusX:0000000000000000 chSysRestoreStatusX
-     /tmp/cccD8qge.s:536    .bss.ch_c0_idle_thread_wa:0000000000000000 ch_c0_idle_thread_wa
+     /tmp/cc83IzZo.s:111    .text.chSysHalt:0000000000000000 chSysHalt
+     /tmp/cc83IzZo.s:145    .text.chSysGetIdleThreadX:0000000000000000 chSysGetIdleThreadX
+     /tmp/cc83IzZo.s:165    .text.chSysIntegrityCheckI:0000000000000000 chSysIntegrityCheckI
+     /tmp/cc83IzZo.s:413    .text.chSysTimerHandlerI:0000000000000000 chSysTimerHandlerI
+     /tmp/cc83IzZo.s:430    .text.chSysGetStatusAndLockX:0000000000000000 chSysGetStatusAndLockX
+     /tmp/cc83IzZo.s:476    .text.chSysRestoreStatusX:0000000000000000 chSysRestoreStatusX
+     /tmp/cc83IzZo.s:536    .bss.ch_c0_idle_thread_wa:0000000000000000 ch_c0_idle_thread_wa
 
 UNDEFINED SYMBOLS
 __core_init

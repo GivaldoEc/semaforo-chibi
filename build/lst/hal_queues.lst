@@ -4267,27 +4267,27 @@
  1977               		.file 25 "<built-in>"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_queues.c
-     /tmp/ccBNSuc0.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccBNSuc0.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccBNSuc0.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccBNSuc0.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccBNSuc0.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccBNSuc0.s:12     .text.iq_read:0000000000000000 iq_read
-     /tmp/ccBNSuc0.s:180    .text.oq_write:0000000000000000 oq_write
-     /tmp/ccBNSuc0.s:349    .text.iqObjectInit:0000000000000000 iqObjectInit
-     /tmp/ccBNSuc0.s:422    .text.iqResetI:0000000000000000 iqResetI
-     /tmp/ccBNSuc0.s:460    .text.iqPutI:0000000000000000 iqPutI
-     /tmp/ccBNSuc0.s:541    .text.iqGetI:0000000000000000 iqGetI
-     /tmp/ccBNSuc0.s:644    .text.iqGetTimeout:0000000000000000 iqGetTimeout
-     /tmp/ccBNSuc0.s:828    .text.iqReadI:0000000000000000 iqReadI
-     /tmp/ccBNSuc0.s:903    .text.iqReadTimeout:0000000000000000 iqReadTimeout
-     /tmp/ccBNSuc0.s:1146   .text.oqObjectInit:0000000000000000 oqObjectInit
-     /tmp/ccBNSuc0.s:1218   .text.oqResetI:0000000000000000 oqResetI
-     /tmp/ccBNSuc0.s:1261   .text.oqPutI:0000000000000000 oqPutI
-     /tmp/ccBNSuc0.s:1359   .text.oqPutTimeout:0000000000000000 oqPutTimeout
-     /tmp/ccBNSuc0.s:1545   .text.oqGetI:0000000000000000 oqGetI
-     /tmp/ccBNSuc0.s:1640   .text.oqWriteI:0000000000000000 oqWriteI
-     /tmp/ccBNSuc0.s:1715   .text.oqWriteTimeout:0000000000000000 oqWriteTimeout
+     /tmp/ccWd78n4.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccWd78n4.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccWd78n4.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccWd78n4.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccWd78n4.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccWd78n4.s:12     .text.iq_read:0000000000000000 iq_read
+     /tmp/ccWd78n4.s:180    .text.oq_write:0000000000000000 oq_write
+     /tmp/ccWd78n4.s:349    .text.iqObjectInit:0000000000000000 iqObjectInit
+     /tmp/ccWd78n4.s:422    .text.iqResetI:0000000000000000 iqResetI
+     /tmp/ccWd78n4.s:460    .text.iqPutI:0000000000000000 iqPutI
+     /tmp/ccWd78n4.s:541    .text.iqGetI:0000000000000000 iqGetI
+     /tmp/ccWd78n4.s:644    .text.iqGetTimeout:0000000000000000 iqGetTimeout
+     /tmp/ccWd78n4.s:828    .text.iqReadI:0000000000000000 iqReadI
+     /tmp/ccWd78n4.s:903    .text.iqReadTimeout:0000000000000000 iqReadTimeout
+     /tmp/ccWd78n4.s:1146   .text.oqObjectInit:0000000000000000 oqObjectInit
+     /tmp/ccWd78n4.s:1218   .text.oqResetI:0000000000000000 oqResetI
+     /tmp/ccWd78n4.s:1261   .text.oqPutI:0000000000000000 oqPutI
+     /tmp/ccWd78n4.s:1359   .text.oqPutTimeout:0000000000000000 oqPutTimeout
+     /tmp/ccWd78n4.s:1545   .text.oqGetI:0000000000000000 oqGetI
+     /tmp/ccWd78n4.s:1640   .text.oqWriteI:0000000000000000 oqWriteI
+     /tmp/ccWd78n4.s:1715   .text.oqWriteTimeout:0000000000000000 oqWriteTimeout
 
 UNDEFINED SYMBOLS
 memcpy

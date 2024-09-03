@@ -876,13 +876,13 @@
  283               		.file 15 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/oslib/include/chmemcore.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chcore.c
-     /tmp/ccazMwM6.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccazMwM6.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccazMwM6.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccazMwM6.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccazMwM6.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccazMwM6.s:13     .text._port_switch:0000000000000000 _port_switch
-     /tmp/ccazMwM6.s:221    .text._port_thread_start:0000000000000000 _port_thread_start
+     /tmp/ccZ6169J.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccZ6169J.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccZ6169J.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccZ6169J.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccZ6169J.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccZ6169J.s:13     .text._port_switch:0000000000000000 _port_switch
+     /tmp/ccZ6169J.s:221    .text._port_thread_start:0000000000000000 _port_thread_start
                             *COM*:0000000000000001 __avr_in_isr
 
 UNDEFINED SYMBOLS

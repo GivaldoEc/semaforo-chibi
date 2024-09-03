@@ -2814,30 +2814,30 @@
  892               		.file 24 "/home/givaldo/Documents/ChibiStudio/chibios_stable-21.11.x/os/rt/include/chschd.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_serial.c
-     /tmp/cc5AOfge.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cc5AOfge.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cc5AOfge.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cc5AOfge.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cc5AOfge.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cc5AOfge.s:12     .text._readt:0000000000000000 _readt
-     /tmp/cc5AOfge.s:46     .text._read:0000000000000000 _read
-     /tmp/cc5AOfge.s:81     .text._writet:0000000000000000 _writet
-     /tmp/cc5AOfge.s:114    .text._write:0000000000000000 _write
-     /tmp/cc5AOfge.s:149    .text._gett:0000000000000000 _gett
-     /tmp/cc5AOfge.s:168    .text._get:0000000000000000 _get
-     /tmp/cc5AOfge.s:190    .text._putt:0000000000000000 _putt
-     /tmp/cc5AOfge.s:209    .text._put:0000000000000000 _put
-     /tmp/cc5AOfge.s:231    .text._ctl:0000000000000000 _ctl
-     /tmp/cc5AOfge.s:255    .text.sdInit:0000000000000000 sdInit
-     /tmp/cc5AOfge.s:272    .text.sdObjectInit:0000000000000000 sdObjectInit
-     /tmp/cc5AOfge.s:860    .rodata.vmt:0000000000000000 vmt
-     /tmp/cc5AOfge.s:372    .text.sdStart:0000000000000000 sdStart
-     /tmp/cc5AOfge.s:441    .text.sdStop:0000000000000000 sdStop
-     /tmp/cc5AOfge.s:525    .text.sdIncomingDataI:0000000000000000 sdIncomingDataI
-     /tmp/cc5AOfge.s:624    .text.sdRequestDataI:0000000000000000 sdRequestDataI
-     /tmp/cc5AOfge.s:699    .text.sdPutWouldBlock:0000000000000000 sdPutWouldBlock
-     /tmp/cc5AOfge.s:759    .text.sdGetWouldBlock:0000000000000000 sdGetWouldBlock
-     /tmp/cc5AOfge.s:819    .text.sdControl:0000000000000000 sdControl
+     /tmp/ccuf9O3G.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccuf9O3G.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccuf9O3G.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccuf9O3G.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccuf9O3G.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccuf9O3G.s:12     .text._readt:0000000000000000 _readt
+     /tmp/ccuf9O3G.s:46     .text._read:0000000000000000 _read
+     /tmp/ccuf9O3G.s:81     .text._writet:0000000000000000 _writet
+     /tmp/ccuf9O3G.s:114    .text._write:0000000000000000 _write
+     /tmp/ccuf9O3G.s:149    .text._gett:0000000000000000 _gett
+     /tmp/ccuf9O3G.s:168    .text._get:0000000000000000 _get
+     /tmp/ccuf9O3G.s:190    .text._putt:0000000000000000 _putt
+     /tmp/ccuf9O3G.s:209    .text._put:0000000000000000 _put
+     /tmp/ccuf9O3G.s:231    .text._ctl:0000000000000000 _ctl
+     /tmp/ccuf9O3G.s:255    .text.sdInit:0000000000000000 sdInit
+     /tmp/ccuf9O3G.s:272    .text.sdObjectInit:0000000000000000 sdObjectInit
+     /tmp/ccuf9O3G.s:860    .rodata.vmt:0000000000000000 vmt
+     /tmp/ccuf9O3G.s:372    .text.sdStart:0000000000000000 sdStart
+     /tmp/ccuf9O3G.s:441    .text.sdStop:0000000000000000 sdStop
+     /tmp/ccuf9O3G.s:525    .text.sdIncomingDataI:0000000000000000 sdIncomingDataI
+     /tmp/ccuf9O3G.s:624    .text.sdRequestDataI:0000000000000000 sdRequestDataI
+     /tmp/ccuf9O3G.s:699    .text.sdPutWouldBlock:0000000000000000 sdPutWouldBlock
+     /tmp/ccuf9O3G.s:759    .text.sdGetWouldBlock:0000000000000000 sdGetWouldBlock
+     /tmp/ccuf9O3G.s:819    .text.sdControl:0000000000000000 sdControl
 
 UNDEFINED SYMBOLS
 iqReadTimeout

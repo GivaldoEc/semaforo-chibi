@@ -17,8 +17,6 @@
 #include "ch.h"
 #include "hal.h"
 
-#define LED_PERIODO 10000
-#define BUFFER_SIZE 8
 #define QUEUE_SIZE 128
 
 /* Definições de pinos*/
@@ -46,22 +44,10 @@ static condition_variable_t qempty;
 static condition_variable_t qfull;
 
 
-typedef struct
-{
-  uint8_t events[BUFFER_SIZE];
-  uint8_t head;
-  uint8_t tail;
-  uint8_t size;
-} EventBuffer;
-
-EventBuffer ev_buffer;
-
 void queueInit(void);
 void enqueue(msg_t msg);
 msg_t dequeue(void);
-void bufferPush(EventBuffer *cb, uint8_t event);
-uint8_t bufferPop(EventBuffer *cb);
-uint8_t button_check(ioline_t line);
+uint8_t button_check(ioline_t line, uint8_t button);
 void vt_cb(void *arg);
 
 enum
@@ -69,8 +55,34 @@ enum
   SECUNDARIO = 1,
   PEDESTRE,
   AMB_PRIMARIO,
-  AMB_SECUNDARIO
+  AMB_SECUNDARIO,
+  START,
+  SWITCH
 };
+
+enum
+{
+  VERDE_AMB_PRIM,
+  VERDE_LOCKED_PRIM,
+  VERDE_IDLE_PRIM,
+  AMARELO_PED_PRIM,
+  AMARELO_SEC_PRIM,
+  VERDE_AMB_SEC,
+  VERDE_LOCKED_SEC,
+  AMARELO_PED_SEC,
+  AMARELO_PRIM_SEC,
+  VERDE_AMB_PED,
+  VERDE_LOCKED_PED,
+  PISCANDO_SEC,
+  PISCANDO_PRIM
+};
+
+/* Estado inicial */
+uint8_t g_state = VERDE_LOCKED_PRIM;
+
+/* Flags timers */
+uint8_t main_vt_flag = 0;
+
 
 /*
  * LED blinker thread, times are in milliseconds.
@@ -79,23 +91,91 @@ enum
 static THD_WORKING_AREA(waThread1, 32);
 static THD_FUNCTION(Thread1, arg)
 {
-  virtual_timer_t vt;
-
-  chVTObjectInit(&vt);
-  chVTSet(&vt, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, (void *)&vt);
-
   msg_t ev;
+  virtual_timer_t main_vt;
+
+  chVTObjectInit(&main_vt);
+
+  enqueue(START);
   while (1)
   {
-    ev = dequeue();
-    if (ev == AMB_PRIMARIO){
-      palSetLine(PRIMARIO_VERDE);
-    } else if (ev == AMB_SECUNDARIO){
-      palToggleLine(SECUNDARIO_VERDE);
-    } else if (ev == SECUNDARIO){
-      palSetLine(SECUNDARIO_VERMELHO);
-    } else if (ev == PEDESTRE){
-      palSetLine(PEDESTRE_VERDE);
+    switch (g_state) {
+      case VERDE_LOCKED_PRIM:
+        palClearLine(PRIMARIO_VERMELHO);
+        palSetLine(PRIMARIO_VERDE);
+        palSetLine(SECUNDARIO_VERMELHO);
+        palSetLine(PEDESTRE_VERMELHO);
+        chVTSet(&main_vt, TIME_MS2I(10000), (vtfunc_t)vt_cb, (void *)&main_vt);
+        while (!main_vt_flag) {
+          chThdSleepMilliseconds(100);
+        }
+        main_vt_flag = 0;
+        g_state = VERDE_IDLE_PRIM;
+        break;
+      case VERDE_IDLE_PRIM:
+        ev = dequeue();
+        if (ev == SECUNDARIO || ev == AMB_SECUNDARIO) {
+          g_state = AMARELO_SEC_PRIM;
+          palClearLine(PRIMARIO_VERDE);
+        } else if (ev == PEDESTRE) {
+          g_state = AMARELO_PED_PRIM;
+          palClearLine(PRIMARIO_VERDE);
+        }
+        break;
+      case AMARELO_SEC_PRIM:
+        palSetLine(PRIMARIO_AMARELO);
+        chVTSet(&main_vt, TIME_MS2I(2000), (vtfunc_t)vt_cb, (void *)&main_vt);
+        while (!main_vt_flag) {
+          chThdSleepMilliseconds(100);
+        }
+        main_vt_flag = 0;
+        g_state = VERDE_LOCKED_SEC;
+        palClearLine(PRIMARIO_AMARELO);
+        palSetLine(PRIMARIO_VERMELHO);
+        break;
+      case AMARELO_PED_PRIM:
+        palSetLine(PRIMARIO_AMARELO);
+        chVTSet(&main_vt, TIME_MS2I(2000), (vtfunc_t)vt_cb, (void *)&main_vt);
+        while (!main_vt_flag) {
+          chThdSleepMilliseconds(100);
+        }
+        main_vt_flag = 0;
+        g_state = VERDE_LOCKED_PED;
+        palClearLine(PRIMARIO_AMARELO);
+        palSetLine(PRIMARIO_VERMELHO);
+        break;
+      case VERDE_LOCKED_SEC:
+        palClearLine(SECUNDARIO_VERMELHO);
+        palSetLine(SECUNDARIO_VERDE);
+        chVTSet(&main_vt, TIME_MS2I(6000), (vtfunc_t)vt_cb, (void *)&main_vt);
+        while (!main_vt_flag) {
+          chThdSleepMilliseconds(100);
+        }
+        main_vt_flag = 0;
+        if (qsize > 0) {
+          ev = dequeue();
+        }
+        if (ev == PEDESTRE) {
+          g_state = AMARELO_PED_SEC;
+          palClearLine(SECUNDARIO_VERDE);
+        } else {
+          g_state = AMARELO_PRIM_SEC;
+          palClearLine(SECUNDARIO_VERDE);
+        }
+        break;
+      case AMARELO_PRIM_SEC:
+        palSetLine(SECUNDARIO_AMARELO);
+        chVTSet(&main_vt, TIME_MS2I(2000), (vtfunc_t)vt_cb, (void *)&main_vt);
+        while (!main_vt_flag) {
+          chThdSleepMilliseconds(100);
+        }
+        main_vt_flag = 0;
+        g_state = VERDE_LOCKED_PRIM;
+        palClearLine(SECUNDARIO_AMARELO);
+        palSetLine(SECUNDARIO_VERMELHO);
+        break;
+      default:
+        palSetLine(PEDESTRE_VERDE);
     }
     chThdSleepMilliseconds(100);
   }
@@ -152,19 +232,19 @@ int main(void)
 
   while (1)
   {
-    if (button_check(AMB_SEC))
+    if (button_check(AMB_SEC, 1))
     {
       enqueue(AMB_SECUNDARIO);
     }
-    else if (palReadLine(AMB_PRIM) == PAL_LOW)
+    else if (button_check(AMB_PRIM, 2))
     {
       enqueue(AMB_PRIMARIO);
     }
-    else if (palReadLine(SEC_FLAG) == PAL_LOW)
+    else if (button_check(SEC_FLAG, 3))
     {
       enqueue(SECUNDARIO);
     }
-    else if (palReadLine(PED_FLAG) == PAL_LOW)
+    else if (button_check(PED_FLAG, 4))
     {
       enqueue(PEDESTRE);
     }
@@ -241,18 +321,39 @@ msg_t dequeue(void) {
   return msg;
 }
 
-uint8_t button_check(ioline_t line) {
-  static uint8_t x, w, old_x;
-  x = palReadLine(line);
-  w = x^old_x;
-  old_x = x;
+/* Ficou muito hard coded */
+uint8_t button_check(ioline_t line, uint8_t button) {
+  static uint8_t x1, old_x1, x2, old_x2, x3, old_x3, x4, old_x4;
+  uint8_t w, x;
+
+  if (button == 1) {
+    x1 = palReadLine(line);
+    w = x1^old_x1;
+    old_x1 = x1;
+    x = x1;
+  } else if (button == 2) {
+    x2 = palReadLine(line);
+    w = x2^old_x2;
+    old_x2 = x2;
+    x = x2;
+  } else if (button == 3) {
+    x3 = palReadLine(line);
+    w = x3^old_x3;
+    old_x3 = x3;
+    x = x3;
+  } else if (button == 4) {
+    x4 = palReadLine(line);
+    w = x4^old_x4;
+    old_x4 = x4;
+    x = x4;
+  }
+  
   return w &! x;
 }
 
 void vt_cb(void *arg)
 {
   chSysLockFromISR();
-  palTogglePad(IOPORT2, PORTB_LED1);
-  chVTSetI((virtual_timer_t *)arg, TIME_MS2I(LED_PERIODO / 2), (vtfunc_t)vt_cb, arg);
+  main_vt_flag = 1;
   chSysUnlockFromISR();
 }

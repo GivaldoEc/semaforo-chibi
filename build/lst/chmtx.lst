@@ -3078,20 +3078,20 @@
  1209               		.file 17 "../../os/oslib/include/chmemcore.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chmtx.c
-     /tmp/cczD3fq7.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cczD3fq7.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cczD3fq7.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cczD3fq7.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cczD3fq7.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cczD3fq7.s:13     .text.chMtxObjectInit:0000000000000000 chMtxObjectInit
-     /tmp/cczD3fq7.s:49     .text.chMtxLockS:0000000000000000 chMtxLockS
-     /tmp/cczD3fq7.s:455    .text.chMtxLock:0000000000000000 chMtxLock
-     /tmp/cczD3fq7.s:503    .text.chMtxTryLock:0000000000000000 chMtxTryLock
-     /tmp/cczD3fq7.s:611    .text.chMtxTryLockS:0000000000000000 chMtxTryLockS
-     /tmp/cczD3fq7.s:668    .text.chMtxUnlock:0000000000000000 chMtxUnlock
-     /tmp/cczD3fq7.s:856    .text.chMtxUnlockS:0000000000000000 chMtxUnlockS
-     /tmp/cczD3fq7.s:1003   .text.chMtxUnlockAllS:0000000000000000 chMtxUnlockAllS
-     /tmp/cczD3fq7.s:1153   .text.chMtxUnlockAll:0000000000000000 chMtxUnlockAll
+     /tmp/cccS5rqW.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cccS5rqW.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cccS5rqW.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cccS5rqW.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cccS5rqW.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cccS5rqW.s:13     .text.chMtxObjectInit:0000000000000000 chMtxObjectInit
+     /tmp/cccS5rqW.s:49     .text.chMtxLockS:0000000000000000 chMtxLockS
+     /tmp/cccS5rqW.s:455    .text.chMtxLock:0000000000000000 chMtxLock
+     /tmp/cccS5rqW.s:503    .text.chMtxTryLock:0000000000000000 chMtxTryLock
+     /tmp/cccS5rqW.s:611    .text.chMtxTryLockS:0000000000000000 chMtxTryLockS
+     /tmp/cccS5rqW.s:668    .text.chMtxUnlock:0000000000000000 chMtxUnlock
+     /tmp/cccS5rqW.s:856    .text.chMtxUnlockS:0000000000000000 chMtxUnlockS
+     /tmp/cccS5rqW.s:1003   .text.chMtxUnlockAllS:0000000000000000 chMtxUnlockAllS
+     /tmp/cccS5rqW.s:1153   .text.chMtxUnlockAll:0000000000000000 chMtxUnlockAll
 
 UNDEFINED SYMBOLS
 ch0

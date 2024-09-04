@@ -16,6 +16,7 @@
 
 #include "ch.h"
 #include "hal.h"
+#include "chprintf.h"
 
 #define QUEUE_SIZE 128
 
@@ -56,8 +57,6 @@ enum
   PEDESTRE,
   AMB_PRIMARIO,
   AMB_SECUNDARIO,
-  START,
-  SWITCH
 };
 
 enum
@@ -82,7 +81,11 @@ uint8_t g_state = VERDE_LOCKED_PRIM;
 
 /* Flags timers */
 uint8_t main_vt_flag = 0;
+uint8_t flag_red_vt_prim = 1;
+uint8_t flag_red_vt_sec= 1;
 
+/* Flags ambulancias */
+uint8_t flag_amb_prim, flag_amb_sec;
 
 /*
  * LED blinker thread, times are in milliseconds.
@@ -95,28 +98,41 @@ static THD_FUNCTION(Thread1, arg)
   virtual_timer_t main_vt;
 
   chVTObjectInit(&main_vt);
-
+  
   while (1)
   {
     switch (g_state) {
       case VERDE_LOCKED_PRIM:
+        //flag_red_vt_prim = 0;
         palClearLine(PRIMARIO_VERMELHO);
         palSetLine(PRIMARIO_VERDE);
         palSetLine(SECUNDARIO_VERMELHO);
         palSetLine(PEDESTRE_VERMELHO);
         chVTSet(&main_vt, TIME_MS2I(10000), (vtfunc_t)vt_cb, (void *)&main_vt);
         while (!main_vt_flag) {
+          if ((*rdp == AMB_SECUNDARIO) && flag_red_vt_sec) {
+            chVTReset(&main_vt);
+            main_vt_flag = 1;
+          }
           chThdSleepMilliseconds(100);
         }
         main_vt_flag = 0;
         g_state = VERDE_IDLE_PRIM;
         break;
       case VERDE_IDLE_PRIM:
+        chprintf((BaseSequentialStream *)&SD1, "QSIZE1: %d\n", (char)qsize);
         ev = dequeue();
-        if (ev == SECUNDARIO || ev == AMB_SECUNDARIO) {
+        chprintf((BaseSequentialStream *)&SD1, "QSIZE2: %d\n", (char)qsize);
+        if (ev == AMB_PRIMARIO) {
+          flag_amb_prim = !flag_amb_prim;
+        }
+        if ((ev == SECUNDARIO || ev == AMB_SECUNDARIO) &! flag_amb_prim) {
+          if (ev == AMB_SECUNDARIO) {
+            flag_amb_sec = 1;
+          }
           g_state = AMARELO_SEC_PRIM;
           palClearLine(PRIMARIO_VERDE);
-        } else if (ev == PEDESTRE) {
+        } else if (ev == PEDESTRE &! flag_amb_prim) {
           g_state = AMARELO_PED_PRIM;
           palClearLine(PRIMARIO_VERDE);
         }
@@ -144,13 +160,30 @@ static THD_FUNCTION(Thread1, arg)
         palSetLine(PRIMARIO_VERMELHO);
         break;
       case VERDE_LOCKED_SEC:
+        //flag_red_vt_sec = 0;
         palClearLine(SECUNDARIO_VERMELHO);
         palSetLine(SECUNDARIO_VERDE);
         chVTSet(&main_vt, TIME_MS2I(6000), (vtfunc_t)vt_cb, (void *)&main_vt);
         while (!main_vt_flag) {
+          if ((*rdp == AMB_PRIMARIO) && flag_red_vt_prim) {
+            flag_amb_prim = 1;
+            chVTReset(&main_vt);
+            main_vt_flag = 1;
+          } else if ((*rdp == AMB_SECUNDARIO) && flag_red_vt_sec && flag_amb_sec == 0) {
+            dequeue();
+            flag_amb_sec = 1;
+            chprintf((BaseSequentialStream *)&SD1, "CHEGUEI AQUI\n", (char)qsize);
+          }
           chThdSleepMilliseconds(100);
         }
+        chprintf((BaseSequentialStream *)&SD1, "QSIZE3: %d\n", (char)qsize);
         main_vt_flag = 0;
+        while (flag_amb_sec) {
+          ev = dequeue();
+          if (ev == AMB_SECUNDARIO) {
+            flag_amb_sec = 0;
+          }
+        }
         if (qsize > 0) {
           ev = dequeue(); /* Caso esse evento nao seja um dos esperados por esse estado, será perdido (CONFERIR SE É ASSIM) */
         }
@@ -189,13 +222,22 @@ static THD_FUNCTION(Thread1, arg)
         palSetLine(PEDESTRE_VERDE);
         chVTSet(&main_vt, TIME_MS2I(3000), (vtfunc_t)vt_cb, (void *)&main_vt);
         while (!main_vt_flag) {
+          if ((*rdp == AMB_PRIMARIO) && flag_red_vt_prim) {
+            flag_amb_prim = 1;
+            chVTReset(&main_vt);
+            main_vt_flag = 1;
+          } else if ((*rdp == AMB_SECUNDARIO) && flag_red_vt_sec) {
+            flag_amb_sec = 1;
+            chVTReset(&main_vt);
+            main_vt_flag = 1;
+          }
           chThdSleepMilliseconds(100);
         }
         main_vt_flag = 0;
         if (qsize > 0) {
           ev = dequeue(); /* Caso esse evento nao seja um dos esperados por esse estado, será perdido (CONFERIR SE É ASSIM) */
         }
-        if (ev == SECUNDARIO) {
+        if (ev == SECUNDARIO || ev == AMB_SECUNDARIO) {
           g_state = PISCANDO_SEC;
           palClearLine(PEDESTRE_VERDE);
         } else {
@@ -207,7 +249,7 @@ static THD_FUNCTION(Thread1, arg)
         chVTSet(&main_vt, TIME_MS2I(2000), (vtfunc_t)vt_cb, (void *)&main_vt);
         while (!main_vt_flag) {
           palToggleLine(PEDESTRE_VERMELHO);
-          chThdSleepMilliseconds(250);
+          chThdSleepMilliseconds(125);
         }
         main_vt_flag = 0;
         g_state = VERDE_LOCKED_SEC;
@@ -217,7 +259,7 @@ static THD_FUNCTION(Thread1, arg)
         chVTSet(&main_vt, TIME_MS2I(2000), (vtfunc_t)vt_cb, (void *)&main_vt);
         while (!main_vt_flag) {
           palToggleLine(PEDESTRE_VERMELHO);
-          chThdSleepMilliseconds(250);
+          chThdSleepMilliseconds(125);
         }
         main_vt_flag = 0;
         g_state = VERDE_LOCKED_PRIM;
@@ -235,6 +277,10 @@ static THD_FUNCTION(Thread1, arg)
  */
 int main(void)
 {
+  SerialConfig config = {.sc_brr = UBRR2x(9600),
+                         .sc_bits_per_char = USART_CHAR_SIZE_8
+  };
+
   queueInit();
   /*
    * System initializations.
@@ -245,6 +291,8 @@ int main(void)
    */
   halInit();
   chSysInit();
+
+  sdStart(&SD1, &config);
 
   /* Configuração dos botões */
   palSetLineMode(PED_FLAG, PAL_MODE_INPUT_PULLUP);

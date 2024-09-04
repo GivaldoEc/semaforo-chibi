@@ -2138,16 +2138,16 @@
  1004               		.file 17 "../../os/oslib/include/chobjcaches.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chobjcaches.c
-     /tmp/ccf6omq8.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccf6omq8.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccf6omq8.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccf6omq8.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccf6omq8.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccf6omq8.s:13     .text.chCacheObjectInit:0000000000000000 chCacheObjectInit
-     /tmp/ccf6omq8.s:287    .text.chCacheGetObject:0000000000000000 chCacheGetObject
-     /tmp/ccf6omq8.s:718    .text.chCacheReleaseObjectI:0000000000000000 chCacheReleaseObjectI
-     /tmp/ccf6omq8.s:892    .text.chCacheReadObject:0000000000000000 chCacheReadObject
-     /tmp/ccf6omq8.s:941    .text.chCacheWriteObject:0000000000000000 chCacheWriteObject
+     /tmp/ccstfGf2.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccstfGf2.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccstfGf2.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccstfGf2.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccstfGf2.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccstfGf2.s:13     .text.chCacheObjectInit:0000000000000000 chCacheObjectInit
+     /tmp/ccstfGf2.s:287    .text.chCacheGetObject:0000000000000000 chCacheGetObject
+     /tmp/ccstfGf2.s:718    .text.chCacheReleaseObjectI:0000000000000000 chCacheReleaseObjectI
+     /tmp/ccstfGf2.s:892    .text.chCacheReadObject:0000000000000000 chCacheReadObject
+     /tmp/ccstfGf2.s:941    .text.chCacheWriteObject:0000000000000000 chCacheWriteObject
 
 UNDEFINED SYMBOLS
 chSemObjectInit

@@ -3799,21 +3799,21 @@
  1911               		.file 17 "../../os/rt/include/chvt.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chvt.c
-     /tmp/ccCLN4qL.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccCLN4qL.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccCLN4qL.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccCLN4qL.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccCLN4qL.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccCLN4qL.s:12     .text.vt_insert_first.constprop.5:0000000000000000 vt_insert_first.constprop.5
-     /tmp/ccCLN4qL.s:286    .text.vt_set_alarm:0000000000000000 vt_set_alarm
-     /tmp/ccCLN4qL.s:492    .text.vt_enqueue.constprop.4:0000000000000000 vt_enqueue.constprop.4
-     /tmp/ccCLN4qL.s:763    .text.chVTDoSetI:0000000000000000 chVTDoSetI
-     /tmp/ccCLN4qL.s:807    .text.chVTDoSetContinuousI:0000000000000000 chVTDoSetContinuousI
-     /tmp/ccCLN4qL.s:851    .text.chVTDoResetI:0000000000000000 chVTDoResetI
-     /tmp/ccCLN4qL.s:1073   .text.chVTGetRemainingIntervalI:0000000000000000 chVTGetRemainingIntervalI
-     /tmp/ccCLN4qL.s:1218   .text.chVTDoTickI:0000000000000000 chVTDoTickI
-     /tmp/ccCLN4qL.s:1702   .text.chVTGetTimeStampI:0000000000000000 chVTGetTimeStampI
-     /tmp/ccCLN4qL.s:1852   .text.chVTResetTimeStampI:0000000000000000 chVTResetTimeStampI
+     /tmp/ccvuK2I2.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccvuK2I2.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccvuK2I2.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccvuK2I2.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccvuK2I2.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccvuK2I2.s:12     .text.vt_insert_first.constprop.5:0000000000000000 vt_insert_first.constprop.5
+     /tmp/ccvuK2I2.s:286    .text.vt_set_alarm:0000000000000000 vt_set_alarm
+     /tmp/ccvuK2I2.s:492    .text.vt_enqueue.constprop.4:0000000000000000 vt_enqueue.constprop.4
+     /tmp/ccvuK2I2.s:763    .text.chVTDoSetI:0000000000000000 chVTDoSetI
+     /tmp/ccvuK2I2.s:807    .text.chVTDoSetContinuousI:0000000000000000 chVTDoSetContinuousI
+     /tmp/ccvuK2I2.s:851    .text.chVTDoResetI:0000000000000000 chVTDoResetI
+     /tmp/ccvuK2I2.s:1073   .text.chVTGetRemainingIntervalI:0000000000000000 chVTGetRemainingIntervalI
+     /tmp/ccvuK2I2.s:1218   .text.chVTDoTickI:0000000000000000 chVTDoTickI
+     /tmp/ccvuK2I2.s:1702   .text.chVTGetTimeStampI:0000000000000000 chVTGetTimeStampI
+     /tmp/ccvuK2I2.s:1852   .text.chVTResetTimeStampI:0000000000000000 chVTResetTimeStampI
 
 UNDEFINED SYMBOLS
 ch0

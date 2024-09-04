@@ -876,13 +876,13 @@
  283               		.file 15 "../../os/oslib/include/chmemcore.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chcore.c
-     /tmp/cc6e50fM.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cc6e50fM.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cc6e50fM.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cc6e50fM.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cc6e50fM.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cc6e50fM.s:13     .text._port_switch:0000000000000000 _port_switch
-     /tmp/cc6e50fM.s:221    .text._port_thread_start:0000000000000000 _port_thread_start
+     /tmp/cckZ8g2N.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cckZ8g2N.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cckZ8g2N.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cckZ8g2N.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cckZ8g2N.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cckZ8g2N.s:13     .text._port_switch:0000000000000000 _port_switch
+     /tmp/cckZ8g2N.s:221    .text._port_thread_start:0000000000000000 _port_thread_start
                             *COM*:0000000000000001 __avr_in_isr
 
 UNDEFINED SYMBOLS

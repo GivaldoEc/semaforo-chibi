@@ -1,4 +1,6 @@
-build/obj/main.o: main.c ../../os/rt/include/ch.h \
+build/obj/chprintf.o: ../../os/hal/lib/streams/chprintf.c \
+ ../../os/hal/include/hal.h ../../os/common/portability/GCC/ccportab.h \
+ ../../os/hal/osal/rt-nil/osal.h ../../os/rt/include/ch.h \
  ../../os/license/chlicense.h ../../os/license/chversion.h \
  ../../os/license/chcustomer.h cfg/chconf.h \
  ../../os/rt/include/chchecks.h ../../os/rt/include/chrestrictions.h \
@@ -22,9 +24,7 @@ build/obj/main.o: main.c ../../os/rt/include/ch.h \
  ../../os/oslib/include/chpipes.h ../../os/oslib/include/chobjcaches.h \
  ../../os/oslib/include/chdelegates.h ../../os/oslib/include/chjobs.h \
  ../../os/oslib/include/chfactory.h ../../os/rt/include/chdynamic.h \
- ../../os/hal/include/hal.h ../../os/common/portability/GCC/ccportab.h \
- ../../os/hal/osal/rt-nil/osal.h ../../os/hal/boards/ARDUINO_NANO/board.h \
- cfg/halconf.h cfg/mcuconf.h \
+ ../../os/hal/boards/ARDUINO_NANO/board.h cfg/halconf.h cfg/mcuconf.h \
  ../../os/hal/ports/AVR/MEGA/ATMEGAxx/hal_lld.h \
  ../../os/hal/include/hal_objects.h ../../os/hal/include/hal_streams.h \
  ../../os/hal/include/hal_channels.h ../../os/hal/include/hal_files.h \
@@ -50,7 +50,14 @@ build/obj/main.o: main.c ../../os/rt/include/ch.h \
  ../../os/hal/include/hal_st.h \
  ../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h \
  ../../os/hal/include/hal_mmc_spi.h ../../os/hal/include/hal_serial_usb.h \
- ../../os/hal/lib/streams/chprintf.h
+ ../../os/hal/lib/streams/chprintf.h \
+ ../../os/hal/lib/streams/memstreams.h
+
+../../os/hal/include/hal.h:
+
+../../os/common/portability/GCC/ccportab.h:
+
+../../os/hal/osal/rt-nil/osal.h:
 
 ../../os/rt/include/ch.h:
 
@@ -142,12 +149,6 @@ cfg/chconf.h:
 
 ../../os/rt/include/chdynamic.h:
 
-../../os/hal/include/hal.h:
-
-../../os/common/portability/GCC/ccportab.h:
-
-../../os/hal/osal/rt-nil/osal.h:
-
 ../../os/hal/boards/ARDUINO_NANO/board.h:
 
 cfg/halconf.h:
@@ -237,3 +238,5 @@ cfg/mcuconf.h:
 ../../os/hal/include/hal_serial_usb.h:
 
 ../../os/hal/lib/streams/chprintf.h:
+
+../../os/hal/lib/streams/memstreams.h:

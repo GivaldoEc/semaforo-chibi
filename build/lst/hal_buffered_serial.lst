@@ -1265,13 +1265,13 @@
  209               		.file 24 "../../os/hal/ports/AVR/MEGA/LLD/USARTv1/hal_serial_lld.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_buffered_serial.c
-     /tmp/cc648B8U.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cc648B8U.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cc648B8U.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cc648B8U.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cc648B8U.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cc648B8U.s:13     .text.bsIncomingDataI:0000000000000000 bsIncomingDataI
-     /tmp/cc648B8U.s:114    .text.bsRequestDataI:0000000000000000 bsRequestDataI
+     /tmp/ccwfc63D.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccwfc63D.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccwfc63D.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccwfc63D.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccwfc63D.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccwfc63D.s:13     .text.bsIncomingDataI:0000000000000000 bsIncomingDataI
+     /tmp/ccwfc63D.s:114    .text.bsRequestDataI:0000000000000000 bsRequestDataI
 
 UNDEFINED SYMBOLS
 iqPutI

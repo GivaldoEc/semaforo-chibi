@@ -531,18 +531,18 @@
  206               		.file 23 "../../os/hal/ports/AVR/MEGA/LLD/USARTv1/hal_serial_lld.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_st.c
-     /tmp/ccNNszbN.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccNNszbN.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccNNszbN.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccNNszbN.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccNNszbN.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccNNszbN.s:13     .text.stInit:0000000000000000 stInit
-     /tmp/ccNNszbN.s:31     .text.stGetCounter:0000000000000000 stGetCounter
-     /tmp/ccNNszbN.s:56     .text.stStartAlarm:0000000000000000 stStartAlarm
-     /tmp/ccNNszbN.s:89     .text.stStopAlarm:0000000000000000 stStopAlarm
-     /tmp/ccNNszbN.s:112    .text.stSetAlarm:0000000000000000 stSetAlarm
-     /tmp/ccNNszbN.s:138    .text.stGetAlarm:0000000000000000 stGetAlarm
-     /tmp/ccNNszbN.s:162    .text.stIsAlarmActive:0000000000000000 stIsAlarmActive
+     /tmp/cc8elAfQ.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc8elAfQ.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc8elAfQ.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc8elAfQ.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc8elAfQ.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc8elAfQ.s:13     .text.stInit:0000000000000000 stInit
+     /tmp/cc8elAfQ.s:31     .text.stGetCounter:0000000000000000 stGetCounter
+     /tmp/cc8elAfQ.s:56     .text.stStartAlarm:0000000000000000 stStartAlarm
+     /tmp/cc8elAfQ.s:89     .text.stStopAlarm:0000000000000000 stStopAlarm
+     /tmp/cc8elAfQ.s:112    .text.stSetAlarm:0000000000000000 stSetAlarm
+     /tmp/cc8elAfQ.s:138    .text.stGetAlarm:0000000000000000 stGetAlarm
+     /tmp/cc8elAfQ.s:162    .text.stIsAlarmActive:0000000000000000 stIsAlarmActive
 
 UNDEFINED SYMBOLS
 st_lld_init

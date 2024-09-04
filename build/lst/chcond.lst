@@ -2595,20 +2595,20 @@
  850               		.file 18 "../../os/oslib/include/chmemcore.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chcond.c
-     /tmp/ccLmFHnq.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccLmFHnq.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccLmFHnq.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccLmFHnq.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccLmFHnq.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccLmFHnq.s:13     .text.chCondObjectInit:0000000000000000 chCondObjectInit
-     /tmp/ccLmFHnq.s:45     .text.chCondSignal:0000000000000000 chCondSignal
-     /tmp/ccLmFHnq.s:137    .text.chCondSignalI:0000000000000000 chCondSignalI
-     /tmp/ccLmFHnq.s:211    .text.chCondBroadcast:0000000000000000 chCondBroadcast
-     /tmp/ccLmFHnq.s:336    .text.chCondBroadcastI:0000000000000000 chCondBroadcastI
-     /tmp/ccLmFHnq.s:428    .text.chCondWaitS:0000000000000000 chCondWaitS
-     /tmp/ccLmFHnq.s:575    .text.chCondWait:0000000000000000 chCondWait
-     /tmp/ccLmFHnq.s:622    .text.chCondWaitTimeoutS:0000000000000000 chCondWaitTimeoutS
-     /tmp/ccLmFHnq.s:793    .text.chCondWaitTimeout:0000000000000000 chCondWaitTimeout
+     /tmp/cce6GMGU.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cce6GMGU.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cce6GMGU.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cce6GMGU.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cce6GMGU.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cce6GMGU.s:13     .text.chCondObjectInit:0000000000000000 chCondObjectInit
+     /tmp/cce6GMGU.s:45     .text.chCondSignal:0000000000000000 chCondSignal
+     /tmp/cce6GMGU.s:137    .text.chCondSignalI:0000000000000000 chCondSignalI
+     /tmp/cce6GMGU.s:211    .text.chCondBroadcast:0000000000000000 chCondBroadcast
+     /tmp/cce6GMGU.s:336    .text.chCondBroadcastI:0000000000000000 chCondBroadcastI
+     /tmp/cce6GMGU.s:428    .text.chCondWaitS:0000000000000000 chCondWaitS
+     /tmp/cce6GMGU.s:575    .text.chCondWait:0000000000000000 chCondWait
+     /tmp/cce6GMGU.s:622    .text.chCondWaitTimeoutS:0000000000000000 chCondWaitTimeoutS
+     /tmp/cce6GMGU.s:793    .text.chCondWaitTimeout:0000000000000000 chCondWaitTimeout
 
 UNDEFINED SYMBOLS
 chSchWakeupS

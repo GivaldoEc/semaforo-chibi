@@ -4264,30 +4264,30 @@
  1974               		.file 22 "../../os/hal/include/hal_serial.h"
  1975               		.file 23 "../../os/hal/ports/AVR/MEGA/LLD/USARTv1/hal_serial_lld.h"
  1976               		.file 24 "../../os/rt/include/chthreads.h"
- 1977               		.file 25 "<embutido>"
+ 1977               		.file 25 "<built-in>"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_queues.c
-     /tmp/ccaSLuNY.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccaSLuNY.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccaSLuNY.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccaSLuNY.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccaSLuNY.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccaSLuNY.s:12     .text.iq_read:0000000000000000 iq_read
-     /tmp/ccaSLuNY.s:180    .text.oq_write:0000000000000000 oq_write
-     /tmp/ccaSLuNY.s:349    .text.iqObjectInit:0000000000000000 iqObjectInit
-     /tmp/ccaSLuNY.s:422    .text.iqResetI:0000000000000000 iqResetI
-     /tmp/ccaSLuNY.s:460    .text.iqPutI:0000000000000000 iqPutI
-     /tmp/ccaSLuNY.s:541    .text.iqGetI:0000000000000000 iqGetI
-     /tmp/ccaSLuNY.s:644    .text.iqGetTimeout:0000000000000000 iqGetTimeout
-     /tmp/ccaSLuNY.s:828    .text.iqReadI:0000000000000000 iqReadI
-     /tmp/ccaSLuNY.s:903    .text.iqReadTimeout:0000000000000000 iqReadTimeout
-     /tmp/ccaSLuNY.s:1146   .text.oqObjectInit:0000000000000000 oqObjectInit
-     /tmp/ccaSLuNY.s:1218   .text.oqResetI:0000000000000000 oqResetI
-     /tmp/ccaSLuNY.s:1261   .text.oqPutI:0000000000000000 oqPutI
-     /tmp/ccaSLuNY.s:1359   .text.oqPutTimeout:0000000000000000 oqPutTimeout
-     /tmp/ccaSLuNY.s:1545   .text.oqGetI:0000000000000000 oqGetI
-     /tmp/ccaSLuNY.s:1640   .text.oqWriteI:0000000000000000 oqWriteI
-     /tmp/ccaSLuNY.s:1715   .text.oqWriteTimeout:0000000000000000 oqWriteTimeout
+     /tmp/ccTwSIbe.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccTwSIbe.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccTwSIbe.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccTwSIbe.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccTwSIbe.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccTwSIbe.s:12     .text.iq_read:0000000000000000 iq_read
+     /tmp/ccTwSIbe.s:180    .text.oq_write:0000000000000000 oq_write
+     /tmp/ccTwSIbe.s:349    .text.iqObjectInit:0000000000000000 iqObjectInit
+     /tmp/ccTwSIbe.s:422    .text.iqResetI:0000000000000000 iqResetI
+     /tmp/ccTwSIbe.s:460    .text.iqPutI:0000000000000000 iqPutI
+     /tmp/ccTwSIbe.s:541    .text.iqGetI:0000000000000000 iqGetI
+     /tmp/ccTwSIbe.s:644    .text.iqGetTimeout:0000000000000000 iqGetTimeout
+     /tmp/ccTwSIbe.s:828    .text.iqReadI:0000000000000000 iqReadI
+     /tmp/ccTwSIbe.s:903    .text.iqReadTimeout:0000000000000000 iqReadTimeout
+     /tmp/ccTwSIbe.s:1146   .text.oqObjectInit:0000000000000000 oqObjectInit
+     /tmp/ccTwSIbe.s:1218   .text.oqResetI:0000000000000000 oqResetI
+     /tmp/ccTwSIbe.s:1261   .text.oqPutI:0000000000000000 oqPutI
+     /tmp/ccTwSIbe.s:1359   .text.oqPutTimeout:0000000000000000 oqPutTimeout
+     /tmp/ccTwSIbe.s:1545   .text.oqGetI:0000000000000000 oqGetI
+     /tmp/ccTwSIbe.s:1640   .text.oqWriteI:0000000000000000 oqWriteI
+     /tmp/ccTwSIbe.s:1715   .text.oqWriteTimeout:0000000000000000 oqWriteTimeout
 
 UNDEFINED SYMBOLS
 memcpy

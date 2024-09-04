@@ -1244,16 +1244,16 @@
  524               		.file 17 "/usr/lib/avr/include/string.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chregistry.c
-     /tmp/ccPK3ttd.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccPK3ttd.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccPK3ttd.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccPK3ttd.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccPK3ttd.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccPK3ttd.s:13     .text.chRegFirstThread:0000000000000000 chRegFirstThread
-     /tmp/ccPK3ttd.s:64     .text.chRegNextThread:0000000000000000 chRegNextThread
-     /tmp/ccPK3ttd.s:132    .text.chRegFindThreadByName:0000000000000000 chRegFindThreadByName
-     /tmp/ccPK3ttd.s:308    .text.chRegFindThreadByPointer:0000000000000000 chRegFindThreadByPointer
-     /tmp/ccPK3ttd.s:465    .rodata.ch_debug:0000000000000000 ch_debug
+     /tmp/ccMn40I8.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccMn40I8.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccMn40I8.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccMn40I8.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccMn40I8.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccMn40I8.s:13     .text.chRegFirstThread:0000000000000000 chRegFirstThread
+     /tmp/ccMn40I8.s:64     .text.chRegNextThread:0000000000000000 chRegNextThread
+     /tmp/ccMn40I8.s:132    .text.chRegFindThreadByName:0000000000000000 chRegFindThreadByName
+     /tmp/ccMn40I8.s:308    .text.chRegFindThreadByPointer:0000000000000000 chRegFindThreadByPointer
+     /tmp/ccMn40I8.s:465    .rodata.ch_debug:0000000000000000 ch_debug
 
 UNDEFINED SYMBOLS
 ch0

@@ -458,17 +458,17 @@
  228               		.file 22 "../../os/hal/ports/AVR/MEGA/LLD/USARTv1/hal_serial_lld.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_pal_lld.c
-     /tmp/ccaWeetp.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccaWeetp.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccaWeetp.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccaWeetp.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccaWeetp.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccaWeetp.s:13     .text._pal_lld_init:0000000000000000 _pal_lld_init
-     /tmp/ccaWeetp.s:52     .text._pal_lld_setgroupmode:0000000000000000 _pal_lld_setgroupmode
-     /tmp/ccaWeetp.s:129    .text._pal_lld_enablepadevent:0000000000000000 _pal_lld_enablepadevent
-     /tmp/ccaWeetp.s:147    .text._pal_lld_setlineid:0000000000000000 _pal_lld_setlineid
-     /tmp/ccaWeetp.s:171    .text._pal_lld_getportfromline:0000000000000000 _pal_lld_getportfromline
-     /tmp/ccaWeetp.s:190    .text._pal_lld_getpadfromline:0000000000000000 _pal_lld_getpadfromline
+     /tmp/cc6y3eI3.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc6y3eI3.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc6y3eI3.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc6y3eI3.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc6y3eI3.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc6y3eI3.s:13     .text._pal_lld_init:0000000000000000 _pal_lld_init
+     /tmp/cc6y3eI3.s:52     .text._pal_lld_setgroupmode:0000000000000000 _pal_lld_setgroupmode
+     /tmp/cc6y3eI3.s:129    .text._pal_lld_enablepadevent:0000000000000000 _pal_lld_enablepadevent
+     /tmp/cc6y3eI3.s:147    .text._pal_lld_setlineid:0000000000000000 _pal_lld_setlineid
+     /tmp/cc6y3eI3.s:171    .text._pal_lld_getportfromline:0000000000000000 _pal_lld_getportfromline
+     /tmp/cc6y3eI3.s:190    .text._pal_lld_getpadfromline:0000000000000000 _pal_lld_getpadfromline
                             *COM*:0000000000000040 _pal_events
 
 UNDEFINED SYMBOLS

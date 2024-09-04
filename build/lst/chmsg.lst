@@ -1948,16 +1948,16 @@
  457               		.file 18 "../../os/rt/include/chschd.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chmsg.c
-     /tmp/cc3z1F1i.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cc3z1F1i.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cc3z1F1i.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cc3z1F1i.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cc3z1F1i.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cc3z1F1i.s:13     .text.chMsgSend:0000000000000000 chMsgSend
-     /tmp/cc3z1F1i.s:126    .text.chMsgWaitS:0000000000000000 chMsgWaitS
-     /tmp/cc3z1F1i.s:215    .text.chMsgWaitTimeoutS:0000000000000000 chMsgWaitTimeoutS
-     /tmp/cc3z1F1i.s:317    .text.chMsgPollS:0000000000000000 chMsgPollS
-     /tmp/cc3z1F1i.s:394    .text.chMsgRelease:0000000000000000 chMsgRelease
+     /tmp/ccwdNPZX.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccwdNPZX.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccwdNPZX.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccwdNPZX.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccwdNPZX.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccwdNPZX.s:13     .text.chMsgSend:0000000000000000 chMsgSend
+     /tmp/ccwdNPZX.s:126    .text.chMsgWaitS:0000000000000000 chMsgWaitS
+     /tmp/ccwdNPZX.s:215    .text.chMsgWaitTimeoutS:0000000000000000 chMsgWaitTimeoutS
+     /tmp/ccwdNPZX.s:317    .text.chMsgPollS:0000000000000000 chMsgPollS
+     /tmp/ccwdNPZX.s:394    .text.chMsgRelease:0000000000000000 chMsgRelease
 
 UNDEFINED SYMBOLS
 ch0

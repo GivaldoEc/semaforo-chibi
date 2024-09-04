@@ -2060,18 +2060,18 @@
  1021               		.file 17 "../../os/oslib/include/chmemcore.h"
  1022               		.file 18 "../../os/rt/include/chthreads.h"
  1023               		.file 19 "../../os/rt/include/chschd.h"
- 1024               		.file 20 "<embutido>"
+ 1024               		.file 20 "<built-in>"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chpipes.c
-     /tmp/ccRoivVm.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccRoivVm.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccRoivVm.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccRoivVm.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccRoivVm.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccRoivVm.s:13     .text.chPipeObjectInit:0000000000000000 chPipeObjectInit
-     /tmp/ccRoivVm.s:85     .text.chPipeReset:0000000000000000 chPipeReset
-     /tmp/ccRoivVm.s:196    .text.chPipeWriteTimeout:0000000000000000 chPipeWriteTimeout
-     /tmp/ccRoivVm.s:612    .text.chPipeReadTimeout:0000000000000000 chPipeReadTimeout
+     /tmp/ccsHeuUO.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccsHeuUO.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccsHeuUO.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccsHeuUO.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccsHeuUO.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccsHeuUO.s:13     .text.chPipeObjectInit:0000000000000000 chPipeObjectInit
+     /tmp/ccsHeuUO.s:85     .text.chPipeReset:0000000000000000 chPipeReset
+     /tmp/ccsHeuUO.s:196    .text.chPipeWriteTimeout:0000000000000000 chPipeWriteTimeout
+     /tmp/ccsHeuUO.s:612    .text.chPipeReadTimeout:0000000000000000 chPipeReadTimeout
 
 UNDEFINED SYMBOLS
 chMtxObjectInit

@@ -222,12 +222,12 @@
   68               		.file 26 "../../os/hal/osal/rt-nil/osal.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal.c
-     /tmp/cc6YCdIb.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cc6YCdIb.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cc6YCdIb.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cc6YCdIb.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cc6YCdIb.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cc6YCdIb.s:13     .text.halInit:0000000000000000 halInit
+     /tmp/ccWfoOSp.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccWfoOSp.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccWfoOSp.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccWfoOSp.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccWfoOSp.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccWfoOSp.s:13     .text.halInit:0000000000000000 halInit
 
 UNDEFINED SYMBOLS
 hal_lld_init

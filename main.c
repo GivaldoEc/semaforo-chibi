@@ -61,6 +61,7 @@ void enqueue(msg_t msg);
 msg_t dequeue(void);
 void bufferPush(EventBuffer *cb, uint8_t event);
 uint8_t bufferPop(EventBuffer *cb);
+uint8_t button_check(ioline_t line);
 void vt_cb(void *arg);
 
 enum
@@ -151,7 +152,7 @@ int main(void)
 
   while (1)
   {
-    if (palReadLine(AMB_SEC) == PAL_LOW)
+    if (button_check(AMB_SEC))
     {
       enqueue(AMB_SECUNDARIO);
     }
@@ -238,6 +239,14 @@ msg_t dequeue(void) {
   chMtxUnlock(&qmtx);
  
   return msg;
+}
+
+uint8_t button_check(ioline_t line) {
+  static uint8_t x, w, old_x;
+  x = palReadLine(line);
+  w = x^old_x;
+  old_x = x;
+  return w &! x;
 }
 
 void vt_cb(void *arg)

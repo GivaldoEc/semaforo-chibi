@@ -93,10 +93,11 @@ static THD_FUNCTION(Thread1, arg)
 {
   msg_t ev;
   virtual_timer_t main_vt;
+  virtual_timer_t blink_vt;
 
   chVTObjectInit(&main_vt);
+  chVTObjectInit(&blink_vt);
 
-  enqueue(START);
   while (1)
   {
     switch (g_state) {
@@ -153,7 +154,7 @@ static THD_FUNCTION(Thread1, arg)
         }
         main_vt_flag = 0;
         if (qsize > 0) {
-          ev = dequeue();
+          ev = dequeue(); /* Caso esse evento nao seja um dos esperados por esse estado, será perdido (CONFERIR SE É ASSIM) */
         }
         if (ev == PEDESTRE) {
           g_state = AMARELO_PED_SEC;
@@ -173,6 +174,56 @@ static THD_FUNCTION(Thread1, arg)
         g_state = VERDE_LOCKED_PRIM;
         palClearLine(SECUNDARIO_AMARELO);
         palSetLine(SECUNDARIO_VERMELHO);
+        break;
+      case AMARELO_PED_SEC:
+        palSetLine(SECUNDARIO_AMARELO);
+        chVTSet(&main_vt, TIME_MS2I(2000), (vtfunc_t)vt_cb, (void *)&main_vt);
+        while (!main_vt_flag) {
+          chThdSleepMilliseconds(100);
+        }
+        main_vt_flag = 0;
+        g_state = VERDE_LOCKED_PED;
+        palClearLine(SECUNDARIO_AMARELO);
+        palSetLine(SECUNDARIO_VERMELHO);
+        break;
+      case VERDE_LOCKED_PED:
+        palClearLine(PEDESTRE_VERMELHO);
+        palSetLine(PEDESTRE_VERDE);
+        chVTSet(&main_vt, TIME_MS2I(3000), (vtfunc_t)vt_cb, (void *)&main_vt);
+        while (!main_vt_flag) {
+          chThdSleepMilliseconds(100);
+        }
+        main_vt_flag = 0;
+        if (qsize > 0) {
+          ev = dequeue(); /* Caso esse evento nao seja um dos esperados por esse estado, será perdido (CONFERIR SE É ASSIM) */
+        }
+        if (ev == SECUNDARIO) {
+          g_state = PISCANDO_SEC;
+          palClearLine(PEDESTRE_VERDE);
+        } else {
+          g_state = PISCANDO_PRIM;
+          palClearLine(PEDESTRE_VERDE);
+        }
+        break;
+      case PISCANDO_SEC:
+        chVTSet(&main_vt, TIME_MS2I(2000), (vtfunc_t)vt_cb, (void *)&main_vt);
+        while (!main_vt_flag) {
+          palToggleLine(PEDESTRE_VERMELHO);
+          chThdSleepMilliseconds(250);
+        }
+        main_vt_flag = 0;
+        g_state = VERDE_LOCKED_SEC;
+        palSetLine(PEDESTRE_VERMELHO);
+        break;
+      case PISCANDO_PRIM:
+        chVTSet(&main_vt, TIME_MS2I(2000), (vtfunc_t)vt_cb, (void *)&main_vt);
+        while (!main_vt_flag) {
+          palToggleLine(PEDESTRE_VERMELHO);
+          chThdSleepMilliseconds(250);
+        }
+        main_vt_flag = 0;
+        g_state = VERDE_LOCKED_PRIM;
+        palSetLine(PEDESTRE_VERMELHO);
         break;
       default:
         palSetLine(PEDESTRE_VERDE);

@@ -1472,13 +1472,13 @@ END GROUP
                 0x00000000008001c7       0x80 build/obj/chmemcore.o
  .bss.default_heap
                 0x0000000000800247        0xe build/obj/chmemheaps.o
- .bss.old_x4.4149
+ .bss.old_x4.4148
                 0x0000000000800255        0x1 build/obj/main.o
- .bss.old_x3.4147
+ .bss.old_x3.4146
                 0x0000000000800256        0x1 build/obj/main.o
- .bss.old_x2.4145
+ .bss.old_x2.4144
                 0x0000000000800257        0x1 build/obj/main.o
- .bss.old_x1.4143
+ .bss.old_x1.4142
                 0x0000000000800258        0x1 build/obj/main.o
  .bss.waThread1
                 0x0000000000800259       0x83 build/obj/main.o
@@ -1654,7 +1654,7 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x0000000000000000    0x1d8f7
+.debug_info     0x0000000000000000    0x1d8e5
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x0000000000000000      0x5f4 /usr/lib/gcc/avr/7.3.0/../../../avr/lib/avr5/crtatmega328p.o
  .debug_info    0x00000000000005f4      0xfe4 build/obj/hal.o
@@ -1679,9 +1679,9 @@ END GROUP
  .debug_info    0x0000000000017d3a      0xe53 build/obj/chmemcore.o
  .debug_info    0x0000000000018b8d      0xf50 build/obj/chmemheaps.o
  .debug_info    0x0000000000019add      0xb49 build/obj/chcore.o
- .debug_info    0x000000000001a626     0x32d1 build/obj/main.o
+ .debug_info    0x000000000001a626     0x32bf build/obj/main.o
 
-.debug_abbrev   0x0000000000000000     0x4e9d
+.debug_abbrev   0x0000000000000000     0x4ea6
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000      0x5a2 /usr/lib/gcc/avr/7.3.0/../../../avr/lib/avr5/crtatmega328p.o
  .debug_abbrev  0x00000000000005a2      0x1e3 build/obj/hal.o
@@ -1706,7 +1706,7 @@ END GROUP
  .debug_abbrev  0x000000000000434f      0x2cf build/obj/chmemcore.o
  .debug_abbrev  0x000000000000461e      0x2ea build/obj/chmemheaps.o
  .debug_abbrev  0x0000000000004908      0x1db build/obj/chcore.o
- .debug_abbrev  0x0000000000004ae3      0x3ba build/obj/main.o
+ .debug_abbrev  0x0000000000004ae3      0x3c3 build/obj/main.o
 
 .debug_line     0x0000000000000000     0x6ae3
  *(.debug_line .debug_line.* .debug_line_end)
@@ -1761,7 +1761,7 @@ END GROUP
  .debug_frame   0x0000000000001624       0x34 build/obj/chcore.o
  .debug_frame   0x0000000000001658       0xc8 build/obj/main.o
 
-.debug_str      0x0000000000000000     0x21b1
+.debug_str      0x0000000000000000     0x21a8
  *(.debug_str)
  .debug_str     0x0000000000000000      0x208 /usr/lib/gcc/avr/7.3.0/../../../avr/lib/avr5/crtatmega328p.o
  .debug_str     0x0000000000000208      0x886 build/obj/hal.o
@@ -1808,10 +1808,10 @@ END GROUP
                                         0x875 (size before relaxing)
  .debug_str     0x0000000000001fb1       0x36 build/obj/chcore.o
                                         0x796 (size before relaxing)
- .debug_str     0x0000000000001fe7      0x1ca build/obj/main.o
-                                        0xd51 (size before relaxing)
+ .debug_str     0x0000000000001fe7      0x1c1 build/obj/main.o
+                                        0xd48 (size before relaxing)
 
-.debug_loc      0x0000000000000000     0x798e
+.debug_loc      0x0000000000000000     0x7969
  *(.debug_loc)
  .debug_loc     0x0000000000000000       0x7c build/obj/hal_st.o
  .debug_loc     0x000000000000007c     0x124e build/obj/hal_queues.o
@@ -1831,7 +1831,7 @@ END GROUP
  .debug_loc     0x0000000000005c36      0x9e9 build/obj/chevents.o
  .debug_loc     0x000000000000661f      0x38d build/obj/chmemcore.o
  .debug_loc     0x00000000000069ac      0x866 build/obj/chmemheaps.o
- .debug_loc     0x0000000000007212      0x77c build/obj/main.o
+ .debug_loc     0x0000000000007212      0x757 build/obj/main.o
 
 .debug_macinfo
  *(.debug_macinfo)

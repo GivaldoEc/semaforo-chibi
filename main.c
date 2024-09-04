@@ -93,10 +93,8 @@ static THD_FUNCTION(Thread1, arg)
 {
   msg_t ev;
   virtual_timer_t main_vt;
-  virtual_timer_t blink_vt;
 
   chVTObjectInit(&main_vt);
-  chVTObjectInit(&blink_vt);
 
   while (1)
   {

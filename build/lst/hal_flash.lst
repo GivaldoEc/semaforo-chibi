@@ -1639,17 +1639,17 @@
  657               		.file 25 "../../os/rt/include/chthreads.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_flash.c
-     /tmp/ccxGVA8b.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccxGVA8b.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccxGVA8b.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccxGVA8b.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccxGVA8b.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccxGVA8b.s:13     .text.flashWaitErase:0000000000000000 flashWaitErase
-     /tmp/ccxGVA8b.s:141    .text.flashGetSectorOffset:0000000000000000 flashGetSectorOffset
-     /tmp/ccxGVA8b.s:231    .text.flashGetSectorSize:0000000000000000 flashGetSectorSize
-     /tmp/ccxGVA8b.s:319    .text.flashGetOffsetSector:0000000000000000 flashGetOffsetSector
-     /tmp/ccxGVA8b.s:504    .text.flashGetOffsetAddress:0000000000000000 flashGetOffsetAddress
-     /tmp/ccxGVA8b.s:566    .text.flashGetAddressOffset:0000000000000000 flashGetAddressOffset
+     /tmp/ccCRB1Ty.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccCRB1Ty.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccCRB1Ty.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccCRB1Ty.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccCRB1Ty.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccCRB1Ty.s:13     .text.flashWaitErase:0000000000000000 flashWaitErase
+     /tmp/ccCRB1Ty.s:141    .text.flashGetSectorOffset:0000000000000000 flashGetSectorOffset
+     /tmp/ccCRB1Ty.s:231    .text.flashGetSectorSize:0000000000000000 flashGetSectorSize
+     /tmp/ccCRB1Ty.s:319    .text.flashGetOffsetSector:0000000000000000 flashGetOffsetSector
+     /tmp/ccCRB1Ty.s:504    .text.flashGetOffsetAddress:0000000000000000 flashGetOffsetAddress
+     /tmp/ccCRB1Ty.s:566    .text.flashGetAddressOffset:0000000000000000 flashGetAddressOffset
 
 UNDEFINED SYMBOLS
 __muluhisi3

@@ -1304,17 +1304,17 @@
  880               		.file 17 "../../os/oslib/include/chmemheaps.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chmemheaps.c
-     /tmp/ccsrkGWK.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccsrkGWK.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccsrkGWK.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccsrkGWK.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccsrkGWK.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccsrkGWK.s:13     .text.__heap_init:0000000000000000 __heap_init
-     /tmp/ccsrkGWK.s:861    .bss.default_heap:0000000000000000 default_heap
-     /tmp/ccsrkGWK.s:46     .text.chHeapObjectInit:0000000000000000 chHeapObjectInit
-     /tmp/ccsrkGWK.s:107    .text.chHeapAllocAligned:0000000000000000 chHeapAllocAligned
-     /tmp/ccsrkGWK.s:515    .text.chHeapFree:0000000000000000 chHeapFree
-     /tmp/ccsrkGWK.s:701    .text.chHeapStatus:0000000000000000 chHeapStatus
+     /tmp/ccXPM4u6.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccXPM4u6.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccXPM4u6.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccXPM4u6.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccXPM4u6.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccXPM4u6.s:13     .text.__heap_init:0000000000000000 __heap_init
+     /tmp/ccXPM4u6.s:861    .bss.default_heap:0000000000000000 default_heap
+     /tmp/ccXPM4u6.s:46     .text.chHeapObjectInit:0000000000000000 chHeapObjectInit
+     /tmp/ccXPM4u6.s:107    .text.chHeapAllocAligned:0000000000000000 chHeapAllocAligned
+     /tmp/ccXPM4u6.s:515    .text.chHeapFree:0000000000000000 chHeapFree
+     /tmp/ccXPM4u6.s:701    .text.chHeapStatus:0000000000000000 chHeapStatus
 
 UNDEFINED SYMBOLS
 chCoreAllocFromTop

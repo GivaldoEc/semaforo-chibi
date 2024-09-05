@@ -1987,13 +1987,13 @@
  287               		.file 18 "../../os/oslib/include/chmemcore.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chinstances.c
-     /tmp/cclwiSSK.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cclwiSSK.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cclwiSSK.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cclwiSSK.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cclwiSSK.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cclwiSSK.s:12     .text.__idle_thread:0000000000000000 __idle_thread
-     /tmp/cclwiSSK.s:33     .text.chInstanceObjectInit:0000000000000000 chInstanceObjectInit
+     /tmp/cc9zB9a4.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc9zB9a4.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc9zB9a4.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc9zB9a4.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc9zB9a4.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc9zB9a4.s:12     .text.__idle_thread:0000000000000000 __idle_thread
+     /tmp/cc9zB9a4.s:33     .text.chInstanceObjectInit:0000000000000000 chInstanceObjectInit
 
 UNDEFINED SYMBOLS
 ch_system

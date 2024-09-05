@@ -1997,18 +1997,18 @@
  420               		.file 24 "../../os/rt/include/chthreads.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_pal.c
-     /tmp/ccgWYgfA.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccgWYgfA.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccgWYgfA.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccgWYgfA.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccgWYgfA.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccgWYgfA.s:13     .text.palReadBus:0000000000000000 palReadBus
-     /tmp/ccgWYgfA.s:49     .text.palWriteBus:0000000000000000 palWriteBus
-     /tmp/ccgWYgfA.s:98     .text.palSetBusMode:0000000000000000 palSetBusMode
-     /tmp/ccgWYgfA.s:131    .text.palWaitPadTimeoutS:0000000000000000 palWaitPadTimeoutS
-     /tmp/ccgWYgfA.s:167    .text.palWaitPadTimeout:0000000000000000 palWaitPadTimeout
-     /tmp/ccgWYgfA.s:241    .text.palWaitLineTimeoutS:0000000000000000 palWaitLineTimeoutS
-     /tmp/ccgWYgfA.s:306    .text.palWaitLineTimeout:0000000000000000 palWaitLineTimeout
+     /tmp/cc3X9W59.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc3X9W59.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc3X9W59.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc3X9W59.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc3X9W59.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc3X9W59.s:13     .text.palReadBus:0000000000000000 palReadBus
+     /tmp/cc3X9W59.s:49     .text.palWriteBus:0000000000000000 palWriteBus
+     /tmp/cc3X9W59.s:98     .text.palSetBusMode:0000000000000000 palSetBusMode
+     /tmp/cc3X9W59.s:131    .text.palWaitPadTimeoutS:0000000000000000 palWaitPadTimeoutS
+     /tmp/cc3X9W59.s:167    .text.palWaitPadTimeout:0000000000000000 palWaitPadTimeout
+     /tmp/cc3X9W59.s:241    .text.palWaitLineTimeoutS:0000000000000000 palWaitLineTimeoutS
+     /tmp/cc3X9W59.s:306    .text.palWaitLineTimeout:0000000000000000 palWaitLineTimeout
 
 UNDEFINED SYMBOLS
 _pal_lld_setgroupmode

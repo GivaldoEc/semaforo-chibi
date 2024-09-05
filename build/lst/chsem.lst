@@ -2780,22 +2780,22 @@
  1235               		.file 17 "../../os/rt/include/chschd.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chsem.c
-     /tmp/ccMJycpc.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccMJycpc.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccMJycpc.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccMJycpc.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccMJycpc.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccMJycpc.s:13     .text.chSemObjectInit:0000000000000000 chSemObjectInit
-     /tmp/ccMJycpc.s:48     .text.chSemResetWithMessage:0000000000000000 chSemResetWithMessage
-     /tmp/ccMJycpc.s:169    .text.chSemResetWithMessageI:0000000000000000 chSemResetWithMessageI
-     /tmp/ccMJycpc.s:254    .text.chSemWait:0000000000000000 chSemWait
-     /tmp/ccMJycpc.s:395    .text.chSemWaitS:0000000000000000 chSemWaitS
-     /tmp/ccMJycpc.s:486    .text.chSemWaitTimeout:0000000000000000 chSemWaitTimeout
-     /tmp/ccMJycpc.s:652    .text.chSemWaitTimeoutS:0000000000000000 chSemWaitTimeoutS
-     /tmp/ccMJycpc.s:768    .text.chSemSignal:0000000000000000 chSemSignal
-     /tmp/ccMJycpc.s:875    .text.chSemSignalI:0000000000000000 chSemSignalI
-     /tmp/ccMJycpc.s:946    .text.chSemAddCounterI:0000000000000000 chSemAddCounterI
-     /tmp/ccMJycpc.s:1035   .text.chSemSignalWait:0000000000000000 chSemSignalWait
+     /tmp/ccE72IXh.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccE72IXh.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccE72IXh.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccE72IXh.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccE72IXh.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccE72IXh.s:13     .text.chSemObjectInit:0000000000000000 chSemObjectInit
+     /tmp/ccE72IXh.s:48     .text.chSemResetWithMessage:0000000000000000 chSemResetWithMessage
+     /tmp/ccE72IXh.s:169    .text.chSemResetWithMessageI:0000000000000000 chSemResetWithMessageI
+     /tmp/ccE72IXh.s:254    .text.chSemWait:0000000000000000 chSemWait
+     /tmp/ccE72IXh.s:395    .text.chSemWaitS:0000000000000000 chSemWaitS
+     /tmp/ccE72IXh.s:486    .text.chSemWaitTimeout:0000000000000000 chSemWaitTimeout
+     /tmp/ccE72IXh.s:652    .text.chSemWaitTimeoutS:0000000000000000 chSemWaitTimeoutS
+     /tmp/ccE72IXh.s:768    .text.chSemSignal:0000000000000000 chSemSignal
+     /tmp/ccE72IXh.s:875    .text.chSemSignalI:0000000000000000 chSemSignalI
+     /tmp/ccE72IXh.s:946    .text.chSemAddCounterI:0000000000000000 chSemAddCounterI
+     /tmp/ccE72IXh.s:1035   .text.chSemSignalWait:0000000000000000 chSemSignalWait
 
 UNDEFINED SYMBOLS
 chSchReadyI

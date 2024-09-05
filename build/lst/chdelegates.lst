@@ -1343,19 +1343,19 @@
  545               		.file 18 "../../os/oslib/include/chdelegates.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chdelegates.c
-     /tmp/cclyecP1.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cclyecP1.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cclyecP1.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cclyecP1.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cclyecP1.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cclyecP1.s:13     .text.__ch_delegate_fn0:0000000000000000 __ch_delegate_fn0
-     /tmp/cclyecP1.s:45     .text.__ch_delegate_fn1:0000000000000000 __ch_delegate_fn1
-     /tmp/cclyecP1.s:96     .text.__ch_delegate_fn2:0000000000000000 __ch_delegate_fn2
-     /tmp/cclyecP1.s:154    .text.__ch_delegate_fn3:0000000000000000 __ch_delegate_fn3
-     /tmp/cclyecP1.s:217    .text.__ch_delegate_fn4:0000000000000000 __ch_delegate_fn4
-     /tmp/cclyecP1.s:285    .text.chDelegateCallVeneer:0000000000000000 chDelegateCallVeneer
-     /tmp/cclyecP1.s:351    .text.chDelegateDispatch:0000000000000000 chDelegateDispatch
-     /tmp/cclyecP1.s:435    .text.chDelegateDispatchTimeout:0000000000000000 chDelegateDispatchTimeout
+     /tmp/cckrgVKD.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cckrgVKD.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cckrgVKD.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cckrgVKD.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cckrgVKD.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cckrgVKD.s:13     .text.__ch_delegate_fn0:0000000000000000 __ch_delegate_fn0
+     /tmp/cckrgVKD.s:45     .text.__ch_delegate_fn1:0000000000000000 __ch_delegate_fn1
+     /tmp/cckrgVKD.s:96     .text.__ch_delegate_fn2:0000000000000000 __ch_delegate_fn2
+     /tmp/cckrgVKD.s:154    .text.__ch_delegate_fn3:0000000000000000 __ch_delegate_fn3
+     /tmp/cckrgVKD.s:217    .text.__ch_delegate_fn4:0000000000000000 __ch_delegate_fn4
+     /tmp/cckrgVKD.s:285    .text.chDelegateCallVeneer:0000000000000000 chDelegateCallVeneer
+     /tmp/cckrgVKD.s:351    .text.chDelegateDispatch:0000000000000000 chDelegateDispatch
+     /tmp/cckrgVKD.s:435    .text.chDelegateDispatchTimeout:0000000000000000 chDelegateDispatchTimeout
 
 UNDEFINED SYMBOLS
 chMsgSend

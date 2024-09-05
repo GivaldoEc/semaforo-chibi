@@ -49,7 +49,8 @@ build/obj/main.o: main.c ../../os/rt/include/ch.h \
  ../../os/hal/include/hal_wdg.h ../../os/hal/include/hal_wspi.h \
  ../../os/hal/include/hal_st.h \
  ../../os/hal/ports/AVR/MEGA/LLD/SYSTICKv1/hal_st_lld.h \
- ../../os/hal/include/hal_mmc_spi.h ../../os/hal/include/hal_serial_usb.h
+ ../../os/hal/include/hal_mmc_spi.h ../../os/hal/include/hal_serial_usb.h \
+ ../../os/hal/lib/streams/chprintf.h
 
 ../../os/rt/include/ch.h:
 
@@ -234,3 +235,5 @@ cfg/mcuconf.h:
 ../../os/hal/include/hal_mmc_spi.h:
 
 ../../os/hal/include/hal_serial_usb.h:
+
+../../os/hal/lib/streams/chprintf.h:

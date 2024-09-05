@@ -2198,15 +2198,15 @@
  1597               		.file 25 "../../os/hal/lib/streams/memstreams.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 chprintf.c
-     /tmp/ccnMEbDr.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccnMEbDr.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccnMEbDr.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccnMEbDr.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccnMEbDr.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccnMEbDr.s:16     .text.chvprintf:0000000000000000 chvprintf
-     /tmp/ccnMEbDr.s:1331   .text.chprintf:0000000000000000 chprintf
-     /tmp/ccnMEbDr.s:1374   .text.chvsnprintf:0000000000000000 chvsnprintf
-     /tmp/ccnMEbDr.s:1530   .text.chsnprintf:0000000000000000 chsnprintf
+     /tmp/ccDPuXjs.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccDPuXjs.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccDPuXjs.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccDPuXjs.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccDPuXjs.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccDPuXjs.s:16     .text.chvprintf:0000000000000000 chvprintf
+     /tmp/ccDPuXjs.s:1331   .text.chprintf:0000000000000000 chprintf
+     /tmp/ccDPuXjs.s:1374   .text.chvsnprintf:0000000000000000 chvsnprintf
+     /tmp/ccDPuXjs.s:1530   .text.chsnprintf:0000000000000000 chsnprintf
 
 UNDEFINED SYMBOLS
 __tablejump2__

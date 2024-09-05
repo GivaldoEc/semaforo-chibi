@@ -16,6 +16,7 @@
 
 #include "ch.h"
 #include "hal.h"
+#include "chprintf.h"
 
 #define QUEUE_SIZE 128
 
@@ -115,6 +116,7 @@ static THD_FUNCTION(Thread1, arg)
             chThdSleepMilliseconds(100);
           }
         }
+        main_vt_flag = 0;
         chVTSet(&main_vt, TIME_MS2I(prev_state == SECUNDARIO ? 5000 : 10000), (vtfunc_t)vt_cb, (void *)&main_vt);
         while (!main_vt_flag) {
           if ((*rdp == AMB_SECUNDARIO)) {
@@ -182,6 +184,7 @@ static THD_FUNCTION(Thread1, arg)
             chThdSleepMilliseconds(100);
           }
         }
+        main_vt_flag = 0;
         chVTSet(&main_vt, TIME_MS2I((prev_state == PRIMARIO) ? 1000 : 6000), (vtfunc_t)vt_cb, (void *)&main_vt);
         while (!main_vt_flag) {
           if ((*rdp == AMB_PRIMARIO)) {
@@ -202,7 +205,9 @@ static THD_FUNCTION(Thread1, arg)
           }
         }
         if (qsize > 0) {
-          ev = dequeue(); /* Caso esse evento nao seja um dos esperados por esse estado, será perdido (CONFERIR SE É ASSIM) */
+          if (*rdp != SECUNDARIO) {
+            ev = dequeue(); /* Caso esse evento nao seja um dos esperados por esse estado, será perdido (CONFERIR SE É ASSIM) */
+          }
         }
         if (ev == PEDESTRE &! flag_amb_prim) {
           g_state = AMARELO_PED_SEC;
@@ -254,7 +259,9 @@ static THD_FUNCTION(Thread1, arg)
         }
         main_vt_flag = 0;
         if (qsize > 0) {
-          ev = dequeue(); /* Caso esse evento nao seja um dos esperados por esse estado, será perdido (CONFERIR SE É ASSIM) */
+          if (*rdp != PEDESTRE) {
+            ev = dequeue(); /* Caso esse evento nao seja um dos esperados por esse estado, será perdido (CONFERIR SE É ASSIM) */
+          }
         }
         if (ev == SECUNDARIO || ev == AMB_SECUNDARIO) {
           g_state = PISCANDO_SEC;

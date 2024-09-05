@@ -1882,18 +1882,18 @@
  506               		.file 24 "../../os/rt/include/chschd.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 hal_serial_lld.c
-     /tmp/cc1Paaf2.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cc1Paaf2.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cc1Paaf2.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cc1Paaf2.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cc1Paaf2.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cc1Paaf2.s:12     .text.notify1:0000000000000000 notify1
-     /tmp/cc1Paaf2.s:38     .text.__vector_18:0000000000000000 __vector_18
+     /tmp/ccUKI1w0.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccUKI1w0.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccUKI1w0.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccUKI1w0.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccUKI1w0.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccUKI1w0.s:12     .text.notify1:0000000000000000 notify1
+     /tmp/ccUKI1w0.s:38     .text.__vector_18:0000000000000000 __vector_18
                             *COM*:0000000000000049 SD1
-     /tmp/cc1Paaf2.s:194    .text.__vector_19:0000000000000000 __vector_19
-     /tmp/cc1Paaf2.s:318    .text.sd_lld_init:0000000000000000 sd_lld_init
-     /tmp/cc1Paaf2.s:341    .text.sd_lld_start:0000000000000000 sd_lld_start
-     /tmp/cc1Paaf2.s:449    .text.sd_lld_stop:0000000000000000 sd_lld_stop
+     /tmp/ccUKI1w0.s:194    .text.__vector_19:0000000000000000 __vector_19
+     /tmp/ccUKI1w0.s:318    .text.sd_lld_init:0000000000000000 sd_lld_init
+     /tmp/ccUKI1w0.s:341    .text.sd_lld_start:0000000000000000 sd_lld_start
+     /tmp/ccUKI1w0.s:449    .text.sd_lld_stop:0000000000000000 sd_lld_stop
 
 UNDEFINED SYMBOLS
 __avr_in_isr
